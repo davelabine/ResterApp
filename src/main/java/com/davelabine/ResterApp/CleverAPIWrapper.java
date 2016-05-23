@@ -36,10 +36,14 @@ public class CleverAPIWrapper {
     {
         WebTarget sURI = client.target("https://api.github.com/users/davelabine");
 
+        /* The long way to do it is below for future reference
+         *
         Invocation.Builder invocation = sURI.request();
         Response response = invocation.get();
         System.out.println(response.toString());
-        return response.getStatus();
+        */
+
+        return sURI.request().get(Response.class).getStatus();
     }
 
 }
