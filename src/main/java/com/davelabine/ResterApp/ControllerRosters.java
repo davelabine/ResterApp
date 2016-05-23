@@ -6,9 +6,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Root resource (exposed at "rosters" path)
+ * Root resource (exposed at "roster" path)
  */
-@Path("rosters")
+@Path("/roster")
 public class ControllerRosters {
 
     /**
@@ -24,11 +24,9 @@ public class ControllerRosters {
     }
 
     // This method is called if XML is request
-    /*
     @GET
     @Produces(MediaType.TEXT_XML)
-    public String sayXMLHello() {
+    public String GetXMLRoster() {
         return "<?xml version=\"1.0\"?>" + "<Roster>A Roster in XML!</hello>";
     }
-    */
 }

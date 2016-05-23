@@ -34,7 +34,7 @@ public class ControllerRostersTest {
      */
     @Test
     public void testGetIt() {
-        String responseMsg = target.path("rosters").request().get(String.class);
+        String responseMsg = target.path("roster").request().get(String.class);
         junit.framework.Assert.assertEquals("Text Roster!", responseMsg);
     }
 }
