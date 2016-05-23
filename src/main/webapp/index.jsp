@@ -4,6 +4,8 @@
 </HEAD>
 <body>
     <h2>Welcome to the ResterApp Web Application!</h2>
-    <p><a href="webapi/rosters">See Rosters</a>
+    <p><a href="webapi/rosters">Rosters Web API</a>
+    <p><a href="docs/index.html">Swagger Docs</a></p>
+
 </body>
 </html>
