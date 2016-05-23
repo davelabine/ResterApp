@@ -12,7 +12,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ResterApp</servlet-name>
-        <url-pattern>/WebAPI/*</url-pattern>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/webapi/*</url-pattern>
     </servlet-mapping>
 </web-app>

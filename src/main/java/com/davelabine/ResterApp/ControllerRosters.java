@@ -6,9 +6,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Root resource (exposed at "/rosters" path)
+ * Root resource (exposed at "rosters" path)
  */
-@Path("/rosters")
+@Path("rosters")
 public class ControllerRosters {
 
     /**
@@ -20,6 +20,6 @@ public class ControllerRosters {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getIt() {
-        return "Got a Roster!";
+        return "Got rosters endpoint!";
     }
 }
