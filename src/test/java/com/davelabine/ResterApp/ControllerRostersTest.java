@@ -1,14 +1,15 @@
 package com.davelabine.ResterApp;
 
-import junit.framework.*;
-import org.junit.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.junit.Test;
+
+import org.junit.*;
+import static org.junit.Assert.*;
+
 
 
 public class ControllerRostersTest {
@@ -35,6 +36,6 @@ public class ControllerRostersTest {
     @Test
     public void testGetIt() {
         String responseMsg = target.path("roster").request().get(String.class);
-        junit.framework.Assert.assertEquals("Text Roster!", responseMsg);
+        assertEquals("Text Roster!", responseMsg);
     }
 }
