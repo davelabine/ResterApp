@@ -19,14 +19,16 @@ public class ControllerRosters {
      */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getIt() {
-        return "A Roster in Plaintext!";
+    public String getTextPlainRoster() {
+        return "Text Roster!";
     }
 
     // This method is called if XML is request
+    /*
     @GET
     @Produces(MediaType.TEXT_XML)
     public String sayXMLHello() {
         return "<?xml version=\"1.0\"?>" + "<Roster>A Roster in XML!</hello>";
     }
+    */
 }

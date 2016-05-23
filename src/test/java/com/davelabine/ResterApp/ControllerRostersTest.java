@@ -1,5 +1,6 @@
 package com.davelabine.ResterApp;
 
+import junit.framework.*;
 import org.junit.*;
 
 import javax.ws.rs.client.Client;
@@ -7,7 +8,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.glassfish.grizzly.http.server.HttpServer;
-
+import org.junit.Test;
 
 
 public class ControllerRostersTest {
@@ -23,19 +24,17 @@ public class ControllerRostersTest {
         target = c.target(Main.BASE_URI);
     }
 
-    /**
     @After
     public void tearDown() throws Exception {
-        server.stop();
+        server.shutdownNow();
     }
 
-
+    /*
      * Test to see that the message "Got it!" is sent in the response.
-
+     */
     @Test
     public void testGetIt() {
-        String responseMsg = target.path("myresource").request().get(String.class);
-        assertEquals("Got it!", responseMsg);
+        String responseMsg = target.path("rosters").request().get(String.class);
+        junit.framework.Assert.assertEquals("Text Roster!", responseMsg);
     }
-     */
 }
