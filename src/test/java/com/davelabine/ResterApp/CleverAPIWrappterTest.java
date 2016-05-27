@@ -1,5 +1,8 @@
 package com.davelabine.ResterApp;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.AbstractModule;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -10,12 +13,18 @@ import static org.junit.Assert.*;
  */
 public class CleverAPIWrappterTest {
 
-    private CleverAPIWrapper clever;
-
+    private CleverAPI clever;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        clever = new CleverAPIWrapper();
+        injector = Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(CleverAPI.class).to(CleverAPIWrapper.class);
+            }
+        });
+        clever = injector.getInstance(CleverAPI.class);
     }
 
     @After
