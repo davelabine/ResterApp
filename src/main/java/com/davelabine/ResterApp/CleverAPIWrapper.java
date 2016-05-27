@@ -2,6 +2,7 @@ package com.davelabine.ResterApp;
 
 import java.net.URI;
 
+import javax.inject.Inject;
 import javax.print.DocFlavor;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -13,13 +14,10 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
 
-import javax.inject.Singleton;
-
 /**
  * Created by davidl on 5/23/16.
  */
 
-@Singleton
 public class CleverAPIWrapper implements CleverAPI {
     // Base URI the CleverAPIWrapper will call
     public static final String BASE_URI = "https://api.clever.com/v1.1/";
@@ -28,6 +26,7 @@ public class CleverAPIWrapper implements CleverAPI {
     private Client          client;
     private WebTarget       baseURI;
 
+    @Inject
     CleverAPIWrapper() {
         clientConfig = new ClientConfig();
         client = ClientBuilder.newClient(clientConfig);
