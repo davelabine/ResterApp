@@ -25,6 +25,7 @@ public class Main {
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
+     * This is only used when code is under test.
      * @return Grizzly HTTP server.
      */
     public static HttpServer startServer() {
