@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 
 /**
  * Root resource for student information (exposed at "students" path)
@@ -32,8 +31,7 @@ public class ControllerStudents {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create() throws URISyntaxException{
-        String studentKey = UUID.randomUUID().toString();
-        URI retURI = new URI(ENDPOINT_BASE_PATH_REGEX, "TODO-ServerURL", studentKey);
+        URI retURI = new URI(ENDPOINT_BASE_PATH_REGEX, Main.BASE_URI, "FIXME");
         return Response.created(retURI).build();
     }
 

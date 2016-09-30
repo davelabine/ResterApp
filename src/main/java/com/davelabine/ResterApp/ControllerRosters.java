@@ -37,7 +37,7 @@ public class ControllerRosters {
     @Produces(MediaType.TEXT_XML)
     @ApiOperation(value = "Returns roster details as XML")
     public String GetXMLRoster() {
-        return "<?xml version=\"1.0\"?>" + "<Roster>A Roster in XML!</hello>";
+        return "<?xml version=\"1.0\"?>" + "<Roster>A Roster in XML!</Roster>";
     }
 }
 
