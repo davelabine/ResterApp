@@ -4,11 +4,15 @@ package com.davelabine.ResterApp;
  * Created by davidl on 9/29/16.
  */
 
+import com.google.inject.Inject;
 import io.swagger.annotations.ApiOperation;
+
+import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.validation.constraints.NotNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,6 +23,15 @@ import java.net.URISyntaxException;
 @Path("/students")
 public class ControllerStudents {
     private static final String ENDPOINT_BASE_PATH_REGEX = "%s/students/%s";
+    //private Gson gson = new Gson();
+
+    private final StudentManager studentManager;
+
+    @Inject
+    public ControllerStudents(final StudentManager studentManager) {
+        this.studentManager = studentManager;
+    }
+
 
     /**
      * Method for creating students.

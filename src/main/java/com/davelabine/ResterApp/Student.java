@@ -1,9 +1,8 @@
 package com.davelabine.ResterApp;
 
-import java.util.UUID;
-
 import lombok.Getter;
-import lombok.Setter;
+
+import javax.inject.Inject;
 
 /**
  * Created by davidl on 9/29/16.
@@ -18,11 +17,6 @@ public class Student {
 
     public Student(String studentID, String studentName) {
         this.studentID = studentID;
-        this.studentName = studentName;
-    }
-
-    public Student(String studentName) {
-        this.studentID = UUID.randomUUID().toString();
         this.studentName = studentName;
     }
 
