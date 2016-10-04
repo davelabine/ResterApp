@@ -1,6 +1,5 @@
 package com.davelabine.ResterApp;
 
-import io.swagger.annotations.*;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,7 +14,6 @@ import javax.ws.rs.PathParam;
 /**
  * Root resource (exposed at "roster" path)
  */
-@Api(value = "roster", description = "Endpoint for working with a roster")
 @Path("/roster")
 public class ControllerRosters {
 
@@ -27,7 +25,6 @@ public class ControllerRosters {
      */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @ApiOperation(value = "Returns roster details as plain text")
     public String getTextPlainRoster() {
         return "Text Roster!";
     }
@@ -35,7 +32,6 @@ public class ControllerRosters {
     // This method is called if XML is request
     @GET
     @Produces(MediaType.TEXT_XML)
-    @ApiOperation(value = "Returns roster details as XML")
     public String GetXMLRoster() {
         return "<?xml version=\"1.0\"?>" + "<Roster>A Roster in XML!</Roster>";
     }

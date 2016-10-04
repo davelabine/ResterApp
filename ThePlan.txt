@@ -1,0 +1,41 @@
+
+Questions:
+- What's with Web.xml and the Servlet 3.x spec?  Many of the tutorials configure this through code, but
+in CS we still seem to use Web.xml.  Why?
+- Explain rules of thumb for code organization.
+- When is appropriate to inject dependencies.  Doesn't seem necessary for POJOs with few or common
+dependencies.  Maybe more complex objects that you want to mock out in tests or add a lot of
+dependencies?
+- Explain how we wire up dependency injection via in CS (so I can mirror).
+- Probably this will also involve standing up some configuration code, especially when I start
+introducing dependencies like S3 and SQS
+
+
+TODOS:
+
+Basic AutoScaling App:
+- Get Unit Tests Working and running for basic app.
+- Get /students endpoint POST and GET working with POJOs and simple in-memory storage.
+- Figure out why index.jsp is not serving up
+- Develop a JMeter test to stress the /students endpoint
+- Simulate an increased workload per request with some kind of busywork, that can be switched with
+a query param.
+- Deploy this to EC2 with a Tomcat container
+- Deploy JMeter tests to EC2 to stress app instances there
+- Try to deploy autoscaling groups based on a coarse measure, like CPU usage.
+- Swagger docs?
+
+Handling POST of complex content types, storing to S3:
+- Figure out how upload a student picture to S3 as a part of the POST endpoint.
+Configure the file upload to happen asynchronously (not on a serving thread), and the
+- More JMeter load tests to stress this.
+
+Using SQS for batch processing of messages:
+- Use /rosters endpoint to post a OneRoster standard CSV that populates the /students endpoint
+- Develop a separate processor that reads from the queue and adds students using the /students endpoint
+- Might involve throwing data in a database somewhere to keep memory from blowing up.
+
+Logging and other Metrics?
+Adding an external Cache?
+
+

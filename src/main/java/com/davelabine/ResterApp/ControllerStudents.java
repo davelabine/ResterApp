@@ -5,7 +5,6 @@ package com.davelabine.ResterApp;
  */
 
 import com.google.inject.Inject;
-import io.swagger.annotations.ApiOperation;
 
 import com.google.gson.Gson;
 
@@ -17,20 +16,25 @@ import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Map;
+
 /**
  * Root resource for student information (exposed at "students" path)
  */
 @Path("/students")
 public class ControllerStudents {
     private static final String ENDPOINT_BASE_PATH_REGEX = "%s/students/%s";
-    //private Gson gson = new Gson();
 
-    private final StudentManager studentManager;
+    private Gson gson = new Gson();
 
+    private final StudentManager studentManager = new StudentManager();
+
+    /* TODO - Figure out when it is appropriate to inject dependencies
     @Inject
     public ControllerStudents(final StudentManager studentManager) {
         this.studentManager = studentManager;
     }
+    */
 
 
     /**
@@ -43,8 +47,11 @@ public class ControllerStudents {
     @Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create() throws URISyntaxException{
+    public Response create(String studentJsonData) throws URISyntaxException {
+
+        //Student newStudent = gson.fromJson(studentJsonData, Student.class);
         URI retURI = new URI(ENDPOINT_BASE_PATH_REGEX, Main.BASE_URI, "FIXME");
+
         return Response.created(retURI).build();
     }
 
@@ -52,14 +59,12 @@ public class ControllerStudents {
      * Get the metadata of an uploaded resource.
      */
     @GET
-    @Path("/{id}")
-    @ApiOperation(value = "Get metadata for a student.")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-
     public Response get(
             @PathParam("id")
             String id) {
-        return Response.ok().build();
+        return Response.ok("The param you sent me was + " + id).build();
     }
 
 }
