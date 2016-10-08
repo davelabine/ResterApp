@@ -1,4 +1,4 @@
-package com.davelabine.ResterApp;
+package com.davelabine.ResterApp.com.davelabine.resterapp.controller;
 
 /**
  * Created by davidl on 9/29/16.
@@ -50,7 +50,7 @@ public class ControllerStudents {
     public Response create(String studentJsonData) throws URISyntaxException {
 
         //Student newStudent = gson.fromJson(studentJsonData, Student.class);
-        URI retURI = new URI(ENDPOINT_BASE_PATH_REGEX, Main.BASE_URI, "FIXME");
+        URI retURI = new URI(ENDPOINT_BASE_PATH_REGEX, "FIXME", "FIXME");
 
         return Response.created(retURI).build();
     }

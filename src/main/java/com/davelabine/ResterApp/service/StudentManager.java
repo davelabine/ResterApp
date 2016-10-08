@@ -1,4 +1,4 @@
-package com.davelabine.ResterApp;
+package com.davelabine.ResterApp.service;
 
 import javax.inject.Inject;
 
