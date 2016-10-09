@@ -1,8 +1,9 @@
-package com.davelabine.ResterApp.service;
+package com.davelabine.resterapp.service;
+
+import com.davelabine.resterapp.model.Student;
 
 import javax.inject.Inject;
 
-import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 

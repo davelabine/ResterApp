@@ -1,4 +1,7 @@
-package com.davelabine.ResterApp;
+package com.davelabine.resterapp;
+
+import com.davelabine.resterapp.service.StudentManager;
+import com.davelabine.resterapp.model.Student;
 
 import org.junit.After;
 import org.junit.Before;

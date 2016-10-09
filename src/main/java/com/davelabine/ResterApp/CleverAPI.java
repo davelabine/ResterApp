@@ -1,4 +1,4 @@
-package com.davelabine.ResterApp;
+package com.davelabine.resterapp;
 
 /**
  * Created by davidl on 5/27/16.

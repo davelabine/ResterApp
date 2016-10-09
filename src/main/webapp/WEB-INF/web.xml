@@ -6,8 +6,7 @@
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>
-                io.swagger.jaxrs.listing,
-                com.davelabine.ResterApp
+                com.davelabine.resterapp
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>

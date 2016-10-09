@@ -1,7 +1,7 @@
-package com.davelabine.ResterApp;
+package com.davelabine.resterapp;
 
-import org.junit.After;
-import org.junit.Before;
+import com.davelabine.resterapp.model.Student;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

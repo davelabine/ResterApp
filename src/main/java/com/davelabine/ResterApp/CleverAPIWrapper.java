@@ -1,19 +1,15 @@
-package com.davelabine.ResterApp;
-
-import java.net.URI;
+package com.davelabine.resterapp;
 
 import javax.inject.Inject;
-import javax.print.DocFlavor;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.core.MediaType;
+
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
 
+/*
 /**
  * Created by davidl on 5/23/16.
  */
