@@ -14,9 +14,11 @@ introducing dependencies like S3 and SQS
 TODOS:
 
 Basic AutoScaling App:
+- DONE Figure out why index.jsp is not serving up
+- DONE Switch to integrated Gradle build
+- DONE Switch to RestEasy with Guice DI
 - Get Unit Tests Working and running for basic app.
 - Get /students endpoint POST and GET working with POJOs and simple in-memory storage.
-- Figure out why index.jsp is not serving up
 - Develop a JMeter test to stress the /students endpoint
 - Simulate an increased workload per request with some kind of busywork, that can be switched with
 a query param.
