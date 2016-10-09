@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="ResterApp:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="ResterApp.war">
-      <element id="artifact" artifact-name="ResterApp:war exploded" />
-    </root>
-  </artifact>
-</component>
