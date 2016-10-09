@@ -7,14 +7,16 @@ import javax.ws.rs.client.WebTarget;
 
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.client.ClientConfig;
+// import org.glassfish.jersey.client.ClientConfig;
 
 /*
 /**
  * Created by davidl on 5/23/16.
  */
 
+/*
 public class CleverAPIWrapper implements CleverAPI {
+
     // Base URI the CleverAPIWrapper will call
     public static final String BASE_URI = "https://api.clever.com/v1.1/";
 
@@ -31,16 +33,15 @@ public class CleverAPIWrapper implements CleverAPI {
 
     public int sample()
     {
-        WebTarget sURI = client.target("https://api.github.com/users/davelabine");
+        //WebTarget sURI = client.target("https://api.github.com/users/davelabine");
 
-        /* The long way to do it is below for future reference
-         *
-        Invocation.Builder invocation = sURI.request();
-        Response response = invocation.get();
-        System.out.println(response.toString());
-        */
+        // The long way to do it is below for future reference
+        // Invocation.Builder invocation = sURI.request();
+        // Response response = invocation.get();
+        // System.out.println(response.toString());
 
-        return sURI.request().get(Response.class).getStatus();
+        //return sURI.request().get(Response.class).getStatus();
     }
 
 }
+*/
