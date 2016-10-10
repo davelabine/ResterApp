@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.controller;
 
+import org.apache.http.HttpStatus;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.MockDispatcherFactory;
 import org.jboss.resteasy.mock.MockHttpRequest;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by davidl on 10/10/16.
@@ -38,20 +40,22 @@ public class ControllerRosterTest {
     }
 
     @Test
-    public void getTextPlainRoster() throws URISyntaxException {
+    public void getTextPlainRosterTest() throws URISyntaxException {
         MockHttpRequest request = MockHttpRequest.get("/roster").accept(MediaType.TEXT_PLAIN);
         MockHttpResponse response = new MockHttpResponse();
         dispatcher.invoke(request, response);
 
+        assertEquals(response.getStatus(), HttpStatus.SC_OK);
         assertEquals(response.getContentAsString(), ControllerRoster.ROSTER_TEXT_PLAIN);
     }
 
     @Test
-    public void getTextXMLRoster() throws URISyntaxException {
+    public void getTextXMLRosterTest() throws URISyntaxException {
         MockHttpRequest request = MockHttpRequest.get("/roster").accept(MediaType.TEXT_XML);
         MockHttpResponse response = new MockHttpResponse();
         dispatcher.invoke(request, response);
 
+        assertEquals(response.getStatus(), HttpStatus.SC_OK);
         assertEquals(response.getContentAsString(), ControllerRoster.ROSTER_TEXT_XML);
     }
 
