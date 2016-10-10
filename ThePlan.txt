@@ -1,14 +1,20 @@
 
 Questions:
 - What's with Web.xml and the Servlet 3.x spec?  Many of the tutorials configure this through code, but
-in CS we still seem to use Web.xml.  Why?
-- Explain rules of thumb for code organization.
-- When is appropriate to inject dependencies.  Doesn't seem necessary for POJOs with few or common
-dependencies.  Maybe more complex objects that you want to mock out in tests or add a lot of
-dependencies?
-- Explain how we wire up dependency injection via in CS (so I can mirror).
+in CS we still seem to use Web.xml.  Why?  Force of habit, and some inconsistencies between Tomcat, Jetty.
+In other words Web.xml is more compatible and consistent between containers.
+- When is appropriate to inject dependencies? Generally use DI whenever you use "new" and only create POJOs on the
+stack.  DI automatically defers loading of dependencies to optimize startup.  Eg, Loads class files, but not objects
+until they are needed.
+- Explain how we wire up dependency injection via in CS (so I can mirror).  Use Servlet Context Listeners, which
+are the primary hook for when your app loads up - getModules is where the magic is for Guice.  Modules are def'ns
+for what beans get wired to which other beans, with a namespace.
 - Probably this will also involve standing up some configuration code, especially when I start
 introducing dependencies like S3 and SQS
+- Explain rules of thumb for code organization - generally across seams in your app - eg controllers (external
+endpoint def'n and communication), services which are business logic to do stuff, a Repo tier.
+- Good basic MVP project for all of this stuff is here:
+https://github.com/patrickianwilson/blog-testing-demonstration
 
 
 TODOS:
@@ -18,6 +24,7 @@ Basic AutoScaling App:
 - DONE Switch to integrated Gradle build
 - DONE Switch to RestEasy with Guice DI
 - Get Unit Tests Working and running for basic app.
+- Add dependency injection via Guice rather than the Jersey injectors
 - Get /students endpoint POST and GET working with POJOs and simple in-memory storage.
 - Develop a JMeter test to stress the /students endpoint
 - Simulate an increased workload per request with some kind of busywork, that can be switched with
