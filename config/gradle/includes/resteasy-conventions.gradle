@@ -18,6 +18,7 @@ dependencies {
     compile("org.jboss.resteasy:resteasy-guice:$RESTEASY_VERSION") {
         exclude group: 'javassist'
     }
+    compile("org.jboss.resteasy:resteasy-client:$RESTEASY_VERSION")
 
     compile "com.google.code.gson:gson:$GSON_VERSION"
 

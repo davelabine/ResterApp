@@ -9,9 +9,15 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Root resource (exposed at "roster" path)
+ *
+ * I plan to expand this later by uploading a OneRoster-compliant CSV and processing it via SQS Queue
+ * For now, just define some basic placeholder resources.
+ *
  */
 @Path("/roster")
-public class ControllerRosters {
+public class ControllerRoster {
+    public static final String ROSTER_TEXT_PLAIN = "Text Roster!";
+    public static final String ROSTER_TEXT_XML = "<?xml version=\"1.0\"?><Roster>A Roster in XML!</Roster>";
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent
@@ -21,15 +27,13 @@ public class ControllerRosters {
      */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getTextPlainRoster() {
-        return "Text Roster!";
-    }
+    public String getTextPlainRoster() { return ROSTER_TEXT_PLAIN;}
 
     // This method is called if XML is request
     @GET
     @Produces(MediaType.TEXT_XML)
     public String GetXMLRoster() {
-        return "<?xml version=\"1.0\"?>" + "<Roster>A Roster in XML!</Roster>";
+        return ROSTER_TEXT_XML;
     }
 }
 

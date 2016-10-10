@@ -3,7 +3,7 @@ package com.davelabine.resterapp;
 //import com.sun.java.swing.plaf.windows.TMSchema;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
 //import com.github.patrickianwilson.template.java.web.controllers.ErrorCodeExceptionMapper;
-import com.davelabine.resterapp.controller.ControllerRosters;
+import com.davelabine.resterapp.controller.ControllerRoster;
 import com.davelabine.resterapp.controller.ControllerStudents;
 import com.google.inject.servlet.ServletModule;
 
@@ -24,7 +24,7 @@ public class WebModule extends ServletModule {
         //bind(GenericServerErrorExceptionMapper.class);
 
         //controllers.
-        bind(ControllerRosters.class);
+        bind(ControllerRoster.class);
         bind(ControllerStudents.class);
 
         //boot up the resteasy dispatcher.
