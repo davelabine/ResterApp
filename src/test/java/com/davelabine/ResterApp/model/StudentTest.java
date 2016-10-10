@@ -1,6 +1,4 @@
-package com.davelabine.resterapp;
-
-import com.davelabine.resterapp.model.Student;
+package com.davelabine.resterapp.model;
 
 import org.junit.Test;
 

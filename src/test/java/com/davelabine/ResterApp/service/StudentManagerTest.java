@@ -1,11 +1,11 @@
-package com.davelabine.resterapp;
+package com.davelabine.resterapp.service;
 
-import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.model.Student;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Assert;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,7 +30,10 @@ public class StudentManagerTest {
         String key = target.createStudent("123456", "Jimbo Jones");
 
         Student student = target.getStudent(key);
-        assertEquals("123456", student.getStudentID());
-        assertEquals("Jimbo Jones", student.getStudentName());
+        Assert.assertEquals("123456", student.getStudentID());
+        Assert.assertEquals("Jimbo Jones", student.getStudentName());
+
+        // Used to verify unit tests are working correctly
+        // Assert.assertEquals("fun", "icepick-in-eye");
     }
 }
