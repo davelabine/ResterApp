@@ -5,13 +5,14 @@ import org.jboss.resteasy.mock.MockDispatcherFactory;
 import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.mock.MockHttpResponse;
 import org.jboss.resteasy.plugins.server.resourcefactory.POJOResourceFactory;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.ws.rs.core.MediaType;
 import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertEquals;
@@ -26,51 +27,32 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class ControllerRosterTest {
 
-    // TODO: Why is new appropriate here instead of @Inject?
-    // I suspect because we want a real controller and not mocked out dependencies.
-    // Usually Guice would instantiate this for us, we could try doing this with @Inject?
-    @InjectMocks
-    private ControllerRoster controllerRoster;
+    // @InjectMocks - don't think we need this
+    private Dispatcher dispatcher;
 
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-
+    @Before
+    public void before() throws Exception {
+        this.dispatcher = MockDispatcherFactory.createDispatcher();
+        POJOResourceFactory noDefaults = new POJOResourceFactory(ControllerRoster.class);
+        this.dispatcher.getRegistry().addResourceFactory(noDefaults);
     }
-    @AfterClass
-    public static void afterClass() throws Exception {
-
-    }
-
 
     @Test
-    public void getBasicRoster() throws URISyntaxException {
-        Dispatcher dispatcher = MockDispatcherFactory.createDispatcher();
-        POJOResourceFactory noDefaults = new POJOResourceFactory(ControllerRoster.class);
-        dispatcher.getRegistry().addResourceFactory(noDefaults);
-
-        MockHttpRequest request = MockHttpRequest.get("/roster");
+    public void getTextPlainRoster() throws URISyntaxException {
+        MockHttpRequest request = MockHttpRequest.get("/roster").accept(MediaType.TEXT_PLAIN);
         MockHttpResponse response = new MockHttpResponse();
-
         dispatcher.invoke(request, response);
 
         assertEquals(response.getContentAsString(), ControllerRoster.ROSTER_TEXT_PLAIN);
     }
 
-    /*
     @Test
-    public void getBlobStoreStatus() {
-        reset(mockStatusService);
-        when(mockStatusService.getBlobstoreStatus()).thenReturn(new HealthStatus());
-        statusController.getBlobStoreHealthCheck();
-        verify(mockStatusService).getBlobstoreStatus();
+    public void getTextXMLRoster() throws URISyntaxException {
+        MockHttpRequest request = MockHttpRequest.get("/roster").accept(MediaType.TEXT_XML);
+        MockHttpResponse response = new MockHttpResponse();
+        dispatcher.invoke(request, response);
+
+        assertEquals(response.getContentAsString(), ControllerRoster.ROSTER_TEXT_XML);
     }
 
-    @Test
-    public void getDatabaseStatus() {
-        reset(mockStatusService);
-        when(mockStatusService.getDatabaseStatus()).thenReturn(new HealthStatus());
-        statusController.getDatabaseHealthCheck();
-        verify(mockStatusService).getDatabaseStatus();
-    }
-    */
 }
