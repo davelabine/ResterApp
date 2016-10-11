@@ -31,6 +31,21 @@ public class ControllerStudentsTest {
     }
 
     @Test
+    public void postStudentTest() throws URISyntaxException {
+        String content = new String("{\"StudentName\":\"Joe Blough\"}");
+
+        MockHttpRequest request = MockHttpRequest.post("/students/post")
+                                                .content(content.getBytes())
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .accept(MediaType.APPLICATION_JSON);
+
+        MockHttpResponse response = new MockHttpResponse();
+        dispatcher.invoke(request, response);
+
+        assertEquals(response.getStatus(), HttpStatus.SC_CREATED);
+    }
+
+    @Test
     public void getStudentTest() throws URISyntaxException {
         String queryParam = "1234";
         String uri = "/students/" + queryParam;

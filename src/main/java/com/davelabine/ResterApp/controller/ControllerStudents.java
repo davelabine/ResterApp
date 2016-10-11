@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 @Path("/students")
 public class ControllerStudents {
     private static final String ENDPOINT_BASE_PATH_REGEX = "%s/students/%s";
+    private static final String STUDENT_KEY_HEADER = "student-key";
 
     private Gson gson = new Gson();
 
@@ -45,7 +46,8 @@ public class ControllerStudents {
     public Response create(String studentJsonData) throws URISyntaxException {
 
         //Student newStudent = gson.fromJson(studentJsonData, Student.class);
-        URI retURI = new URI(ENDPOINT_BASE_PATH_REGEX, "FIXME", "FIXME");
+        URI retURI = new URI("http://localhost","/Student/","12345");
+        // TODO: Need to return created with the resource ID of the student in student-key
 
         return Response.created(retURI).build();
     }
