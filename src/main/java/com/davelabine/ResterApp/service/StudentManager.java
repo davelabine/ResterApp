@@ -18,25 +18,24 @@ public class StudentManager {
     private ConcurrentHashMap<String, Student> studentMap;
 
     @Inject
-    public StudentManager() {
-        studentMap = new ConcurrentHashMap<String, Student>();
+    public StudentManager(ConcurrentHashMap<String, Student> studentMap) {
+        this.studentMap = studentMap;
     }
 
     // Returns the Key of the student, or null on failure
-    public String createStudent(String studentID, String studentName) {
-
+    public String createStudent(Student student)
+    {
         // TODO handle bad inputs
-
         String studentKey = UUID.randomUUID().toString();
-        Student studentAdd = new Student(studentID, studentName);
 
         // Returns previous value if another value was mapped to same key
         // or null if there was no key mapping
         // and throws null pointer exceptions if key or value are empty
-        studentMap.put(studentKey, studentAdd);
+        studentMap.put(studentKey, student);
 
         return studentKey;
     }
+
 
     // Returns the student at the key, or null on failure
     public Student getStudent(String studentKey) {

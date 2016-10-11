@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.inject.Inject;
+
 /**
  * Root resource for student information (exposed at "students" path)
  */
@@ -23,14 +25,12 @@ public class ControllerStudents {
 
     private Gson gson = new Gson();
 
-    private final StudentManager studentManager = new StudentManager();
+    private final StudentManager studentManager;
 
-    /* TODO - Figure out when it is appropriate to inject dependencies
     @Inject
     public ControllerStudents(final StudentManager studentManager) {
         this.studentManager = studentManager;
     }
-    */
 
 
     /**
