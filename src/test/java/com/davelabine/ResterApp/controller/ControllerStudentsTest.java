@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  * Created by davidl on 10/10/16.
  */
 public class ControllerStudentsTest {
-    // @InjectMocks - don't think we need this
+
     private Dispatcher dispatcher;
 
     @Before

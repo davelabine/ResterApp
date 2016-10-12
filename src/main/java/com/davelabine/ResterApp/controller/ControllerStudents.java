@@ -5,6 +5,7 @@ package com.davelabine.resterapp.controller;
  */
 import com.davelabine.resterapp.service.StudentManager;
 import com.google.gson.Gson;
+import com.google.inject.Singleton;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 /**
  * Root resource for student information (exposed at "students" path)
  */
+@Singleton
 @Path("/students")
 public class ControllerStudents {
     private static final String ENDPOINT_BASE_PATH_REGEX = "%s/students/%s";
@@ -25,13 +27,8 @@ public class ControllerStudents {
 
     private Gson gson = new Gson();
 
-    private final StudentManager studentManager;
-
     @Inject
-    public ControllerStudents(final StudentManager studentManager) {
-        this.studentManager = studentManager;
-    }
-
+    private StudentManager studentManager;
 
     /**
      * Method for creating students.

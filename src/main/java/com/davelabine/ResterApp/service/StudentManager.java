@@ -15,12 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StudentManager {
 
     //private HashMap<String, Student> studentMap;
-    private ConcurrentHashMap<String, Student> studentMap;
-
     @Inject
-    public StudentManager(ConcurrentHashMap<String, Student> studentMap) {
-        this.studentMap = studentMap;
-    }
+    private ConcurrentHashMap<String, Student> studentMap;
 
     // Returns the Key of the student, or null on failure
     public String createStudent(Student student)

@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.controller;
 
 
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.MediaType;
  * For now, just define some basic placeholder resources.
  *
  */
+@Singleton
 @Path("/roster")
 public class ControllerRoster {
     public static final String ROSTER_TEXT_PLAIN = "Text Roster!";
