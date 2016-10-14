@@ -3,7 +3,7 @@ apply from: "$rootProject.projectDir/config/gradle/includes/java-web-conventions
 apply from: "$rootProject.projectDir/config/gradle/includes/guice-conventions.gradle"
 apply from: "$rootProject.projectDir/config/gradle/includes/resteasy-conventions.gradle"
 
-description = """ResterApp"""
+description = """resterapp"""
 
 dependencies {
 
