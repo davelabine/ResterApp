@@ -4,6 +4,8 @@ package com.davelabine.resterapp.controller;
  * Created by davidl on 9/29/16.
  */
 import com.davelabine.resterapp.service.StudentManager;
+import com.davelabine.resterapp.model.Student;
+import com.google.common.collect.ConcurrentHashMultiset;
 import com.google.gson.Gson;
 import com.google.inject.Singleton;
 
@@ -27,8 +29,9 @@ public class ControllerStudents {
 
     private Gson gson = new Gson();
 
-    @Inject
-    private StudentManager studentManager;
+    // TODO - why won't this inject?
+    //@Inject
+    private StudentManager studentManager = new StudentManager();
 
     /**
      * Method for creating students.
@@ -45,6 +48,10 @@ public class ControllerStudents {
         //Student newStudent = gson.fromJson(studentJsonData, Student.class);
         URI retURI = new URI("http://localhost","/Student/","12345");
         // TODO: Need to return created with the resource ID of the student in student-key
+
+        // Create a random student for now
+        Student test = new Student("12345", "Billy Bob");
+        String studentKey = studentManager.createStudent(test);
 
         return Response.created(retURI).build();
     }

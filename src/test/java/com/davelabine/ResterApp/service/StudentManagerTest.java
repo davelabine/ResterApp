@@ -11,28 +11,45 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Created by dave on 10/1/16.
  */
 
 public class StudentManagerTest {
 
+    private StudentManager underTest;
+
+    // Nope, JUnit says test class should have exactly one zero-argument constructor
+    /*
     @Inject
-    private StudentManager target;
+    public StudentManagerTest(StudentManager target){
+        this.target = target;
+    }
+    */
+
+    /*
+        The Convention seems to be to use something like @Before instead of @Inject
+     */
+    @Before
+    public void before() {
+        // Could mock this out if it were more complicated.
+        underTest = new StudentManager();
+    }
+
 
 
     @Test
     public void testCreateStudent() {
 
-        /* TODO: Fix this test.  I don't have something right with DI
-
         Student student = new Student("123456", "Jimbo Jones");
-        String key = target.createStudent(student);
+        String key = underTest.createStudent(student);
 
-        Student studentGet = target.getStudent(key);
+        Student studentGet = underTest.getStudent(key);
         Assert.assertEquals("123456", studentGet.getStudentID());
         Assert.assertEquals("Jimbo Jones", studentGet.getStudentName());
-        */
+
         // Used to verify unit tests are working correctly
         // Assert.assertEquals("fun", "icepick-in-eye");
     }

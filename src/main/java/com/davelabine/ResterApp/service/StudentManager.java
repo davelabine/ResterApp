@@ -14,9 +14,20 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class StudentManager {
 
-    //private HashMap<String, Student> studentMap;
-    @Inject
     private ConcurrentHashMap<String, Student> studentMap;
+
+    /* TODO - why doesn't this inject work?
+    @Inject
+    public StudentManager(ConcurrentHashMap<String, Student> studentMap) {
+        this.studentMap = studentMap;
+    }
+    */
+
+    public StudentManager() {
+        studentMap = new ConcurrentHashMap<String, Student>();
+    }
+
+
 
     // Returns the Key of the student, or null on failure
     public String createStudent(Student student)
