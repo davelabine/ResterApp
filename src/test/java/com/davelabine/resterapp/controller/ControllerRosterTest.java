@@ -26,7 +26,6 @@ import static org.junit.Assert.assertThat;
  * - For now these are a placeholder that I plan to expand on later.
  * - Make sure GETs are returning the correct document types based on HTTP headers.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ControllerRosterTest {
 
     // @InjectMocks - don't think we need this

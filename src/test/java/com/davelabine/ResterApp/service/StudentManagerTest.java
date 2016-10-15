@@ -1,11 +1,7 @@
 package com.davelabine.resterapp.service;
 
-import com.davelabine.resterapp.controller.ControllerRoster;
 import com.davelabine.resterapp.model.Student;
 
-import com.google.inject.Inject;
-import org.jboss.resteasy.mock.MockDispatcherFactory;
-import org.jboss.resteasy.plugins.server.resourcefactory.POJOResourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by dave on 10/1/16.
@@ -43,6 +38,7 @@ public class StudentManagerTest {
     public void before() {
     }
 
+    // Test that a key is returned when creating a student
     @Test
     public void testCreateStudent() {
         reset(mockStudentMap);
@@ -55,20 +51,25 @@ public class StudentManagerTest {
         // Assert.assertEquals("fun", "icepick-in-eye");
     }
 
+    // Test the case where a student cannot be found in the student list
     @Test
-    public void testGetStudent() {
+    public void testGetStudentMissing() {
         reset(mockStudentMap);
 
         // test a student that isn't present in the student list
         doReturn(null).when(mockStudentMap).get(anyString());
         Assert.assertNull(underTest.getStudent(FAKE_KEY));
+    }
 
-        // test a student that is present in the student list
+    // Test a case where a student is found in the student list
+    @Test
+    public void testGetStudentFound() {
+        reset(mockStudentMap);
+
         Student mockStudent = new Student(FAKE_ID, FAKE_NAME);
         doReturn(mockStudent).when(mockStudentMap).get(FAKE_KEY);
         Student studentGet = underTest.getStudent(FAKE_KEY);
         Assert.assertEquals(FAKE_ID, studentGet.getStudentID());
         Assert.assertEquals(FAKE_NAME, studentGet.getStudentName());
     }
-
 }

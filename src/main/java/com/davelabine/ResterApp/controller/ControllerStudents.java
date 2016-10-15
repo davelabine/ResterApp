@@ -56,8 +56,12 @@ public class ControllerStudents {
         }
 
         String studentKey = studentManager.createStudent(student);
-        URI retURI = new URI("http://localhost","/Student/",studentKey);
 
+        if (studentKey == null) {
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+        }
+
+        URI retURI = new URI("http://localhost","/Student/",studentKey);
         return Response.created(retURI).build();
     }
 
