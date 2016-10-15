@@ -29,7 +29,6 @@ public class ControllerStudents {
 
     private Gson gson = new Gson();
 
-    // TODO - why won't this inject?
     @Inject
     private StudentManager studentManager;
 
