@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.inject.Inject;
 
@@ -10,10 +11,14 @@ import javax.inject.Inject;
 public class Student {
 
     @Getter
+    @Setter
     private String studentID;
 
     @Getter
+    @Setter
     private String studentName;
+
+    public Student() {}
 
     public Student(String studentID, String studentName) {
         this.studentID = studentID;

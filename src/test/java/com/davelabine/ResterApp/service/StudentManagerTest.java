@@ -35,10 +35,9 @@ public class StudentManagerTest {
     @Before
     public void before() {
         // Could mock this out if it were more complicated.
-        underTest = new StudentManager();
+        ConcurrentHashMap<String, Student> studentMap = new ConcurrentHashMap<String, Student>();
+        underTest = new StudentManager(studentMap);
     }
-
-
 
     @Test
     public void testCreateStudent() {

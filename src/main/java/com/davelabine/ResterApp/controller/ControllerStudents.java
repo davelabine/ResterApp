@@ -30,8 +30,8 @@ public class ControllerStudents {
     private Gson gson = new Gson();
 
     // TODO - why won't this inject?
-    //@Inject
-    private StudentManager studentManager = new StudentManager();
+    @Inject
+    private StudentManager studentManager;
 
     /**
      * Method for creating students.
@@ -46,12 +46,13 @@ public class ControllerStudents {
     public Response create(String studentJsonData) throws URISyntaxException {
 
         //Student newStudent = gson.fromJson(studentJsonData, Student.class);
-        URI retURI = new URI("http://localhost","/Student/","12345");
+
         // TODO: Need to return created with the resource ID of the student in student-key
 
         // Create a random student for now
         Student test = new Student("12345", "Billy Bob");
         String studentKey = studentManager.createStudent(test);
+        URI retURI = new URI("http://localhost","/Student/",studentKey);
 
         return Response.created(retURI).build();
     }

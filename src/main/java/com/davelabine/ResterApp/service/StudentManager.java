@@ -13,21 +13,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by davidl on 9/29/16.
  */
 public class StudentManager {
-
     private ConcurrentHashMap<String, Student> studentMap;
 
-    /* TODO - why doesn't this inject work?
+
     @Inject
     public StudentManager(ConcurrentHashMap<String, Student> studentMap) {
         this.studentMap = studentMap;
     }
-    */
-
-    public StudentManager() {
-        studentMap = new ConcurrentHashMap<String, Student>();
-    }
-
-
 
     // Returns the Key of the student, or null on failure
     public String createStudent(Student student)
