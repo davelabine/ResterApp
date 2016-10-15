@@ -1,0 +1,1 @@
+gradle jettyRunWar -Dorg.gradle.jvmargs="-Xdebug -Xrunjdwp:transport=dt_socket,address=5006,server=y,suspend=n -XX:MaxPermSize=512m"

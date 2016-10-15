@@ -25,4 +25,10 @@ public class Student {
         this.studentName = studentName;
     }
 
+    @Override
+    public String toString() {
+        return new StringBuffer(" ID : ").append(this.studentID)
+                .append(" Name : ").append(this.studentName).toString();
+    }
+
 }

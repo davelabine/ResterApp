@@ -5,6 +5,7 @@ package com.davelabine.resterapp.controller;
  */
 import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.model.Student;
+import com.davelabine.resterapp.util.Busywork;
 import com.google.common.collect.ConcurrentHashMultiset;
 import com.google.gson.Gson;
 import com.google.inject.Singleton;
@@ -27,6 +28,8 @@ public class ControllerStudents {
     private static final String ENDPOINT_BASE_PATH_REGEX = "%s/students/%s";
     private static final String STUDENT_KEY_HEADER = "student-key";
 
+    private static final int BUSYTIME_MS = 200; // Milliseconds
+
     private Gson gson = new Gson();
 
     @Inject
@@ -42,15 +45,17 @@ public class ControllerStudents {
     @Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(String studentJsonData) throws URISyntaxException {
+    public Response create(
+            @QueryParam("getBusy") boolean getBusy,
+            Student student)
+            throws URISyntaxException {
 
-        //Student newStudent = gson.fromJson(studentJsonData, Student.class);
 
-        // TODO: Need to return created with the resource ID of the student in student-key
+        if (getBusy) {
+            Busywork.getBusy(BUSYTIME_MS);
+        }
 
-        // Create a random student for now
-        Student test = new Student("12345", "Billy Bob");
-        String studentKey = studentManager.createStudent(test);
+        String studentKey = studentManager.createStudent(student);
         URI retURI = new URI("http://localhost","/Student/",studentKey);
 
         return Response.created(retURI).build();
@@ -63,9 +68,22 @@ public class ControllerStudents {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
+            @QueryParam("getBusy") boolean getBusy,
             @PathParam("id")
             String id) {
-        return Response.ok("The param you sent me was + " + id).build();
+
+        // TODO: try to get not empty to work
+
+        if (getBusy) {
+            Busywork.getBusy(BUSYTIME_MS);
+        }
+
+        Student studentGet = studentManager.getStudent(id);
+        if (studentGet == null) {
+            return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).build();
+        }
+
+        return Response.ok().entity(studentGet).build();
     }
 
 }
