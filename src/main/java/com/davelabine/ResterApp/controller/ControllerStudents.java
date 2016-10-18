@@ -7,8 +7,11 @@ import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.model.Student;
 import com.davelabine.resterapp.util.Busywork;
 import com.google.common.collect.ConcurrentHashMultiset;
+import com.google.common.primitives.Booleans;
 import com.google.gson.Gson;
 import com.google.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,6 +33,8 @@ public class ControllerStudents {
 
     private static final int BUSYTIME_MS = 200; // Milliseconds
 
+    private static final Logger logger = LoggerFactory.getLogger(ControllerStudents.class);
+
     private Gson gson = new Gson();
 
     @Inject
@@ -50,18 +55,18 @@ public class ControllerStudents {
             Student student)
             throws URISyntaxException {
 
-
-        if (getBusy) {
-            Busywork.getBusy(BUSYTIME_MS);
-        }
+        logger.info("Students/post getBusy:{} Student:{}", getBusy, student);
+        if (getBusy) { Busywork.getBusy(BUSYTIME_MS); }
 
         String studentKey = studentManager.createStudent(student);
 
         if (studentKey == null) {
+            logger.error("Student create failed");
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
 
         URI retURI = new URI("http://localhost","/Student/",studentKey);
+        logger.info("Student created successfully:{}", retURI.toString());
         return Response.created(retURI).build();
     }
 
@@ -77,17 +82,17 @@ public class ControllerStudents {
             String id) {
 
         // TODO: try to get not empty to work
+        logger.info("Students/{} getBusy:{}", id, getBusy);
 
-        if (getBusy) {
-            Busywork.getBusy(BUSYTIME_MS);
-        }
+        if (getBusy) { Busywork.getBusy(BUSYTIME_MS); }
 
         Student studentGet = studentManager.getStudent(id);
         if (studentGet == null) {
+            logger.info("Student not found");
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).build();
         }
 
+        logger.info("Student found:{}", studentGet);
         return Response.ok().entity(studentGet).build();
     }
-
 }

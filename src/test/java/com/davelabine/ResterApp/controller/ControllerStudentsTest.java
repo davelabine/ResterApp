@@ -61,7 +61,10 @@ public class ControllerStudentsTest {
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
         Response response = underTest.create(false, fakeStudent);
         assertEquals(response.getStatus(), HttpStatus.SC_CREATED);
-        // TODO: also verify that the provided key is in the returned info
+
+        // TODO - check that returned URL has the FAKE_KEY in it
+        //String responseText = response.readEntity(String.class);
+        //assertTrue(responseText.contains(FAKE_KEY));
     }
 
     @Test
@@ -80,9 +83,11 @@ public class ControllerStudentsTest {
         doReturn(fakeStudent).when(mockStudentManager).getStudent(anyString());
 
         Response response = underTest.get(false, FAKE_KEY);
-
         assertEquals(response.getStatus(), HttpStatus.SC_OK);
-        // TODO: also verify the student data is returned properly
+
+        // TODO - Check that the returned student has the ID we set
+        //String responseText = response.readEntity(String.class);
+        //assertTrue(responseText.contains(FAKE_ID));
     }
 
 }
