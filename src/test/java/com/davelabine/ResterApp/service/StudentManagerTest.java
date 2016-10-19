@@ -69,7 +69,7 @@ public class StudentManagerTest {
         Student mockStudent = new Student(FAKE_ID, FAKE_NAME);
         doReturn(mockStudent).when(mockStudentMap).get(FAKE_KEY);
         Student studentGet = underTest.getStudent(FAKE_KEY);
-        Assert.assertEquals(FAKE_ID, studentGet.getStudentID());
-        Assert.assertEquals(FAKE_NAME, studentGet.getStudentName());
+        Assert.assertEquals(FAKE_ID, studentGet.getId());
+        Assert.assertEquals(FAKE_NAME, studentGet.getName());
     }
 }

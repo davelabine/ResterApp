@@ -12,23 +12,23 @@ public class Student {
 
     @Getter
     @Setter
-    private String studentID;
+    private String id;
 
     @Getter
     @Setter
-    private String studentName;
+    private String name;
 
     public Student() {}
 
-    public Student(String studentID, String studentName) {
-        this.studentID = studentID;
-        this.studentName = studentName;
+    public Student(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return new StringBuffer(" ID : ").append(this.studentID)
-                .append(" Name : ").append(this.studentName).toString();
+        return new StringBuffer(" id : ").append(this.id)
+                .append(" name : ").append(this.name).toString();
     }
 
 }

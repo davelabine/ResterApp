@@ -29,7 +29,6 @@ import javax.inject.Inject;
 @Path("/students")
 public class ControllerStudents {
     private static final String ENDPOINT_BASE_PATH_REGEX = "%s/students/%s";
-    private static final String STUDENT_KEY_HEADER = "student-key";
 
     private static final int BUSYTIME_MS = 200; // Milliseconds
 
@@ -65,7 +64,8 @@ public class ControllerStudents {
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
 
-        URI retURI = new URI("http://localhost","/Student/",studentKey);
+        // TODO: get config data from the container to set this.  Figure out what to do with # sign in header.
+        URI retURI = new URI("http://localhost:8080","/Students/",studentKey);
         logger.info("Student created successfully:{}", retURI.toString());
         return Response.created(retURI).build();
     }

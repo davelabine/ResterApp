@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertEquals;
@@ -61,10 +62,7 @@ public class ControllerStudentsTest {
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
         Response response = underTest.create(false, fakeStudent);
         assertEquals(response.getStatus(), HttpStatus.SC_CREATED);
-
-        // TODO - check that returned URL has the FAKE_KEY in it
-        //String responseText = response.readEntity(String.class);
-        //assertTrue(responseText.contains(FAKE_KEY));
+        assertTrue(response.getLocation().toString().contains(FAKE_KEY));
     }
 
     @Test
@@ -85,9 +83,9 @@ public class ControllerStudentsTest {
         Response response = underTest.get(false, FAKE_KEY);
         assertEquals(response.getStatus(), HttpStatus.SC_OK);
 
-        // TODO - Check that the returned student has the ID we set
-        //String responseText = response.readEntity(String.class);
-        //assertTrue(responseText.contains(FAKE_ID));
+        Student responseStudent = (Student)response.getEntity();
+        assertEquals(responseStudent.getId(), FAKE_ID);
+        assertEquals(responseStudent.getName(), FAKE_NAME);
     }
 
 }

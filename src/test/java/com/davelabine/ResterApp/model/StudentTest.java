@@ -12,8 +12,8 @@ public class StudentTest {
     @Test
     public void testCreate() {
         Student target = new Student("123456", "Joe Blough");
-        assertEquals("123456", target.getStudentID());
-        assertEquals("Joe Blough", target.getStudentName());
+        assertEquals("123456", target.getId());
+        assertEquals("Joe Blough", target.getName());
     }
 }
 
