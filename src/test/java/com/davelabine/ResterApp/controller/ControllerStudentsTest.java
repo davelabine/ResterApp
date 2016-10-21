@@ -50,7 +50,7 @@ public class ControllerStudentsTest {
         doReturn(null).when(mockStudentManager).createStudent(any(Student.class));
 
         Student createStudent = new Student(FAKE_ID, FAKE_NAME);
-        Response response = underTest.create(false, createStudent);
+        Response response = underTest.create(0, createStudent);
         assertEquals(response.getStatus(), HttpStatus.SC_SERVICE_UNAVAILABLE);
     }
 
@@ -60,7 +60,7 @@ public class ControllerStudentsTest {
         doReturn(FAKE_KEY).when(mockStudentManager).createStudent(any(Student.class));
 
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
-        Response response = underTest.create(false, fakeStudent);
+        Response response = underTest.create(0, fakeStudent);
         assertEquals(response.getStatus(), HttpStatus.SC_CREATED);
         assertTrue(response.getLocation().toString().contains(FAKE_KEY));
     }
@@ -70,7 +70,7 @@ public class ControllerStudentsTest {
         reset(mockStudentManager);
         doReturn(null).when(mockStudentManager).getStudent(anyString());
 
-        Response response = underTest.get(false, FAKE_KEY);
+        Response response = underTest.get(0, FAKE_KEY);
         assertEquals(response.getStatus(), HttpStatus.SC_NOT_FOUND);
     }
 
@@ -80,7 +80,7 @@ public class ControllerStudentsTest {
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
         doReturn(fakeStudent).when(mockStudentManager).getStudent(anyString());
 
-        Response response = underTest.get(false, FAKE_KEY);
+        Response response = underTest.get(0, FAKE_KEY);
         assertEquals(response.getStatus(), HttpStatus.SC_OK);
 
         Student responseStudent = (Student)response.getEntity();

@@ -26,9 +26,12 @@ import javax.inject.Inject;
  * Root resource for student information (exposed at "students" path)
  */
 @Singleton
+// We only want one instance shared across all servlet threads to make more efficient use of memory.
 @Path("/students")
 public class ControllerStudents {
-    private static final String ENDPOINT_BASE_PATH_REGEX = "%s/students/%s";
+    // TODO: get config working so I don't have to hardcode stuff like this
+    private static final String STUDENTS_ENDPOINT_BASE_PATH = "http://localhost:8080/resterapp/students/";
+    private static final String STUDENT_KEY_HEADER = "student-key";
 
     private static final int BUSYTIME_MS = 200; // Milliseconds
 
@@ -50,12 +53,12 @@ public class ControllerStudents {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(
-            @QueryParam("getBusy") boolean getBusy,
+            @QueryParam("busyTime") int busyTime,
             Student student)
             throws URISyntaxException {
 
-        logger.info("Students/post getBusy:{} Student:{}", getBusy, student);
-        if (getBusy) { Busywork.getBusy(BUSYTIME_MS); }
+        logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
+        Busywork.doBusyWork(busyTime);
 
         String studentKey = studentManager.createStudent(student);
 
@@ -64,10 +67,10 @@ public class ControllerStudents {
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
 
-        // TODO: get config data from the container to set this.  Figure out what to do with # sign in header.
-        URI retURI = new URI("http://localhost:8080","/Students/",studentKey);
+        URI retURI = new URI(STUDENTS_ENDPOINT_BASE_PATH + studentKey);
         logger.info("Student created successfully:{}", retURI.toString());
-        return Response.created(retURI).build();
+        return Response.created(retURI)
+                .header(STUDENT_KEY_HEADER, studentKey).build();
     }
 
     /**
@@ -77,14 +80,13 @@ public class ControllerStudents {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
-            @QueryParam("getBusy") boolean getBusy,
+            @QueryParam("busyTime") int busyTime,
             @PathParam("id")
             String id) {
 
         // TODO: try to get not empty to work
-        logger.info("Students/{} getBusy:{}", id, getBusy);
-
-        if (getBusy) { Busywork.getBusy(BUSYTIME_MS); }
+        logger.info("Students/{} bustyTime:{}", id, busyTime);
+        Busywork.doBusyWork(busyTime);
 
         Student studentGet = studentManager.getStudent(id);
         if (studentGet == null) {
