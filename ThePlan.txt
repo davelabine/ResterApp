@@ -23,12 +23,12 @@ Basic AutoScaling App:
 - DONE Figure out why index.jsp is not serving up
 - DONE Switch to integrated Gradle build
 - DONE Switch to RestEasy with Guice DI
-- Get Unit Tests Working and running for basic app.
-- Add dependency injection via Guice rather than the Jersey injectors
-- Get /students endpoint POST and GET working with POJOs and simple in-memory storage.
+- DONE Get Unit Tests Working and running for basic app.
+- DONE Add dependency injection via Guice rather than the Jersey injectors
+- DONE Get /students endpoint POST and GET working with POJOs and simple in-memory storage.
+- DONE Add logging
+- DONE Simulate an increased workload per request with some kind of busywork, that can be switched with a query param.
 - Develop a JMeter test to stress the /students endpoint
-- Simulate an increased workload per request with some kind of busywork, that can be switched with
-a query param.
 - Deploy this to EC2 with a Tomcat container
 - Deploy JMeter tests to EC2 to stress app instances there
 - Try to deploy autoscaling groups based on a coarse measure, like CPU usage.

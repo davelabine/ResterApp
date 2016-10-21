@@ -27,8 +27,9 @@ public class Student {
 
     @Override
     public String toString() {
-        return new StringBuffer(" id : ").append(this.id)
-                .append(" name : ").append(this.name).toString();
+        return new StringBuffer("[ id : ").append(this.id)
+                .append(", name : ").append(this.name)
+                .append(" ]").toString();
     }
 
 }

@@ -85,7 +85,7 @@ public class ControllerStudents {
             String id) {
 
         // TODO: try to get not empty to work
-        logger.info("Students/{} bustyTime:{}", id, busyTime);
+        logger.info("Students:{} busyTime:{}", id, busyTime);
         Busywork.doBusyWork(busyTime);
 
         Student studentGet = studentManager.getStudent(id);
@@ -94,7 +94,7 @@ public class ControllerStudents {
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).build();
         }
 
-        logger.info("Student found:{}", studentGet);
+        logger.info("Student found: {}", studentGet.toString());
         return Response.ok().entity(studentGet).build();
     }
 }
