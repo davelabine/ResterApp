@@ -1,0 +1,19 @@
+# LOCAL - Connect to an EC2 instance via SSH
+ssh -i "./secret/resterapp.pem" ec2-user@ec2-35-160-243-81.us-west-2.compute.amazonaws.com
+
+# LOCAL - Secure copy a war file to remote host
+scp -i "./secret/resterapp.pem" -r ./build/libs/resterapp-1.0.1-SNAPSHOT.war ec2-user@ec2-35-160-243-81.us-west-2.compute.amazonaws.com:~
+
+
+# REMOTE
+
+# Tomcat is in /usr/share/tomcat7
+
+# install a .war in webapp directory
+sudo cp ~/resterapp-1.0.1-SNAPSHOT.war /usr/share/tomcat7/webapps/
+
+# To start Tomcat:
+sudo service tomcat7 start
+
+# To stop Tomcat:
+sudo service tomcat7 stop
