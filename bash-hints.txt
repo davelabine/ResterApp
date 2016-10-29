@@ -1,8 +1,15 @@
-# LOCAL - Connect to an EC2 instance via SSH
-ssh -i "./secret/resterapp.pem" ec2-user@ec2-35-160-243-81.us-west-2.compute.amazonaws.com
+# LOCAL 
 
-# LOCAL - Secure copy a war file to remote host
-scp -i "./secret/resterapp.pem" -r ./build/libs/resterapp-1.0.1-SNAPSHOT.war ec2-user@ec2-35-160-243-81.us-west-2.compute.amazonaws.com:~
+# Connect to an EC2 instance via SSH
+# Tomcat instance
+ssh -i "./secret/resterapp.pem" ec2-user@35.161.46.45
+# Loadtest instance
+ssh -i "./secret/Loadtest-resterapp.pem" ec2-user@ec2-35-160-171-66.us-west-2.compute.amazonaws.com
+
+# Copy a war file to remote host
+scp -i "./secret/resterapp.pem" -r ./build/libs/resterapp-1.0.1-SNAPSHOT.war ec2-user@ec2-35-161-174-66.us-west-2.compute.amazonaws.com:~
+# Copy the JMeter test file...
+scp -i "./secret/Loadtest-resterapp.pem -r ./jmeter/ ec2-user@ec2-35-161-174-66.us-west-2.compute.amazonaws.com:~
 
 
 # REMOTE
@@ -17,3 +24,6 @@ sudo service tomcat7 start
 
 # To stop Tomcat:
 sudo service tomcat7 stop
+
+# To start a JMeter test
+JMeter -n -t ResterApp.jmx -l log.jtl 
