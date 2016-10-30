@@ -6,8 +6,6 @@ package com.davelabine.resterapp.controller;
 import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.model.Student;
 import com.davelabine.resterapp.util.Busywork;
-import com.google.common.collect.ConcurrentHashMultiset;
-import com.google.common.primitives.Booleans;
 import com.google.gson.Gson;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;

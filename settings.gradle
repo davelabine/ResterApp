@@ -1,1 +1,3 @@
 rootProject.name = 'resterapp'
+include ":service"
+include ":integration-tests"
