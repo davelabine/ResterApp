@@ -41,7 +41,7 @@ public class JaxRsIntegrationRunner {
     }
 
     @Test
-    public void verifyTextPlainRosters  () throws IOException {
+    public void verifyTextPlainRosters() throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
 
         HttpGet getStatus = new HttpGet("http://localhost:8080/roster");
@@ -52,6 +52,10 @@ public class JaxRsIntegrationRunner {
         // TODO: Something to check that the returned page contains the text roster string.
     }
 
+    @Test
+    public void verifyStudentCreate() throws IOException {
+        // Post student data, save the key, then do a GET on the key to make sure it is retrievable.
+    }
 
 /*
 
