@@ -39,11 +39,24 @@ public class JaxRsIntegrationRunner {
 
     }
 
+    @Test
+    public void verifyTextPlainRosters  () throws IOException {
+        CloseableHttpClient client = HttpClients.createDefault();
+
+        HttpGet getStatus = new HttpGet("http://localhost:8080/rosters");
+
+        CloseableHttpResponse statusResp = client.execute(getStatus);
+
+        Assert.assertThat("Non 200 status response received", statusResp.getStatusLine().getStatusCode(), is(200));
+        // TODO: Something to check that the returned page contains the text roster string.
+    }
+
+
+/*
 
 
     @Test
     public void verifyServiceHealthy() throws IOException {
-        /*
         CloseableHttpClient client = HttpClients.createDefault();
 
         HttpGet getStatus = new HttpGet("http://localhost:8080/status");
@@ -51,12 +64,11 @@ public class JaxRsIntegrationRunner {
         CloseableHttpResponse statusResp = client.execute(getStatus);
 
         Assert.assertThat("Non 200 status response received", statusResp.getStatusLine().getStatusCode(), is(200));
-        */
     }
 
     @Test
     public void verifyJaxRsGETAndParamsWorkAsAssumed() throws IOException {
-        /*
+
         CloseableHttpClient client = HttpClients.createDefault();
 
         HttpGet getStatus = new HttpGet("http://localhost:8080/testing?url=http://input.com/long/url");
@@ -66,8 +78,9 @@ public class JaxRsIntegrationRunner {
         Assert.assertThat("Non 200 status response received", statusResp.getStatusLine().getStatusCode(), is(200));
         Assert.assertThat("X-Testing-Orignal-URL header was not present in the response", statusResp.getFirstHeader("X-Testing-Orignal-URL").getValue(), is ("http://input.com/long/url"));
         Assert.assertThat("Location header was not present in the response", statusResp.getFirstHeader("Location").getValue(), is ("http://g.og/shortened"));
-        */
-    }z
+    }
+
+*/
 
     @AfterClass
     public static void stopServer() throws Exception {
