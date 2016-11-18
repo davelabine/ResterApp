@@ -11,7 +11,7 @@ dependencies {
 
 task runIntegrationTests(type: Test, dependsOn: ":service:war") {
     include "**/*IntegrationRunner.class"
-    systemProperty('WAR_FILE', project(":service").getBuildDir().getAbsolutePath() + "/libs/service-1.0.1-SNAPSHOST.war")
+    systemProperty('WAR_FILE', project(":service").getBuildDir().getAbsolutePath() + "/libs/service-1.0.1-SNAPSHOT.war")
 }
 
 test.dependsOn runIntegrationTests

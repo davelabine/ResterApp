@@ -37,6 +37,6 @@ public class Runner {
      * @throws Exception
      */
     public void join() throws Exception {
-
+        int i=0;
     }
 }

@@ -31,6 +31,7 @@ public class JaxRsIntegrationRunner {
 
     @BeforeClass
     public static void startServer() throws Exception {
+        String fun = System.getProperty("WAR_FILE");
         Preconditions.checkNotNull(System.getProperty("WAR_FILE"), "This test requires the web path for the service project!  Run with System Property \"WAR_FILE\"");
 
         runner = new Runner(System.getProperty("WAR_FILE"));
@@ -43,7 +44,7 @@ public class JaxRsIntegrationRunner {
     public void verifyTextPlainRosters  () throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
 
-        HttpGet getStatus = new HttpGet("http://localhost:8080/rosters");
+        HttpGet getStatus = new HttpGet("http://localhost:8080/roster");
 
         CloseableHttpResponse statusResp = client.execute(getStatus);
 
