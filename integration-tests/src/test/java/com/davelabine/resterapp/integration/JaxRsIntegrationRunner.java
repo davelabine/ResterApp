@@ -7,6 +7,8 @@ import static org.hamcrest.CoreMatchers.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.jetty.server.Server;
@@ -44,17 +46,36 @@ public class JaxRsIntegrationRunner {
     public void verifyTextPlainRosters() throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
 
-        HttpGet getStatus = new HttpGet("http://localhost:8080/roster");
+        HttpGet rosterGet = new HttpGet("http://localhost:8080/roster");
 
-        CloseableHttpResponse statusResp = client.execute(getStatus);
+        CloseableHttpResponse rosterResp = client.execute(rosterGet);
 
-        Assert.assertThat("Non 200 status response received", statusResp.getStatusLine().getStatusCode(), is(200));
+        Assert.assertThat("Non 200 status response received", rosterResp.getStatusLine().getStatusCode(), is(200));
         // TODO: Something to check that the returned page contains the text roster string.
     }
 
     @Test
     public void verifyStudentCreate() throws IOException {
         // Post student data, save the key, then do a GET on the key to make sure it is retrievable.
+        CloseableHttpClient client = HttpClients.createDefault();
+
+        HttpPost studentPost = new HttpPost("http://localhost:8080/students/post");
+        // TODO: add some sort of automatic toJson() for the Student data object
+        StringEntity stringEntity = new StringEntity("{\"id\":\"12345\",\"name\":\"Billy Bob\"}");
+        studentPost.setEntity(stringEntity);
+        studentPost.setHeader("Content-type", "application/json");
+
+        CloseableHttpResponse postResp = client.execute(studentPost);
+
+        Assert.assertThat("Non 201 (created) status response received", postResp.getStatusLine().getStatusCode(), is(201));
+        String studentKey = postResp.getFirstHeader("Student-Key").getValue();
+        Assert.assertThat("Empty Student-Key header", studentKey, notNullValue());
+
+        HttpGet studentGet = new HttpGet("http://localhost:8080/students/" + studentKey);
+        CloseableHttpResponse getResp = client.execute(studentGet);
+
+        Assert.assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(200));
+        // TODO: add test that checks returned JSON object is valid
     }
 
 /*
