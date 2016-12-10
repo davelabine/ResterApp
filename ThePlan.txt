@@ -1,5 +1,10 @@
 
-Questions:
+New questions:
+- Explain @Provides vs regular @Inject.  Seems like it is used when you need to create with new.  Why?  Allows
+objects you create with new to be added into the DI chain?  Why not just use a regular class?
+
+
+Answered Questions:
 - What's with Web.xml and the Servlet 3.x spec?  Many of the tutorials configure this through code, but
 in CS we still seem to use Web.xml.  Why?  Force of habit, and some inconsistencies between Tomcat, Jetty.
 In other words Web.xml is more compatible and consistent between containers.
@@ -18,25 +23,12 @@ https://github.com/patrickianwilson/blog-testing-demonstration
 
 
 TODOS:
-
-Basic AutoScaling App:
-- DONE Figure out why index.jsp is not serving up
-- DONE Switch to integrated Gradle build
-- DONE Switch to RestEasy with Guice DI
-- DONE Get Unit Tests Working and running for basic app.
-- DONE Add dependency injection via Guice rather than the Jersey injectors
-- DONE Get /students endpoint POST and GET working with POJOs and simple in-memory storage.
-- DONE Add logging
-- DONE Simulate an increased workload per request with some kind of busywork, that can be switched with a query param.
-- Develop a JMeter test to stress the /students endpoint
-- Deploy this to EC2 with a Tomcat container
-- Deploy JMeter tests to EC2 to stress app instances there
-- Try to deploy autoscaling groups based on a coarse measure, like CPU usage.
-- Swagger docs?
+** IN PRIORITY ORDER, WITH COMPLETED AT THE BOTTOM ***
 
 Handling POST of complex content types, storing to S3:
-- Figure out how upload a student picture to S3 as a part of the POST endpoint.
-Configure the file upload to happen asynchronously (not on a serving thread), and the
+- Create a BlobStore service implemented with S3.  Figure out how to handle config for this.
+- Accept a student picture as part of the students POST endpoint, upload it to blob store, and return the URL in GET
+- Configure the file upload to happen asynchronously (not on a serving thread)
 - More JMeter load tests to stress this.
 
 Using SQS for batch processing of messages:
@@ -47,4 +39,18 @@ Using SQS for batch processing of messages:
 Logging and other Metrics?
 Adding an external Cache?
 
+Basic AutoScaling App:
+- DONE Figure out why index.jsp is not serving up
+- DONE Switch to integrated Gradle build
+- DONE Switch to RestEasy with Guice DI
+- DONE Get Unit Tests Working and running for basic app.
+- DONE Add dependency injection via Guice rather than the Jersey injectors
+- DONE Get /students endpoint POST and GET working with POJOs and simple in-memory storage.
+- DONE Add logging
+- DONE Simulate an increased workload per request with some kind of busywork, that can be switched with a query param.
+- DONE Develop a JMeter test to stress the /students endpoint
+- DONE Deploy this to EC2 with a Tomcat container
+- DONE Deploy JMeter tests to EC2 to stress app instances there
+- DONE Try to deploy autoscaling groups based on a coarse measure, like CPU usage.
+- DONE Swagger docs?
 

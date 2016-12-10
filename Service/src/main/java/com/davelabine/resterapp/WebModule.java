@@ -7,6 +7,8 @@ import com.davelabine.resterapp.controller.ControllerRoster;
 import com.davelabine.resterapp.controller.ControllerStudents;
 import com.google.inject.servlet.ServletModule;
 
+import javax.inject.Singleton;
+
 /**
  * Created by pwilson on 3/7/16.
  */

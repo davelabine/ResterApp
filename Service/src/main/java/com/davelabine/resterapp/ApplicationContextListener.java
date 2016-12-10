@@ -11,10 +11,9 @@ import com.google.inject.Module;
  */
 public class ApplicationContextListener extends GuiceResteasyBootstrapServletContextListener {
 
-
     @Override
     protected List<Module> getModules(ServletContext context) {
-        return Lists.newArrayList((Module) new WebModule());
+        return Lists.newArrayList(new S3Module(), (Module) new WebModule());
     }
 
 
