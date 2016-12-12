@@ -1,7 +1,6 @@
 
 New questions:
-- Explain @Provides vs regular @Inject.  Seems like it is used when you need to create with new.  Why?  Allows
-objects you create with new to be added into the DI chain?  Why not just use a regular class?
+- What is appropriate to store in a properties file?
 
 
 Answered Questions:
@@ -20,15 +19,41 @@ introducing dependencies like S3 and SQS
 endpoint def'n and communication), services which are business logic to do stuff, a Repo tier.
 - Good basic MVP project for all of this stuff is here:
 https://github.com/patrickianwilson/blog-testing-demonstration
-
+- Explain @Provides vs regular @Inject.  This implements the provider\factory pattern and is used when creating an
+ object is very complex or not possible with the usual DI framework.  Allows you to create an instance (eg with new)
+ or select an instance and return it to the framework.  @Inject is the opposite, it tells the framework to create your
+ object and inject all of the dependencies it needs.
+objects you create with new to be added into the DI chain?  Why not just use a regular class?
+- What are advantages\disadvantages of concurrency model for Java vs other technologies like node.js?  Node.js and
+event-based programming makes everything asynchronous, which is actually pretty good in many cases since this improves
+utilization of a single process, allowing you to get the most out of it.  Complexity in spreading this across many cores
+though, you need to add a broker in front of it.  The JVM is highly optimized, and exposes lower level methods to
+leverage lighter weight mechanisms like threads to implement concurrency.  It is a little more efficient at the cost of
+a lot of complexity.  Using this method, the container (eg Tomcat) can scale across multiple cores in a system.  It also
+offers more advanced features like connection throttling that prevent the server from being bottlenecked on a single
+task as can happen with Node.js.
+- What's the best way to make a Java Servlet asynchronous?  There are typically only a limited number of request threads
+and these need to be treated like gold.  Ideally you only want these accepting and responding to requests, and not doing
+any grunt work.  Offloading the grunt work can be done with a request queue, put a job on the queue and have another
+process grab it.  Another way to do this is by making the servlet handler respond asynchronously.  That way, you can
+have bocking code in dependent services that is handled by a thread pool without tying up your main request threads.
+- How do you integration test a component that uses a DI framework to inject its dependencies?  Especially when
+you want to use the real objects (eg a database connection), and not mocks.  Can use the JUnit framework, and create\
+inject the dependencies by hand with new.  You can bootstrap the DI framework, but this is generally overkill and adds
+too much overhead\complexity.  If you are really dealing with isolated classes, using new should be simpler.  Adding in
+DI is usually only appropriate for large, system-level integration tests.
 
 TODOS:
 ** IN PRIORITY ORDER, WITH COMPLETED AT THE BOTTOM ***
 
 Handling POST of complex content types, storing to S3:
-- Create a BlobStore service implemented with S3.  Figure out how to handle config for this.
-- Accept a student picture as part of the students POST endpoint, upload it to blob store, and return the URL in GET
-- Configure the file upload to happen asynchronously (not on a serving thread)
+- Create a BlobStore service implemented with S3 that uploads a local file.  Add unit\integration tests.
+- Figure out how to handle config for this - eg a properties file and local environment variables
+- Accept a student picture as part of the students POST endpoint, upload it to blob store (synchronously), and return
+the URL in GET.  May require implementing Multipart MIME
+- Figure out how to make the servlet respond to the request asynchronously (with a thread pool?) so we don't tie up a
+response thread from the serving container (eg Tomcat)
+- Figure out how to make the S3 code asynchronous with a thread pool.
 - More JMeter load tests to stress this.
 
 Using SQS for batch processing of messages:
