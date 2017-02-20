@@ -20,7 +20,7 @@ public class BlobStoreService {
     private static String bucketName = "akiajzepuyoh2e3z73jqcomhaystacksoftwarearq";
     private static String getKeyName = "bash-hints.txt";
     private static String putKeyName = "cuteimage.jpg";
-    private static String uploadFileName = "classpath:webapp/images/DSC_0133.jpg";
+    private static String uploadFileName = "src/main/webapp/images/DSC_0133.jpg";
 
     private static final Logger logger = LoggerFactory.getLogger(BlobStoreService.class);
 
