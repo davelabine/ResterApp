@@ -22,13 +22,11 @@ public class BlobStoreServiceTest {
 
     @Test
     public void testPutObject() {
-        /*
         try {
-            //blobStore.putObject();
+            blobStore.putObject();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
     }
 
     @Test

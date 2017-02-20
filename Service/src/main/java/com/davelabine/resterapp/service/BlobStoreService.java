@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 public class BlobStoreService {
     private static String bucketName = "akiajzepuyoh2e3z73jqcomhaystacksoftwarearq";
     private static String getKeyName = "bash-hints.txt";
-    private static String putKeyName = ""
-    private static String uploadFileName = "*** Provide file name ***";
+    private static String putKeyName = "cuteimage.jpg";
+    private static String uploadFileName = "classpath:webapp/images/DSC_0133.jpg";
 
     private static final Logger logger = LoggerFactory.getLogger(BlobStoreService.class);
 
@@ -36,9 +36,8 @@ public class BlobStoreService {
     public void putObject() throws IOException {
         logger.info("BlobStoreService.putObject");
         File file = new File(uploadFileName);
-
         try {
-            s3.putObject(bucketName, keyName, file);
+            s3.putObject(bucketName, putKeyName, file);
         } catch (AmazonServiceException ase) {
             logger.error("Request made it to Amazon S3, but was rejected with an error response. Error: {}, " +
                             "HTTP Status Code: {}, AWS Error Code: {}, Error Type: {}, Request ID: {}",
@@ -82,7 +81,7 @@ public class BlobStoreService {
 
         try {
             //S3Object object = s3.getObject(new GetObjectRequest(bucketName, keyName));
-            ObjectMetadata metadata = s3.getObjectMetadata(bucketName, keyName);
+            ObjectMetadata metadata = s3.getObjectMetadata(bucketName, getKeyName);
             logger.info("Metadata: {}", metadata.toString());
         } catch (AmazonServiceException ase) {
             logger.error("Request made it to Amazon S3, but was rejected with an error response. Error: {}, " +
