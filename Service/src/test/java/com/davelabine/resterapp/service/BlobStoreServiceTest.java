@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,15 +16,25 @@ public class BlobStoreServiceTest {
 
     @Before
     public void before() {
-        // TODO: Figure out how to seperate into appropriate integration and unit tests
-        AmazonS3Client s3 = new AmazonS3Client();
+        AmazonS3Client s3 = new AmazonS3Client(new ProfileCredentialsProvider());
         blobStore = new BlobStoreService(s3);
     }
 
     @Test
     public void testPutObject() {
+        /*
         try {
-            blobStore.putObject();
+            //blobStore.putObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+    }
+
+    @Test
+    public void testGetObject() {
+        try {
+            blobStore.getObject();
         } catch (IOException e) {
             e.printStackTrace();
         }

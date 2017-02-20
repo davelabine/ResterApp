@@ -7,8 +7,7 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -18,8 +17,9 @@ import org.slf4j.LoggerFactory;
  * Created by dave on 12/9/16.
  */
 public class BlobStoreService {
-    private static String bucketName     = "*** Provide bucket name ***";
-    private static String keyName        = "*** Provide key ***";
+    private static String bucketName = "akiajzepuyoh2e3z73jqcomhaystacksoftwarearq";
+    private static String getKeyName = "bash-hints.txt";
+    private static String putKeyName = ""
     private static String uploadFileName = "*** Provide file name ***";
 
     private static final Logger logger = LoggerFactory.getLogger(BlobStoreService.class);
@@ -38,11 +38,10 @@ public class BlobStoreService {
         File file = new File(uploadFileName);
 
         try {
-            // PutObjectResult?
             s3.putObject(bucketName, keyName, file);
         } catch (AmazonServiceException ase) {
             logger.error("Request made it to Amazon S3, but was rejected with an error response. Error: {}, " +
-                    "HTTP Status Code: {}, AWS Error Code: {}, Error Type: {}, Request ID: {}",
+                            "HTTP Status Code: {}, AWS Error Code: {}, Error Type: {}, Request ID: {}",
                     ase.getMessage(), ase.getStatusCode(), ase.getErrorCode(), ase.getErrorType(), ase.getRequestId());
         } catch (AmazonClientException ace) {
             logger.error("AmazonClient internal error: {}", ace.getMessage());
@@ -77,4 +76,22 @@ public class BlobStoreService {
         }
     }
     */
+
+    public void getObject() throws IOException {
+        logger.info("BlobStoreService.getObject");
+
+        try {
+            //S3Object object = s3.getObject(new GetObjectRequest(bucketName, keyName));
+            ObjectMetadata metadata = s3.getObjectMetadata(bucketName, keyName);
+            logger.info("Metadata: {}", metadata.toString());
+        } catch (AmazonServiceException ase) {
+            logger.error("Request made it to Amazon S3, but was rejected with an error response. Error: {}, " +
+                            "HTTP Status Code: {}, AWS Error Code: {}, Error Type: {}, Request ID: {}",
+                    ase.getMessage(), ase.getStatusCode(), ase.getErrorCode(), ase.getErrorType(), ase.getRequestId());
+        } catch (AmazonClientException ace) {
+            logger.error("AmazonClient internal error: {}", ace.getMessage());
+
+        }
+    }
 }
+
