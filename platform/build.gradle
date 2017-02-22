@@ -1,0 +1,7 @@
+apply from: "$rootProject.projectDir/config/gradle/includes/java-conventions.gradle"
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:1.16.10"
+    testCompile project(":platform")
+}
+
