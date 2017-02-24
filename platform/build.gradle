@@ -1,5 +1,6 @@
 apply from: "$rootProject.projectDir/config/gradle/includes/java-conventions.gradle"
 apply from: "$rootProject.projectDir/config/gradle/includes/guice-conventions.gradle"
+apply plugin: 'idea'
 
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.10"

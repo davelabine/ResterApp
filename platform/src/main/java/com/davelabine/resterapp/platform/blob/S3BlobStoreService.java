@@ -37,11 +37,11 @@ public class S3BlobStoreService implements BlobStoreService {
     }
 
     @Override
-    BlobLocation putObject(BlobData data) throws IOException {
+    public BlobLocation putObject(BlobData data) {
         logger.info("S3BlobStoreService.putObject");
-        File file = new File(data.getFilename());
+        File file = new File(data.getFileName());
         try {
-            s3.putObject(bucketName, putKeyName, file);
+            PutObjectResult result = s3.putObject(bucketName, putKeyName, file);
         } catch (AmazonServiceException ase) {
             logger.error("Request made it to Amazon S3, but was rejected with an error response. Error: {}, " +
                             "HTTP Status Code: {}, AWS Error Code: {}, Error Type: {}, Request ID: {}",
@@ -49,6 +49,8 @@ public class S3BlobStoreService implements BlobStoreService {
         } catch (AmazonClientException ace) {
             logger.error("AmazonClient internal error: {}", ace.getMessage());
         }
+
+        return null;
     }
 
     /*
@@ -81,7 +83,7 @@ public class S3BlobStoreService implements BlobStoreService {
     }
     */
     @Override
-    public  BlobData getObject(BlobLocation key) throws IOException {
+    public BlobData getObject(BlobLocation key) {
         logger.info("BlobStoreService.getObject");
 
         try {
@@ -98,6 +100,12 @@ public class S3BlobStoreService implements BlobStoreService {
         }
 
         logger.info("Done!");
+        return null;
+    }
+
+    @Override
+    public boolean deleteObject(BlobLocation key) {
+        return true;
     }
 }
 

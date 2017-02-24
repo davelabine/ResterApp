@@ -1,4 +1,5 @@
 apply from: "$rootProject.projectDir/config/gradle/includes/java-conventions.gradle"
+apply plugin: 'idea'
 
 dependencies {
 //    testCompile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '8.0.22'
