@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.platform.blob;
+package com.davelabine.resterapp.platform.api;
 
 /**
  * Created by davidl on 2/21/17.

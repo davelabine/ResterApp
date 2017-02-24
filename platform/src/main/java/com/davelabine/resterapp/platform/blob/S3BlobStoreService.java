@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.service;
+package com.davelabine.resterapp.platform.blob;
 
 import java.io.IOException;
 import java.io.File;
@@ -16,19 +16,19 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by dave on 12/9/16.
  */
-public class BlobStoreService {
+public class S3BlobStoreService {
     private static String bucketName = "akiajzepuyoh2e3z73jqcomhaystacksoftwarearq";
     private static String getKeyName = "bash-hints.txt";
     private static String putKeyName = "cuteimage.jpg";
     private static String uploadFileName = "src/main/webapp/images/DSC_0133.jpg";
 
-    private static final Logger logger = LoggerFactory.getLogger(BlobStoreService.class);
+    private static final Logger logger = LoggerFactory.getLogger(S3BlobStoreService.class);
 
     //private final S3Configuration s3Config;
     private final AmazonS3 s3;
 
     @Inject
-    public BlobStoreService(final AmazonS3Client s3Client) {
+    public S3BlobStoreService(final AmazonS3Client s3Client) {
         this.s3 = s3Client;
         //this.s3Config = s3Config;
     }
