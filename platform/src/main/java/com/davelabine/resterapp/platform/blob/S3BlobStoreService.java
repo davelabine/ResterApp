@@ -91,6 +91,8 @@ public class S3BlobStoreService {
             logger.error("AmazonClient internal error: {}", ace.getMessage());
 
         }
+
+        logger.info("Done!");
     }
 }
 

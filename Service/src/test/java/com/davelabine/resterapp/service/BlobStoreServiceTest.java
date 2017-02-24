@@ -1,6 +1,6 @@
 package com.davelabine.resterapp.service;
 
-import com.davelabine.resterapp.platform.blob;
+import com.davelabine.resterapp.platform.blob.S3BlobStoreService;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.junit.Before;
