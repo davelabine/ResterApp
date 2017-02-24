@@ -9,6 +9,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 
+import com.davelabine.resterapp.platform.api.BlobData;
+import com.davelabine.resterapp.platform.api.BlobLocation;
+import com.davelabine.resterapp.platform.api.BlobStoreService;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +19,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by dave on 12/9/16.
  */
-public class S3BlobStoreService {
+public class S3BlobStoreService implements BlobStoreService {
     private static String bucketName = "akiajzepuyoh2e3z73jqcomhaystacksoftwarearq";
     private static String getKeyName = "bash-hints.txt";
     private static String putKeyName = "cuteimage.jpg";
@@ -33,9 +36,10 @@ public class S3BlobStoreService {
         //this.s3Config = s3Config;
     }
 
-    public void putObject() throws IOException {
-        logger.info("BlobStoreService.putObject");
-        File file = new File(uploadFileName);
+    @Override
+    BlobLocation putObject(BlobData data) throws IOException {
+        logger.info("S3BlobStoreService.putObject");
+        File file = new File(data.getFilename());
         try {
             s3.putObject(bucketName, putKeyName, file);
         } catch (AmazonServiceException ase) {
@@ -46,6 +50,7 @@ public class S3BlobStoreService {
             logger.error("AmazonClient internal error: {}", ace.getMessage());
         }
     }
+
     /*
     public static void main(String[] args) throws IOException {
         AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
@@ -75,13 +80,13 @@ public class S3BlobStoreService {
         }
     }
     */
-
-    public void getObject() throws IOException {
+    @Override
+    public  BlobData getObject(BlobLocation key) throws IOException {
         logger.info("BlobStoreService.getObject");
 
         try {
             //S3Object object = s3.getObject(new GetObjectRequest(bucketName, keyName));
-            ObjectMetadata metadata = s3.getObjectMetadata(bucketName, getKeyName);
+            ObjectMetadata metadata = s3.getObjectMetadata(key.getBucketName(), key.getKey());
             logger.info("Metadata: {}", metadata.toString());
         } catch (AmazonServiceException ase) {
             logger.error("Request made it to Amazon S3, but was rejected with an error response. Error: {}, " +
