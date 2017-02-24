@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.service;
 
+import com.davelabine.resterapp.platform.blob;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.junit.Before;
@@ -12,12 +13,12 @@ import java.io.IOException;
  */
 
 public class BlobStoreServiceTest {
-    BlobStoreService blobStore;
+    S3BlobStoreService blobStore;
 
     @Before
     public void before() {
         AmazonS3Client s3 = new AmazonS3Client(new ProfileCredentialsProvider());
-        blobStore = new BlobStoreService(s3);
+        blobStore = new S3BlobStoreService(s3);
     }
 
     @Test

@@ -1,0 +1,9 @@
+apply from: "$rootProject.projectDir/config/gradle/includes/java-conventions.gradle"
+apply from: "$rootProject.projectDir/config/gradle/includes/guice-conventions.gradle"
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:1.16.10"
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.9.2'
+    testCompile project(":platform")
+}
+

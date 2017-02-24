@@ -1,6 +1,5 @@
 package com.davelabine.resterapp.controller;
 
-
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
