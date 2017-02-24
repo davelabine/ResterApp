@@ -1,5 +1,7 @@
 package com.davelabine.resterapp.platform.api;
 
+import java.net.URL;
+
 /**
  * Created by davidl on 2/21/17.
  */
@@ -18,6 +20,14 @@ public interface BlobStoreService {
      * @return the handle to the object data.
      */
     BlobData getObject(BlobLocation key);
+
+    /**
+     * get an object's URL based on the BlobLocation provided.
+     * @param key a populated blob location (bucket and object id)
+     * @return the handle to the object data.
+     */
+    String getObjectUrl(BlobLocation key);
+
 
 
     /**

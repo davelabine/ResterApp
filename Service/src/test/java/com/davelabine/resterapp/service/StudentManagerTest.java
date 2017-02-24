@@ -20,6 +20,8 @@ import static org.mockito.Mockito.reset;
  * Created by dave on 10/1/16.
  */
 
+@SuppressWarnings("unchecked")
+
 @RunWith(MockitoJUnitRunner.class)
 public class StudentManagerTest {
     public static final String FAKE_KEY = "FAKE_KEY";

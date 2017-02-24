@@ -5,6 +5,6 @@ apply plugin: 'idea'
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.10"
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.9.2'
-    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile "org.mockito:mockito-core:+"
 }
 

@@ -36,7 +36,12 @@ repositories {
 
 compileJava {
     options.encoding = 'UTF-8'
-    options.compilerArgs = ['-Xlint:all', '-Xlint:-deprecation']
+    options.compilerArgs << "-Xlint:all" << "-Xlint:-deprecation"
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:all" << "-Xlint:-deprecation"
 }
 
 jar {
