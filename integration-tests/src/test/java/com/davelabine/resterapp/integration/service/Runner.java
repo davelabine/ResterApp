@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.integration;
+package com.davelabine.resterapp.integration.service;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;

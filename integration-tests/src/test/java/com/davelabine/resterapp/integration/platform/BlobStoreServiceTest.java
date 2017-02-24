@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.service;
+package com.davelabine.resterapp.integration.platform;
 
 import com.davelabine.resterapp.platform.blob.S3BlobStoreService;
 import com.amazonaws.services.s3.AmazonS3Client;

@@ -1,20 +1,17 @@
-package com.davelabine.resterapp.integration;
+package com.davelabine.resterapp.integration.service;
 
 import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.*;
 
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.eclipse.jetty.server.Server;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import com.google.common.base.Preconditions;
