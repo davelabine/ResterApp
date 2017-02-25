@@ -8,6 +8,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
 import java.io.IOException;
 
 /**
@@ -16,12 +19,15 @@ import java.io.IOException;
 
 public class BlobStoreServiceItTest {
     private static String UPLOAD_FILE_NAME = "resources/images/DSC_0133.jpg";
+
+    private static final Config awsConfig = ConfigFactory.load("aws.conf");
+
     BlobStoreService blobStore;
 
     @Before
     public void before() {
         AmazonS3Client s3 = new AmazonS3Client(new ProfileCredentialsProvider());
-        blobStore = new S3BlobStoreService(s3);
+        blobStore = new S3BlobStoreService(s3, awsConfig);
     }
 
     @Test
@@ -29,7 +35,7 @@ public class BlobStoreServiceItTest {
         BlobData data = new BlobData(UPLOAD_FILE_NAME);
         BlobLocation location = blobStore.putObject(data);
         Assert.assertNotNull(location);
-        
+
         String url = blobStore.getObjectUrl(location);
         Assert.assertNotNull(url);
     }

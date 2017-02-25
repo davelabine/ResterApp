@@ -10,6 +10,8 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 
+import com.typesafe.config.Config;
+
 import com.davelabine.resterapp.platform.api.BlobData;
 import com.davelabine.resterapp.platform.api.BlobLocation;
 import com.davelabine.resterapp.platform.api.BlobStoreService;
@@ -21,25 +23,24 @@ import org.slf4j.LoggerFactory;
  * Created by dave on 12/9/16.
  */
 public class S3BlobStoreService implements BlobStoreService {
-    private static String bucketName = "akiajzepuyoh2e3z73jqcomhaystacksoftwarearq";
-    private static String getKeyName = "bash-hints.txt";
-    private static String putKeyName = "cuteimage.jpg";
+    private static String bucketName = "resterapp-dev";
 
     private static final Logger logger = LoggerFactory.getLogger(S3BlobStoreService.class);
 
-    //private final S3Configuration s3Config;
+    private final Config awsConfig;
     private final AmazonS3Client s3;
 
     @Inject
-    public S3BlobStoreService(final AmazonS3Client s3Client) {
+    public S3BlobStoreService(final AmazonS3Client s3Client, final Config awsConfig) {
         this.s3 = s3Client;
-        //this.s3Config = s3Config;
+        this.awsConfig = awsConfig;
     }
 
     @Override
     public BlobLocation putObject(BlobData data) {
         logger.info("S3BlobStoreService.putObject");
-        BlobLocation blobLocation = BlobLocation.builder(bucketName, generateUniqueKey()).build();
+        BlobLocation blobLocation = BlobLocation.builder(awsConfig.getString("s3.bucket"),
+                                                            generateUniqueKey(data)).build();
         File file = new File(data.getFileName());
         try {
             s3.putObject(
@@ -85,7 +86,7 @@ public class S3BlobStoreService implements BlobStoreService {
     @Override
     public String getObjectUrl(BlobLocation key) {
         logger.info("BlobStoreService.getObjectURL");
-        return s3.getResourceUrl(bucketName, key.getKey());
+        return s3.getResourceUrl(awsConfig.getString("s3.bucket"), key.getKey());
     }
 
     @Override
@@ -93,8 +94,14 @@ public class S3BlobStoreService implements BlobStoreService {
         return false;
     }
 
-    private String generateUniqueKey() {
-        return UUID.randomUUID().toString();
+    private String generateUniqueKey(BlobData data) {
+        String fileName = UUID.randomUUID().toString();
+
+        int i = data.getFileName().lastIndexOf('.');
+        if (i > 0) {
+            fileName += data.getFileName().substring(i);
+        }
+        return  fileName;
     }
 }
 

@@ -1,8 +1,10 @@
-package com.davelabine.resterapp;
+package com.davelabine.resterapp.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+
+import lombok.Getter;
 
 //import com.amazonaws.services.s3.AmazonS3Client;
 
@@ -10,7 +12,7 @@ import com.google.inject.Singleton;
  * Created by dave on 12/10/16.
  *
  */
-public class S3Module extends AbstractModule {
+public class AwsModule extends AbstractModule {
 
     @Override
     protected void configure() {

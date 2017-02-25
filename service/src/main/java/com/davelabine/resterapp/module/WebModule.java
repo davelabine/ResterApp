@@ -1,4 +1,4 @@
-package com.davelabine.resterapp;
+package com.davelabine.resterapp.module;
 
 //import com.sun.java.swing.plaf.windows.TMSchema;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;

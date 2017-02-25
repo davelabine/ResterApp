@@ -18,6 +18,8 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import com.typesafe.config.Config;
+
 import static org.mockito.Mockito.*;
 
 
@@ -39,8 +41,12 @@ public class S3BlobStoreServiceTest {
     @Mock
     private AmazonS3Client mockS3;
 
+    @Mock
+    private Config mockConfig;
+
     @Before
     public void before() {
+        when(mockConfig.getString("s3.bucket")).thenReturn(FAKE_BUCKET);
     }
 
     // Test that a blob location is returned when an object is put
