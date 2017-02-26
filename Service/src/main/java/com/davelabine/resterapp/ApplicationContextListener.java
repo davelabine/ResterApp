@@ -3,7 +3,7 @@ package com.davelabine.resterapp;
 import java.util.List;
 import javax.servlet.ServletContext;
 
-import com.davelabine.resterapp.module.AwsModule;
+import com.davelabine.resterapp.platform.module.*;
 import com.davelabine.resterapp.module.WebModule;
 import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener;
 import com.google.common.collect.Lists;

@@ -23,8 +23,6 @@ import org.slf4j.LoggerFactory;
  * Created by dave on 12/9/16.
  */
 public class S3BlobStoreService implements BlobStoreService {
-    private static String bucketName = "resterapp-dev";
-
     private static final Logger logger = LoggerFactory.getLogger(S3BlobStoreService.class);
 
     private final Config awsConfig;
@@ -44,7 +42,7 @@ public class S3BlobStoreService implements BlobStoreService {
         File file = new File(data.getFileName());
         try {
             s3.putObject(
-                    new PutObjectRequest(bucketName, blobLocation.getKey(), file)
+                    new PutObjectRequest(awsConfig.getString("s3.bucket"), blobLocation.getKey(), file)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (AmazonServiceException ase) {
             logger.error("Request made it to Amazon S3, but was rejected with an error response. Error: {}, " +
