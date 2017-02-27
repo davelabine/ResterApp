@@ -1,5 +1,4 @@
 apply from: "$rootProject.projectDir/config/gradle/includes/java-conventions.gradle"
-apply plugin: 'idea'
 
 dependencies {
 //    testCompile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '8.0.22'
@@ -7,8 +6,6 @@ dependencies {
     testCompile group: 'org.eclipse.jetty', name: 'jetty-server', version: '8.2.0.v20160908'
     testCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: '8.2.0.v20160908'
     testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
-    testCompile "com.typesafe:config:1.3.1"
-    testCompile project(":platform")
     testCompile project(":service")
 }
 
