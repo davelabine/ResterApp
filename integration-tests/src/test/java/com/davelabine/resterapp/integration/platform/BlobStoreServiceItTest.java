@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 
 public class BlobStoreServiceItTest {
-    private static String UPLOAD_FILE_NAME = "resources/images/DSC_0133.jpg";
+    private static String UPLOAD_FILE_NAME = "images/DSC_0133.jpg";
 
     private static final Config awsConfig = ConfigFactory.load("aws.conf");
 
@@ -32,7 +32,8 @@ public class BlobStoreServiceItTest {
 
     @Test
     public void testPutObjectAndGetUrl() {
-        BlobData data = new BlobData(UPLOAD_FILE_NAME);
+        String fileName = Thread.currentThread().getContextClassLoader().getResource(UPLOAD_FILE_NAME).getPath();
+        BlobData data = new BlobData(fileName);
         BlobLocation location = blobStore.putObject(data);
         Assert.assertNotNull(location);
 

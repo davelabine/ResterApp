@@ -6,7 +6,7 @@ dependencies {
     testCompile group: 'org.eclipse.jetty', name: 'jetty-server', version: '8.2.0.v20160908'
     testCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: '8.2.0.v20160908'
     testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
-    testCompile project(":service")
+    testCompile project(":platform")
 }
 
 task runIntegrationTests(type: Test, dependsOn: ":service:war") {
