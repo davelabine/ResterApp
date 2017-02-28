@@ -10,6 +10,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 
+import com.google.inject.name.Named;
 import com.typesafe.config.Config;
 
 import com.davelabine.resterapp.platform.api.BlobData;
@@ -29,7 +30,7 @@ public class S3BlobStoreService implements BlobStoreService {
     private final AmazonS3Client s3;
 
     @Inject
-    public S3BlobStoreService(final AmazonS3Client s3Client, final Config awsConfig) {
+    public S3BlobStoreService(final AmazonS3Client s3Client, @Named("aws.conf") final Config awsConfig) {
         this.s3 = s3Client;
         this.awsConfig = awsConfig;
     }

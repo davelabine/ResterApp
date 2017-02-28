@@ -1,10 +1,10 @@
-package com.davelabine.resterapp.platform.module;
+package com.davelabine.resterapp.module;
 
+import com.davelabine.resterapp.platform.api.BlobStoreService;
+import com.davelabine.resterapp.platform.blob.S3BlobStoreService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-
-import lombok.Getter;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -17,7 +17,7 @@ public class AwsModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        // Add bindings here.
+        bind(BlobStoreService.class).to(S3BlobStoreService.class);
     }
 
     @Provides

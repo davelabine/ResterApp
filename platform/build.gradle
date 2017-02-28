@@ -1,6 +1,5 @@
 apply from: "$rootProject.projectDir/config/gradle/includes/java-conventions.gradle"
 apply from: "$rootProject.projectDir/config/gradle/includes/guice-conventions.gradle"
-apply plugin: 'idea'
 
 dependencies {
     compile "com.typesafe:config:1.3.1"

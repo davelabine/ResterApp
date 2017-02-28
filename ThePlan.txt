@@ -42,19 +42,37 @@ Basic AutoScaling App:
 
 
 New questions:
+- What is the call chaining in java called?  Eg used w\ builders
+
+Answered Questions:
 - How to organize typesafe configs in code?  How to deal with multiple config files, and have the correct one selected
 when using DI?
+A: Typesafe is designed to work with a single large Config file that you pass around.  This should be fine for my
+purposes.
 - Review how my library is organized.  How do we separate setup code like config and module vs actual implementation?
 What about API vs actual implementation.  I kept them in the same package under different namespaces for convenience,
 if I was doing this *for real* I would separate implementation into a different lib and wire in using Guice?
+A: The idea with keeping API models \ interfaces seperate is that they can be inherited \ extended by your clients.
+For example, if a client needs a POJO model object to do something slightly different or additional.
+You always want to keep config and DI code with the consumers of the library, not the library itself.  The lib should
+not know where its config comes from, or how its objects are created, that is a client concern.
 - What is the best way to model SQL data in java objects?  I am implementing a table of student info.  I'm thinking of
 using a DAO pattern.  I have a student POJO object already.  Implement an interface for how to get \ set students,
 StudentDAOImpl would actually implement this interface with MySQL or similar.  What are advantages of Repo pattern over
 this?  Could use hibernate too, I would think this is only appropriate with simpler objects since I've heard it can
 be tricky to understand\optimize what is happening with queries.
-How do I organize this in packages?
-
-Answered Questions:
+A: DAO is better for simpler data objects, and easy to get started with.  The disadvantage is that the db implementation
+classes are always custom to the application and need to be purpose built.  The repo pattern abstracts the data into a
+map of maps that is flexbile enough to accomodate almost any data schema.  If you decided to switch to another database
+completely (even SQL->NoSQL) all you would have to do is implement the base repo "driver" interfaces to implement your
+model.  In other words, the base repo object and db implementations can be shared between projects and have minimal
+coupling to the application that implements them.
+Bottom line: it is fine to go with DAO to start.
+- Why builder pattern?  Advantages \ disadvantages.  Another name for Factory pattern?
+A: Makes it easier to enforce creation rules for objects, particularly when you have lengthy constructors where a base
+set of members need to be defined.  Look at how Lobok does Builders.  Also, you can chain together multiple calls.
+- How to get autocomplete fixed up in IntelliJ?
+A: Refresh Gradle configs in IntelliJ... :D
 - Explain gradle testCompile vs compile?  Compile is the group of dependencies you need for your app while testCompile
 are the dependencies only needed for test.  If you testCompile, the dependencies won't be available for the main app.
 - What is appropriate to store in a properties or config file?  Basically anything you'd want to be configurable, like

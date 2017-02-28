@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.service;
 
 import com.davelabine.resterapp.model.Student;
+import com.davelabine.resterapp.platform.api.BlobStoreService;
 
 import javax.inject.Inject;
 
@@ -14,11 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class StudentManager {
     private ConcurrentHashMap<String, Student> studentMap;
+    private BlobStoreService blobStoreService;
 
 
     @Inject
-    public StudentManager(ConcurrentHashMap<String, Student> studentMap) {
+    public StudentManager(ConcurrentHashMap<String, Student> studentMap, BlobStoreService blobStoreService) {
         this.studentMap = studentMap;
+        this.blobStoreService = blobStoreService;
     }
 
     // Returns the Key of the student, or null on failure
