@@ -49,6 +49,11 @@ Answered Questions:
 when using DI?
 A: Typesafe is designed to work with a single large Config file that you pass around.  This should be fine for my
 purposes.
+- Re: @Provides: Wow.  How does it track which method to use, the return value?  That is, the S3 client method could be
+@Provides AmazonS3Client getSomeObject()
+A: Say if you have more than one method returning the same instance type, then Guice will throw errors saying an object
+of same instance type is already bound.  But if you have a need to say return more than one instance of same instance
+type then you will have to use @Named and bind based on the name.
 - Review how my library is organized.  How do we separate setup code like config and module vs actual implementation?
 What about API vs actual implementation.  I kept them in the same package under different namespaces for convenience,
 if I was doing this *for real* I would separate implementation into a different lib and wire in using Guice?

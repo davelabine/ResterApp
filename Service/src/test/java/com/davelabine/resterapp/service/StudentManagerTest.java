@@ -2,6 +2,9 @@ package com.davelabine.resterapp.service;
 
 import com.davelabine.resterapp.model.Student;
 
+import com.davelabine.resterapp.platform.api.BlobData;
+import com.davelabine.resterapp.platform.api.BlobLocation;
+import com.davelabine.resterapp.platform.api.BlobStoreService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
@@ -12,6 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
@@ -27,12 +32,17 @@ public class StudentManagerTest {
     public static final String FAKE_KEY = "FAKE_KEY";
     public static final String FAKE_ID = "FAKE_ID";
     public static final String FAKE_NAME = "FAKE_NAME";
+    public static final String FAKE_BUCKET = "FAKE_BUCKET";
+    public static final String FAKE_URL = "http://fake.url.com";
 
     @InjectMocks
     private StudentManager underTest;
 
     @Mock
     private ConcurrentHashMap<String, Student> mockStudentMap;
+
+    @Mock
+    private BlobStoreService mockBlobStore;
 
 
     @Before
@@ -44,9 +54,15 @@ public class StudentManagerTest {
     public void testCreateStudent() {
         reset(mockStudentMap);
 
+        BlobLocation location = new BlobLocation.Builder(FAKE_BUCKET, FAKE_KEY).build();
+        doReturn(location).when(mockBlobStore).putObject(any(BlobData.class));
+        doReturn(FAKE_URL).when(mockBlobStore).getObjectUrl(any(BlobLocation.class));
+
         Student student = new Student(FAKE_ID, FAKE_NAME);
         String key = underTest.createStudent(student);
+
         Assert.assertNotNull(key);
+        Assert.assertNotNull(student.getUrlPhoto());
 
         // Used to verify unit tests are working correctly
         // Assert.assertEquals("fun", "icepick-in-eye");

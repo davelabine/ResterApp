@@ -18,6 +18,10 @@ public class Student {
     @Setter
     private String name;
 
+    @Getter
+    @Setter
+    private String urlPhoto;
+
     public Student() {}
 
     public Student(String id, String name) {
