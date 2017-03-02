@@ -27,15 +27,15 @@ import java.util.List;
  */
 @Singleton
 // We only want one instance shared across all servlet threads to make more efficient use of memory.
-@Path("/students")
-public class ControllerStudents {
+@Path("/api/students")
+public class ControllerStudentsAPI {
     // TODO: get config working so I don't have to hardcode stuff like this
     private static final String STUDENTS_ENDPOINT_BASE_PATH = "http://localhost:8080/resterapp/students/";
     private static final String STUDENT_KEY_HEADER = "student-key";
 
     private static final int BUSYTIME_MS = 200; // Milliseconds
 
-    private static final Logger logger = LoggerFactory.getLogger(ControllerStudents.class);
+    private static final Logger logger = LoggerFactory.getLogger(ControllerStudentsAPI.class);
 
     @Inject
     private StudentManager studentManager;

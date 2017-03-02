@@ -4,13 +4,14 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
-import freemarker.template.Configuration;
-import freemarker.template.TemplateExceptionHandler;
+import freemarker.template.*;
 
 import com.davelabine.resterapp.controller.ControllerMainApp;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
+import java.io.IOException;
+import java.io.StringWriter;
 
 /**
  * Created by dave on 3/1/17.
@@ -30,6 +31,22 @@ public class FreemarkerModule extends AbstractModule {
         fmConfig.setDefaultEncoding("UTF-8");
         fmConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         return fmConfig;
+    }
+
+    // * A simple helper method for processing Freemarker templates across multiple controllers
+    public static String ProcessTemplateUtil(Configuration configuration, String dataName, Object data,
+                                             String templateName)
+            throws IOException, TemplateException {
+        StringWriter out = new StringWriter();
+        SimpleHash root = new SimpleHash();
+
+        if (data != null) {
+            root.put(dataName, data);
+        }
+
+        Template template = configuration.getTemplate(templateName);
+        template.process(root, out);
+        return out.toString();
     }
 }
 

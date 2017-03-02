@@ -17,12 +17,14 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+import com.davelabine.resterapp.module.FreemarkerModule;
+
 /**
  * Root resource for the main app
  */
 @Singleton
 // We only want one instance shared across all servlet threads to make more efficient use of memory.
-@Path("/app")
+@Path("/students")
 public class ControllerMainApp {
     private static final Logger logger = LoggerFactory.getLogger(ControllerMainApp.class);
 
@@ -32,47 +34,21 @@ public class ControllerMainApp {
     @Inject
     private StudentManager studentManager;
 
+
     /**
      * Get a list of students
      */
     @GET
-    @Path("/")
     @Produces(MediaType.TEXT_HTML)
-    public Response get() {
+    //TODO: Add some exception mappers
+    public String get() throws IOException, TemplateException {
         logger.info("MainAppGet()");
 
-        /*
         studentManager.populateFakeData();
         List<Student> studentList = studentManager.getStudents();
-        if (studentList == null) {
-            logger.error("getStudents() failed");
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
 
-        logger.info("Students retrieved successfully:{}", studentList);
-
-        fmConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
-        StringWriter out = new StringWriter();
-
-        try {
-            Template template = fmConfig.getTemplate("WEB-INF/content/student-list.ftl");
-            SimpleHash root = new SimpleHash();
-            root.put("studentList", studentList);
-            template.process(root, out);
-        } catch (TemplateNotFoundException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        } catch (MalformedTemplateNameException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
-
-        return Response.ok().entity("I'm A-OK!").build();
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig,
+                                                    "studentList", studentList,
+                                                    "WEB-INF/content/student-list.ftl");
     }
 }

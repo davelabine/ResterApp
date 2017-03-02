@@ -27,13 +27,13 @@ import static org.mockito.Mockito.reset;
  * Created by davidl on 10/10/16.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ControllerStudentsTest {
+public class ControllerStudentsAPITest {
     public static final String FAKE_KEY = "FAKE_KEY";
     public static final String FAKE_ID = "FAKE_ID";
     public static final String FAKE_NAME = "FAKE_NAME";
 
     @InjectMocks
-    private ControllerStudents underTest;
+    private ControllerStudentsAPI underTest;
 
     @Mock
     private StudentManager mockStudentManager;

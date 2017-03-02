@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
  * - For now these are a placeholder that I plan to expand on later.
  * - Make sure GETs are returning the correct document types based on HTTP headers.
  */
-public class ControllerRosterTest {
+public class ControllerRosterAPITest {
 
     // @InjectMocks - don't think we need this
     private Dispatcher dispatcher;
@@ -30,28 +30,28 @@ public class ControllerRosterTest {
     @Before
     public void before() throws Exception {
         this.dispatcher = MockDispatcherFactory.createDispatcher();
-        POJOResourceFactory noDefaults = new POJOResourceFactory(ControllerRoster.class);
+        POJOResourceFactory noDefaults = new POJOResourceFactory(ControllerRosterAPI.class);
         this.dispatcher.getRegistry().addResourceFactory(noDefaults);
     }
 
     @Test
     public void getTextPlainRosterTest() throws URISyntaxException {
-        MockHttpRequest request = MockHttpRequest.get("/roster").accept(MediaType.TEXT_PLAIN);
+        MockHttpRequest request = MockHttpRequest.get("/api/roster").accept(MediaType.TEXT_PLAIN);
         MockHttpResponse response = new MockHttpResponse();
         dispatcher.invoke(request, response);
 
         assertEquals(response.getStatus(), HttpStatus.SC_OK);
-        assertEquals(response.getContentAsString(), ControllerRoster.ROSTER_TEXT_PLAIN);
+        assertEquals(response.getContentAsString(), ControllerRosterAPI.ROSTER_TEXT_PLAIN);
     }
 
     @Test
     public void getTextXMLRosterTest() throws URISyntaxException {
-        MockHttpRequest request = MockHttpRequest.get("/roster").accept(MediaType.TEXT_XML);
+        MockHttpRequest request = MockHttpRequest.get("/api/roster").accept(MediaType.TEXT_XML);
         MockHttpResponse response = new MockHttpResponse();
         dispatcher.invoke(request, response);
 
         assertEquals(response.getStatus(), HttpStatus.SC_OK);
-        assertEquals(response.getContentAsString(), ControllerRoster.ROSTER_TEXT_XML);
+        assertEquals(response.getContentAsString(), ControllerRosterAPI.ROSTER_TEXT_XML);
     }
 
 }

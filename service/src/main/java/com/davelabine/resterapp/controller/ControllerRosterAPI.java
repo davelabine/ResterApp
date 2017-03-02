@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
  *
  */
 @Singleton
-@Path("/roster")
-public class ControllerRoster {
+@Path("/api/roster")
+public class ControllerRosterAPI {
     public static final String ROSTER_TEXT_PLAIN = "Text Roster!";
     public static final String ROSTER_TEXT_XML = "<?xml version=\"1.0\"?><Roster>A Roster in XML!</Roster>";
 
-    private static final Logger logger = LoggerFactory.getLogger(ControllerRoster.class);
+    private static final Logger logger = LoggerFactory.getLogger(ControllerRosterAPI.class);
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent

@@ -43,7 +43,7 @@ public class JaxRsIntegrationRunner {
     public void verifyTextPlainRosters() throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
 
-        HttpGet rosterGet = new HttpGet("http://localhost:8080/roster");
+        HttpGet rosterGet = new HttpGet("http://localhost:8080/api/roster");
 
         CloseableHttpResponse rosterResp = client.execute(rosterGet);
 
@@ -56,7 +56,7 @@ public class JaxRsIntegrationRunner {
         // Post student data, save the key, then do a GET on the key to make sure it is retrievable.
         CloseableHttpClient client = HttpClients.createDefault();
 
-        HttpPost studentPost = new HttpPost("http://localhost:8080/students/post");
+        HttpPost studentPost = new HttpPost("http://localhost:8080/api/students/post");
         // TODO: add some sort of automatic toJson() for the Student data object
         StringEntity stringEntity = new StringEntity("{\"id\":\"12345\",\"name\":\"Billy Bob\"}");
         studentPost.setEntity(stringEntity);
@@ -68,7 +68,7 @@ public class JaxRsIntegrationRunner {
         String studentKey = postResp.getFirstHeader("Student-Key").getValue();
         Assert.assertThat("Empty Student-Key header", studentKey, notNullValue());
 
-        HttpGet studentGet = new HttpGet("http://localhost:8080/students/" + studentKey);
+        HttpGet studentGet = new HttpGet("http://localhost:8080/api/students/" + studentKey);
         CloseableHttpResponse getResp = client.execute(studentGet);
 
         Assert.assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(200));
