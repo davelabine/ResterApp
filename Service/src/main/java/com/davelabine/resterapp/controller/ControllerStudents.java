@@ -20,6 +20,9 @@ import java.net.URISyntaxException;
 
 import javax.inject.Inject;
 
+import java.util.List;
+
+
 /**
  * Root resource for student information (exposed at "students" path)
  */
@@ -54,8 +57,13 @@ public class ControllerStudents {
             @QueryParam("busyTime") int busyTime,
             Student student)
             throws URISyntaxException {
-
         logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
+
+        if (student == null) {
+            logger.info("Student data not set");
+            return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+        }
+
         Busywork.doBusyWork(busyTime);
 
         String studentKey = studentManager.createStudent(student);
@@ -72,27 +80,53 @@ public class ControllerStudents {
     }
 
     /**
+     * Get a list of students
+     */
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAll(
+            @QueryParam("busyTime") int busyTime) {
+        logger.info("Students/ busyTime:{} ", busyTime);
+
+        Busywork.doBusyWork(busyTime);
+        studentManager.populateFakeData();
+        List<Student> studentList = studentManager.getStudents();
+        if (studentList == null) {
+            logger.error("Student create failed");
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+        }
+
+        logger.info("Students retrieved successfully:{}", studentList);
+        return Response.ok().entity(studentList).build();
+    }
+
+    /**
      * Get the metadata of an uploaded resource.
      */
     @GET
-    @Path("{id}")
+    @Path("{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
             @QueryParam("busyTime") int busyTime,
-            @PathParam("id")
-            String id) {
+            @PathParam("key")
+            String key) {
+        logger.info("Student:{} busyTime:{}", key, busyTime);
 
-        // TODO: try to get not empty to work
-        logger.info("Students:{} busyTime:{}", id, busyTime);
+        if (key == null ) {
+            logger.info("No ID set");
+            return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+        }
+
         Busywork.doBusyWork(busyTime);
 
-        Student studentGet = studentManager.getStudent(id);
+        Student studentGet = studentManager.getStudent(key);
         if (studentGet == null) {
             logger.info("Student not found");
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).build();
         }
 
-        logger.info("Student found: {}", studentGet.toString());
+        logger.info("Student found: {}", studentGet);
         return Response.ok().entity(studentGet).build();
     }
 }

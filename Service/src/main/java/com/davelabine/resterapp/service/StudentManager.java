@@ -9,7 +9,8 @@ import javax.inject.Inject;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -33,8 +34,11 @@ public class StudentManager {
     {
         // TODO handle bad inputs
         String studentKey = UUID.randomUUID().toString();
+        student.setKey(studentKey);
 
         // Add a profile pic
+        // TODO: Move this into its own put method
+        /*
         String fileName = Thread.currentThread().getContextClassLoader().getResource(UPLOAD_FILE_NAME).getPath();
         BlobData data = new BlobData(fileName);
         BlobLocation location = blobStore.putObject(data);
@@ -42,6 +46,7 @@ public class StudentManager {
             String url = blobStore.getObjectUrl(location);
             student.setUrlPhoto(url);
         }
+        */
 
         // Returns previous value if another value was mapped to same key
         // or null if there was no key mapping
@@ -56,6 +61,20 @@ public class StudentManager {
     public Student getStudent(String studentKey) {
         // returns the value, or null on not found
         return studentMap.get(studentKey);
+    }
+
+    // Returns a list of students in the DB
+    public List<Student> getStudents() {
+        List<Student> studentList = new ArrayList<Student>(studentMap.values());
+        return studentList;
+    }
+
+    // A throwaway method to populate a bit of fake data for testing
+    // TODO: Remove me
+    public void populateFakeData() {
+        createStudent(new Student("123456", "Harley Squirrelnuts"));
+        createStudent(new Student("123456", "Billy Eaglehead"));
+        createStudent(new Student("123456", "Jimmy Shotbothsides"));
     }
 
 }

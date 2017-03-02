@@ -2,12 +2,10 @@ package com.davelabine.resterapp.service;
 
 import com.davelabine.resterapp.model.Student;
 
-import com.davelabine.resterapp.platform.api.BlobData;
-import com.davelabine.resterapp.platform.api.BlobLocation;
 import com.davelabine.resterapp.platform.api.BlobStoreService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
+
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,6 +18,9 @@ import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by dave on 10/1/16.
@@ -54,15 +55,17 @@ public class StudentManagerTest {
     public void testCreateStudent() {
         reset(mockStudentMap);
 
+        /* TODO: make sure to add tests to cover generation of photo URL.  Mabye a separate PUT call.
         BlobLocation location = new BlobLocation.Builder(FAKE_BUCKET, FAKE_KEY).build();
         doReturn(location).when(mockBlobStore).putObject(any(BlobData.class));
         doReturn(FAKE_URL).when(mockBlobStore).getObjectUrl(any(BlobLocation.class));
+        */
 
         Student student = new Student(FAKE_ID, FAKE_NAME);
         String key = underTest.createStudent(student);
 
-        Assert.assertNotNull(key);
-        Assert.assertNotNull(student.getUrlPhoto());
+        assertNotNull(key);
+        //Assert.assertNotNull(student.getUrlPhoto());
 
         // Used to verify unit tests are working correctly
         // Assert.assertEquals("fun", "icepick-in-eye");
@@ -75,7 +78,7 @@ public class StudentManagerTest {
 
         // test a student that isn't present in the student list
         doReturn(null).when(mockStudentMap).get(anyString());
-        Assert.assertNull(underTest.getStudent(FAKE_KEY));
+        assertNull(underTest.getStudent(FAKE_KEY));
     }
 
     // Test a case where a student is found in the student list
@@ -86,7 +89,7 @@ public class StudentManagerTest {
         Student mockStudent = new Student(FAKE_ID, FAKE_NAME);
         doReturn(mockStudent).when(mockStudentMap).get(FAKE_KEY);
         Student studentGet = underTest.getStudent(FAKE_KEY);
-        Assert.assertEquals(FAKE_ID, studentGet.getId());
-        Assert.assertEquals(FAKE_NAME, studentGet.getName());
+        assertEquals(FAKE_ID, studentGet.getId());
+        assertEquals(FAKE_NAME, studentGet.getName());
     }
 }

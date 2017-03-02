@@ -43,6 +43,7 @@ Basic AutoScaling App:
 
 New questions:
 - What is the call chaining in java called?  Eg used w\ builders
+- How do you return a list of data in a DI friendly way?  Using new feels a little dirty...
 
 Answered Questions:
 - How to organize typesafe configs in code?  How to deal with multiple config files, and have the correct one selected

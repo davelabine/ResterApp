@@ -12,6 +12,10 @@ public class Student {
 
     @Getter
     @Setter
+    private String key;
+
+    @Getter
+    @Setter
     private String id;
 
     @Getter
@@ -29,10 +33,13 @@ public class Student {
         this.name = name;
     }
 
+    // TODO: shouldn't need this?!?!
     @Override
     public String toString() {
-        return new StringBuffer("[ id : ").append(this.id)
+        return new StringBuffer("[ key : ").append(this.key)
+                .append(", id : ").append(this.id)
                 .append(", name : ").append(this.name)
+                .append(", urlPhoto: ").append(this.urlPhoto)
                 .append(" ]").toString();
     }
 
