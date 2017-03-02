@@ -1,0 +1,14 @@
+body {
+  padding-top: 50px;
+}
+
+.main-site {
+  padding: 40px 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.buttons {
+  text-align: right;
+  margin: 1em 0;
+}

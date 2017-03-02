@@ -15,7 +15,11 @@ public class ApplicationContextListener extends GuiceResteasyBootstrapServletCon
 
     @Override
     protected List<Module> getModules(ServletContext context) {
-        return Lists.newArrayList((Module) new WebModule(), (Module) new ConfigModule(), (Module) new AwsModule());
+        return Lists.newArrayList(
+                (Module) new ConfigModule(),
+                (Module) new FreemarkerModule(),
+                (Module) new WebModule(),
+                (Module) new AwsModule());
     }
 
 

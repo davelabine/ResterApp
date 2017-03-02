@@ -6,7 +6,6 @@ package com.davelabine.resterapp.controller;
 import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.model.Student;
 import com.davelabine.resterapp.util.Busywork;
-import com.google.gson.Gson;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +36,6 @@ public class ControllerStudents {
     private static final int BUSYTIME_MS = 200; // Milliseconds
 
     private static final Logger logger = LoggerFactory.getLogger(ControllerStudents.class);
-
-    private Gson gson = new Gson();
 
     @Inject
     private StudentManager studentManager;
@@ -93,7 +90,7 @@ public class ControllerStudents {
         studentManager.populateFakeData();
         List<Student> studentList = studentManager.getStudents();
         if (studentList == null) {
-            logger.error("Student create failed");
+            logger.error("getStudents() failed");
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
 

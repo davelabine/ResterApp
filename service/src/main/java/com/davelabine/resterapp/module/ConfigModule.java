@@ -2,9 +2,6 @@ package com.davelabine.resterapp.module;
 
 import com.google.inject.AbstractModule;
 
-
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
