@@ -37,7 +37,7 @@ public class S3BlobStoreService implements BlobStoreService {
 
     @Override
     public BlobLocation putObject(BlobData data) {
-        logger.info("S3BlobStoreService.putObject");
+        logger.info("data: {}", data);
         BlobLocation blobLocation = BlobLocation.builder(awsConfig.getString("s3.bucket"),
                                                             generateUniqueKey(data)).build();
         File file = new File(data.getFileName());
@@ -54,7 +54,7 @@ public class S3BlobStoreService implements BlobStoreService {
             logger.error("AmazonClient internal error: {}", ace.getMessage());
             return null;
         }
-
+        logger.info("object saved! {}", blobLocation);
         return blobLocation;
     }
 
@@ -84,7 +84,7 @@ public class S3BlobStoreService implements BlobStoreService {
 
     @Override
     public String getObjectUrl(BlobLocation key) {
-        logger.info("BlobStoreService.getObjectURL");
+        logger.info("key: {}", key);
         return s3.getResourceUrl(awsConfig.getString("s3.bucket"), key.getKey());
     }
 

@@ -87,7 +87,7 @@ public class ControllerStudents {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll(
             @QueryParam("busyTime") int busyTime) {
-        logger.info("Students/ busyTime:{} ", busyTime);
+        logger.info("busyTime:{} ", busyTime);
 
         Busywork.doBusyWork(busyTime);
         studentManager.populateFakeData();

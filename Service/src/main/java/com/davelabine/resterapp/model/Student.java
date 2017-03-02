@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.model;
 
+import com.davelabine.resterapp.platform.api.BlobLocation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,23 +25,13 @@ public class Student {
 
     @Getter
     @Setter
-    private String urlPhoto;
+    private BlobLocation photo;
 
     public Student() {}
 
     public Student(String id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    // TODO: shouldn't need this?!?!
-    @Override
-    public String toString() {
-        return new StringBuffer("[ key : ").append(this.key)
-                .append(", id : ").append(this.id)
-                .append(", name : ").append(this.name)
-                .append(", urlPhoto: ").append(this.urlPhoto)
-                .append(" ]").toString();
     }
 
 }
