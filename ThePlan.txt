@@ -3,8 +3,6 @@ TODOS:
 ** IN PRIORITY ORDER, WITH COMPLETED AT THE BOTTOM ***
 
 Handling POST of complex content types, storing to S3:
-- Create a BlobStore service implemented with S3 that uploads a local file.  Add unit\integration tests.
-- Figure out how to handle config for this - eg a properties file and local environment variables
 - Accept a student picture as part of the students POST endpoint, upload it to blob store (synchronously), and return
 the URL in GET.  May require implementing Multipart MIME
 - Figure out how to make the servlet respond to the request asynchronously (with a thread pool?) so we don't tie up a
@@ -38,12 +36,17 @@ Basic AutoScaling App:
 - DONE Deploy this to EC2 with a Tomcat container
 - DONE Deploy JMeter tests to EC2 to stress app instances there
 - DONE Try to deploy autoscaling groups based on a coarse measure, like CPU usage.
-
+- DONE Create a BlobStore service implemented with S3 that uploads a local file.  Add unit\integration tests.
+- DONE Figure out how to handle config for this - eg a properties file and local environment variables
+- DONE Add a simple HTML front end using a template engine like Freemarker.  That will make it easier to see data in
+ the app and post changes.
 
 
 New questions:
 - What is the call chaining in java called?  Eg used w\ builders
 - How do you return a list of data in a DI friendly way?  Using new feels a little dirty...
+- Explain the limitations of DynamoDB, particularly around primary keys and secondary indexes.
+- How to do pagination
 
 Answered Questions:
 - How to organize typesafe configs in code?  How to deal with multiple config files, and have the correct one selected
