@@ -76,7 +76,6 @@ public class S3BlobStoreServiceTest {
     @Test
     public void testGetUrl() {
         BlobLocation location = BlobLocation.builder(FAKE_BUCKET, FAKE_KEY).build();
-        when(mockS3.getResourceUrl(anyString(), anyString())).thenReturn(new String(FAKE_URL));
         Assert.assertNotNull(underTest.getObjectUrl(location));
     }
 }

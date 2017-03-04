@@ -33,6 +33,7 @@ public class S3BlobStoreService implements BlobStoreService {
     public S3BlobStoreService(final AmazonS3Client s3Client, @Named("aws.conf") final Config awsConfig) {
         this.s3 = s3Client;
         this.awsConfig = awsConfig;
+        s3.setRegion(Region.fromValue(awsConfig.getString("s3.region")).toAWSRegion());
     }
 
     @Override
@@ -85,7 +86,8 @@ public class S3BlobStoreService implements BlobStoreService {
     @Override
     public String getObjectUrl(BlobLocation key) {
         logger.info("key: {}", key);
-        return s3.getResourceUrl(awsConfig.getString("s3.bucket"), key.getKey());
+        return "https://s3-" + awsConfig.getString("s3.region") + ".amazonaws.com/"
+                + key.getBucketName() + "/" + key.getKey();
     }
 
     @Override

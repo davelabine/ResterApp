@@ -10,8 +10,12 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.*;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.typesafe.config.Config;
 
 /**
  * Created by dave on 3/3/17.
@@ -19,26 +23,25 @@ import org.slf4j.LoggerFactory;
 public class DaoStudentDynamo {
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentDynamo.class);
 
-    private AmazonDynamoDB client;
+    private AmazonDynamoDB dynamoClient;
     private DynamoDB dynamoDB;
 
-    DaoStudentDynamo() {
+    private Config awsConfig;
+    private String tableName;
+
+    @Inject
+    public DaoStudentDynamo(final AmazonDynamoDB dynamoClient, final @Named("aws.conf") Config awsConfig) {
         logger.info("constructor...");
-        try {
-            client = AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(
-                    new AwsClientBuilder.EndpointConfiguration(
-                            "http://localhost:8000", "us-west-1"))
-                                .build();
-            dynamoDB = new DynamoDB(client);
-        } catch (Exception e) {
-            logger.error("Exception {}", e.getMessage());
-        }
+        this.dynamoClient = dynamoClient;
+        this.awsConfig = awsConfig;
+        this.tableName = awsConfig.getString("dynamo.student-table");  // A convenience
+        dynamoDB = new DynamoDB(dynamoClient);
     }
 
-    boolean tableExists(String tableName) {
-        logger.info("tablexists {}", tableName);
+    public boolean tableExists() {
+        logger.info("tablexists");
         try {
-            ListTablesResult result = client.listTables();
+            ListTablesResult result = dynamoClient.listTables();
             List<String> tableList = result.getTableNames();
             Iterator<String> it = tableList.iterator();
             while (it.hasNext()) {
@@ -52,10 +55,10 @@ public class DaoStudentDynamo {
         return false;
     }
 
-    void createTable(String tableName) {
+    public void createTable() {
         logger.info("createTable {}", tableName);
 
-        if (tableExists(tableName)) {
+        if (tableExists()) {
             logger.info("{} already exists!", tableName);
             return;
         }
@@ -75,6 +78,7 @@ public class DaoStudentDynamo {
         } catch (Exception e) {
             logger.error("Exception {}", e.getMessage());
         }
-
     }
+
+
 }

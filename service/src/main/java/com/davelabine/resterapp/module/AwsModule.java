@@ -23,14 +23,6 @@ public class AwsModule extends AbstractModule {
     @Provides
     @Singleton
     AmazonS3Client getAmazonS3Client() {
-        AmazonS3Client s3 = new AmazonS3Client(new ProfileCredentialsProvider());
-
-        // TODO: set the region
-            /*
-        String regionStr = config.getString("s3.region");
-        Region region = Region.fromValue(regionStr);
-        s3.setRegion(region.toAWSRegion());
-        */
-        return s3;
+        return new AmazonS3Client(new ProfileCredentialsProvider());
     }
 }
