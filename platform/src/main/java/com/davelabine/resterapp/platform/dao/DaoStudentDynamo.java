@@ -1,11 +1,6 @@
 package com.davelabine.resterapp.platform.dao;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
@@ -20,10 +15,13 @@ import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.ReturnValue;
+import com.davelabine.resterapp.platform.model.Student;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.davelabine.resterapp.platform.model.Student;
 
 import com.typesafe.config.Config;
 
@@ -32,20 +30,29 @@ import com.typesafe.config.Config;
  */
 public class DaoStudentDynamo {
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentDynamo.class);
+    public static final String DB_KEY = "_key";
+    public static final String DB_DATA = "data";
+    public static final String DB_ID = "id";
+    public static final String DB_NAME = "name";
+    public static final String DB_PHOTO = "photo";
+    public static final String DB_VERSION = "version";
+    public static final String DB_VERSION_VALUE = "0.0.1"; // So we can detect\convert schema changes in prod
 
-    private AmazonDynamoDB dynamoClient;
-    private DynamoDB dynamoDB;
+    private final AmazonDynamoDB dynamoClient;
+    private final DynamoDB dynamoDB;
+    private final String tableName;
 
-    private Config awsConfig;
-    private String tableName;
+    private final Config awsConfig;
+
 
     @Inject
     public DaoStudentDynamo(final AmazonDynamoDB dynamoClient, final @Named("aws.conf") Config awsConfig) {
         logger.info("constructor...");
         this.dynamoClient = dynamoClient;
         this.awsConfig = awsConfig;
+
+        this.dynamoDB = new DynamoDB(dynamoClient);
         this.tableName = awsConfig.getString("dynamo.student-table");  // A convenience
-        dynamoDB = new DynamoDB(dynamoClient);
     }
 
     public boolean tableExists() {
@@ -65,74 +72,93 @@ public class DaoStudentDynamo {
         return false;
     }
 
-    public void createTable() {
+    public boolean createTable() {
         logger.info("createTable {}", tableName);
 
         if (tableExists()) {
             logger.info("{} already exists!", tableName);
-            return;
+            return true;
         }
 
         logger.info("Attempting to create table; please wait...");
         try {
             Table table = dynamoDB.createTable(tableName,
                     Arrays.asList(
-                            new KeySchemaElement("year", KeyType.HASH), //Partition key
-                            new KeySchemaElement("title", KeyType.RANGE)), //Sort key
+                            new KeySchemaElement(DB_KEY, KeyType.HASH)), //Partition key
                     Arrays.asList(
-                            new AttributeDefinition("year", ScalarAttributeType.N),
-                            new AttributeDefinition("title", ScalarAttributeType.S)),
+                            new AttributeDefinition(DB_KEY, ScalarAttributeType.S)),
                     new ProvisionedThroughput(10L, 10L));
             table.waitForActive();
-            logger.info("Success.  Table status: " + table.getDescription().getTableStatus());
+            logger.info("Success.  Table status: {}" + table.getDescription().getTableStatus());
         } catch (Exception e) {
             logger.error("Exception {}", e.getMessage());
+            return false;
         }
+
+        return true;
     }
 
-    public void createItem()
+    private String createKey() {
+        return UUID.randomUUID().toString();
+    }
+
+    public String createItem(Student student)
     {
-        logger.info("createItem ");
+        student.setKey(createKey());
+        logger.info("createItem {}", student);
+
         Table table = dynamoDB.getTable(tableName);
 
-        int year = 2015;
-        String title = "The Big New Movie";
-        final Map<String, Object> infoMap = new HashMap<String, Object>();
-        infoMap.put("plot",  "Nothing happens at all.");
-        infoMap.put("rating",  0);
+        // TODO: There must be a way to do this with GSON or Lombok-Jackson.  Do it the verbose way for now.
+        final Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put(DB_VERSION, DB_VERSION_VALUE);
+        dataMap.put(DB_ID, student.getId());
+        dataMap.put(DB_NAME, student.getName());
+        dataMap.put(DB_PHOTO, student.getPhoto());
 
         try {
             logger.info("Adding a new item...");
             PutItemOutcome outcome = table.putItem(new Item()
-                    .withPrimaryKey("year", year, "title", title)
-                    .withMap("info", infoMap));
-
+                    .withPrimaryKey(DB_KEY, student.getKey())
+                    .withMap(DB_DATA, dataMap));
             logger.info("PutItem succeeded: {}\n" + outcome.getPutItemResult());
 
         } catch (Exception e) {
-            logger.error("Unable to add item: {}, {} - error: ", year, title, e.getMessage());
+            logger.error("Unable to add item - error: {}", e.getMessage());
+            return null;
         }
+
+        return student.getKey();
     }
 
-    public void readItem()
+    public Student readItem(String key)
     {
         logger.info("readItem ");
         Table table = dynamoDB.getTable(tableName);
 
-        int year = 2015;
-        String title = "The Big New Movie";
-
         GetItemSpec spec = new GetItemSpec()
-                .withPrimaryKey("year", year, "title", title);
+                .withPrimaryKey(DB_KEY, key);
 
+        Item outcome;
         try {
             logger.info("Attempting to read the item...");
-            Item outcome = table.getItem(spec);
+            outcome = table.getItem(spec);
             logger.info("GetItem succeeded: {}", outcome);
-
         } catch (Exception e) {
             logger.error("Unable to read item: - error: {}", e.getMessage());
+            return null;
         }
+
+        // TODO: Yuck.  We definitely need some sort of JSON conversion...
+        Student ret = new Student();
+        ret.setKey(key);
+        Map<String, Object> dataMap = outcome.getMap(DB_DATA);
+        if (dataMap != null) {
+            ret.setId((String) dataMap.get(DB_ID));
+            ret.setName((String) dataMap.get(DB_NAME));
+            //ret.setPhoto(outcome.get);
+        }
+        return ret;
     }
 
     public void updateItem() {

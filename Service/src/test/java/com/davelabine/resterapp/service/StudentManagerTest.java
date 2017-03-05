@@ -1,6 +1,6 @@
 package com.davelabine.resterapp.service;
 
-import com.davelabine.resterapp.model.Student;
+import com.davelabine.resterapp.platform.model.Student;
 
 import com.davelabine.resterapp.platform.api.BlobStoreService;
 import org.junit.Before;
@@ -14,7 +14,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;

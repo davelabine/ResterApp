@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.model;
+package com.davelabine.resterapp.platform.model;
 
 import com.davelabine.resterapp.platform.api.BlobLocation;
 import lombok.Getter;

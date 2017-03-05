@@ -46,7 +46,8 @@ New questions:
 - What is the call chaining in java called?  Eg used w\ builders
 - How do you return a list of data in a DI friendly way?  Using new feels a little dirty...
 - Explain the limitations of DynamoDB, particularly around primary keys and secondary indexes.
-- How to do pagination
+- How to do pagination?
+- How to convert POJOs to JSON, etc for storage and re-hydration in the DB?
 
 Answered Questions:
 - How to organize typesafe configs in code?  How to deal with multiple config files, and have the correct one selected

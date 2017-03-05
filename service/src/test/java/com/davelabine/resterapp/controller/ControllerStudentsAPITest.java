@@ -1,6 +1,6 @@
 package com.davelabine.resterapp.controller;
 
-import com.davelabine.resterapp.model.Student;
+import com.davelabine.resterapp.platform.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
 import org.apache.http.HttpStatus;
 

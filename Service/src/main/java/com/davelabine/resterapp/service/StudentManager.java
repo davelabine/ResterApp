@@ -1,8 +1,6 @@
 package com.davelabine.resterapp.service;
 
-import com.davelabine.resterapp.model.Student;
-import com.davelabine.resterapp.platform.api.BlobData;
-import com.davelabine.resterapp.platform.api.BlobLocation;
+import com.davelabine.resterapp.platform.model.Student;
 import com.davelabine.resterapp.platform.api.BlobStoreService;
 
 import javax.inject.Inject;
