@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.*;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -26,15 +28,15 @@ import com.google.common.base.Preconditions;
  *     a. pass a flag parameter that instructs the controller to throw a mapped exception - then verify we see the status + body we expect.
  */
 public class JaxRsIntegrationRunner {
+    private static final Config config = ConfigFactory.load("application.conf");
     private static Runner runner = null;
 
     @BeforeClass
     public static void startServer() throws Exception {
-        String fun = System.getProperty("WAR_FILE");
-        Preconditions.checkNotNull(System.getProperty("WAR_FILE"), "This test requires the web path for the service project!  Run with System Property \"WAR_FILE\"");
+        String war_file = config.getString("JaxRSItRunner.war_file");
+        Preconditions.checkNotNull(war_file, "This test requires the web path for the service project!  Run with JaxRSItRunner.war_file set in resources/application.conf");
 
-        runner = new Runner(System.getProperty("WAR_FILE"));
-
+        runner = new Runner(war_file);
         runner.start();
 
     }
