@@ -32,6 +32,10 @@ public class DaoStudentDynamoItTest {
     @Test
     public void testCreateTable() {
         daoStudent.createTable();
+        daoStudent.createItem();
+        daoStudent.readItem();
+        daoStudent.updateItem();
+        daoStudent.deleteItem();
     }
 }
 
