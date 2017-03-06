@@ -1,4 +1,5 @@
 rootProject.name = 'resterapp'
 include ":platform"
-include ":service"
+include ":platform-api"
 include ":integration-tests"
+include ":service"

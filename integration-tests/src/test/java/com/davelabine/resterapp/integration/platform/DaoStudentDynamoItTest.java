@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.integration.platform;
 
+import com.davelabine.resterapp.platform.api.DaoStudent;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -24,7 +25,7 @@ public class DaoStudentDynamoItTest {
     private static final Config awsConfig = ConfigFactory.load("aws.conf");
 
     AmazonDynamoDB   dynamoClient;
-    DaoStudentDynamo daoStudent;
+    DaoStudent daoStudent;
 
     @Before
     public void before() {

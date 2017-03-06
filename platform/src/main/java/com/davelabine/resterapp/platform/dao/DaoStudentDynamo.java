@@ -20,6 +20,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.ReturnValue;
+import com.davelabine.resterapp.platform.api.DaoStudent;
 import com.davelabine.resterapp.platform.model.Student;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -33,7 +34,7 @@ import com.typesafe.config.Config;
 /**
  * Created by dave on 3/3/17.
  */
-public class DaoStudentDynamo {
+public class DaoStudentDynamo implements DaoStudent {
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentDynamo.class);
     public static final String DB_KEY = "_key";
     public static final String DB_DATA = "data";
@@ -64,6 +65,7 @@ public class DaoStudentDynamo {
         this.secIndexName = awsConfig.getString("dynamo.student-table.sec-index-name");
     }
 
+    @Override
     public boolean tableExists() {
         logger.info("tablexists");
         try {
@@ -81,6 +83,7 @@ public class DaoStudentDynamo {
         return false;
     }
 
+    @Override
     public boolean createTable() {
         logger.info("createTable {}", tableName);
 
@@ -150,6 +153,7 @@ public class DaoStudentDynamo {
         return UUID.randomUUID().toString();
     }
 
+    @Override
     public String createStudent(Student student)
     {
         student.setKey(createKey());
@@ -175,6 +179,7 @@ public class DaoStudentDynamo {
         return student.getKey();
     }
 
+    @Override
     public Student getStudent(String key)
     {
         logger.info("getStudent: {}", key);
@@ -210,6 +215,7 @@ public class DaoStudentDynamo {
         return ret;
     }
 
+    @Override
     public List<Student> getStudentByName(String name)
     {
         logger.info("getStudentByName: {}", name);
@@ -240,7 +246,8 @@ public class DaoStudentDynamo {
         return listStudent;
     }
 
-    public void updateStudent(Student student) {
+    @Override
+    public boolean updateStudent(Student student) {
         logger.info("updateStudent: {}", student.getKey());
         Table table = dynamoDB.getTable(tableName);
 
@@ -260,11 +267,14 @@ public class DaoStudentDynamo {
             logger.info("UpdateItem succeeded: {}" + outcome.getItem().toJSONPretty());
         } catch (Exception e) {
             logger.error("Unable to update item - error: {}", e.getMessage());
+            return false;
         }
 
+        return true;
     }
 
-    public void deleteStudent(String key) {
+    @Override
+    public boolean deleteStudent(String key) {
         logger.info("deleteStudent {}", key);
         Table table = dynamoDB.getTable(tableName);
 
@@ -277,7 +287,10 @@ public class DaoStudentDynamo {
             logger.info("DeleteStudent succeeded");
         } catch (Exception e) {
             logger.error("Unable to delete student: error: {}", e.getMessage());
+            return false;
         }
+
+        return true;
     }
 
 }
