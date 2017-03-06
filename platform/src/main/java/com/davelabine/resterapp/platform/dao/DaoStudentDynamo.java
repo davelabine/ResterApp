@@ -27,7 +27,7 @@ import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.davelabine.resterapp.platform.model.Student;
+import com.davelabine.resterapp.platform.api.Student;
 
 import com.typesafe.config.Config;
 
