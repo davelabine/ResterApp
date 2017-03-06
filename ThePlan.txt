@@ -3,6 +3,11 @@ TODOS:
 ** IN PRIORITY ORDER, WITH COMPLETED AT THE BOTTOM ***
 
 Handling POST of complex content types, storing to S3:
+- Implement a database backend on DynamoDB, with indexes to get students by name
+    - Look into Java: DynamoDBMapper
+    - Make sure to do interfaces and unit tests
+    - Hook into existing StudentManager classes
+    - Add something to the front page to list the first couple students and allow you to search for students.
 - Accept a student picture as part of the students POST endpoint, upload it to blob store (synchronously), and return
 the URL in GET.  May require implementing Multipart MIME
 - Figure out how to make the servlet respond to the request asynchronously (with a thread pool?) so we don't tie up a
@@ -48,6 +53,18 @@ New questions:
 - Explain the limitations of DynamoDB, particularly around primary keys and secondary indexes.
 - How to do pagination?
 - How to convert POJOs to JSON, etc for storage and re-hydration in the DB?
+- Is there a simple way to map collections of one type to another?  For example, Dynamo's ItemCollection to a regular
+List<mytype>?
+- How to deal with database exceptions in the DAO?
+- Discuss secondary indexes in DynamoDB, and how I would design them for my Students table.  I think I need separate
+global secondary indexes for Student ID, and name.  Each of these is not guaranteed to be unique, but doesn't have to
+be because the primary key is pulled in with it by default.  How do I deal with eventual consistency issues here?
+I guess as long as we are working with or updating a student we will always have its primary key.  Only when we are
+searching will eventual consistency matter which should be fine for our query pattern.  Pattern is search by ID \
+name - get primary key, look up\modify student based on the primary.  We could potentially add a range key for district,
+ school, entitlement, etc to reduce the number of records needed to scan for queries.  District would be the primary,
+ name would be range (for example).  This way we could deal with eventual consistency, because we could always guarantee
+ strong consistency for each district's data for new name \ ID searches when students are added.
 
 Answered Questions:
 - How to organize typesafe configs in code?  How to deal with multiple config files, and have the correct one selected

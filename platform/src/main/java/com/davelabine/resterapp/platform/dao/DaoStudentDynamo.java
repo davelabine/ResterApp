@@ -4,14 +4,19 @@ import java.util.*;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
+import com.amazonaws.services.dynamodbv2.document.Index;
+import com.amazonaws.services.dynamodbv2.document.ItemCollection;
+import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
+import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
-import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.ReturnValue;
@@ -33,7 +38,7 @@ public class DaoStudentDynamo {
     public static final String DB_KEY = "_key";
     public static final String DB_DATA = "data";
     public static final String DB_ID = "id";
-    public static final String DB_NAME = "name";
+    public static final String DB_NAME = "_name";
     public static final String DB_PHOTO = "photo";
     public static final String DB_VERSION = "version";
     public static final String DB_VERSION_VALUE = "0.0.1"; // So we can detect\convert schema changes in prod
@@ -41,6 +46,7 @@ public class DaoStudentDynamo {
     private final AmazonDynamoDB dynamoClient;
     private final DynamoDB dynamoDB;
     private final String tableName;
+    private final String secIndexName;
 
     private final Config awsConfig;
 
@@ -52,7 +58,10 @@ public class DaoStudentDynamo {
         this.awsConfig = awsConfig;
 
         this.dynamoDB = new DynamoDB(dynamoClient);
-        this.tableName = awsConfig.getString("dynamo.student-table");  // A convenience
+
+        // Convenience variables...
+        this.tableName = awsConfig.getString("dynamo.student-table.name");
+        this.secIndexName = awsConfig.getString("dynamo.student-table.sec-index-name");
     }
 
     public boolean tableExists() {
@@ -80,18 +89,57 @@ public class DaoStudentDynamo {
             return true;
         }
 
+        logger.info("Setting up table attribute definitions.");
+
+        // Primary Table Attribute definitions
+        ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+
+        attributeDefinitions.add(new AttributeDefinition()
+                .withAttributeName(DB_KEY)
+                .withAttributeType("S"));
+        attributeDefinitions.add(new AttributeDefinition()
+                .withAttributeName(DB_NAME)
+                .withAttributeType("S"));
+
+        // Table key schema
+        ArrayList<KeySchemaElement> tableKeySchema = new ArrayList<KeySchemaElement>();
+        tableKeySchema.add(new KeySchemaElement()
+                .withAttributeName(DB_KEY)
+                .withKeyType(KeyType.HASH));  //Partition key
+
+        // Secondary name index...
+        // TODO: We probably want to project less fields, fix this later.
+        GlobalSecondaryIndex nameIndex = new GlobalSecondaryIndex()
+                .withIndexName(secIndexName)
+                .withProvisionedThroughput(new ProvisionedThroughput()
+                        .withReadCapacityUnits((long) 10)
+                        .withWriteCapacityUnits((long) 1))
+                .withProjection(new Projection().withProjectionType(ProjectionType.ALL));
+
+        ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
+
+        indexKeySchema.add(new KeySchemaElement()
+                .withAttributeName(DB_NAME)
+                .withKeyType(KeyType.HASH));  //Partition key
+
+        nameIndex.setKeySchema(indexKeySchema);
+
+        CreateTableRequest createTableRequest = new CreateTableRequest()
+                .withTableName(tableName)
+                .withProvisionedThroughput(new ProvisionedThroughput()
+                        .withReadCapacityUnits((long) 5)
+                        .withWriteCapacityUnits((long) 1))
+                .withAttributeDefinitions(attributeDefinitions)
+                .withKeySchema(tableKeySchema)
+                .withGlobalSecondaryIndexes(nameIndex);
+
         logger.info("Attempting to create table; please wait...");
         try {
-            Table table = dynamoDB.createTable(tableName,
-                    Arrays.asList(
-                            new KeySchemaElement(DB_KEY, KeyType.HASH)), //Partition key
-                    Arrays.asList(
-                            new AttributeDefinition(DB_KEY, ScalarAttributeType.S)),
-                    new ProvisionedThroughput(10L, 10L));
+            Table table = dynamoDB.createTable(createTableRequest);
             table.waitForActive();
             logger.info("Success.  Table status: {}" + table.getDescription().getTableStatus());
         } catch (Exception e) {
-            logger.error("Exception {}", e.getMessage());
+            logger.error("Exception creating table.  Error: {}", e.getMessage());
             return false;
         }
 
@@ -102,38 +150,36 @@ public class DaoStudentDynamo {
         return UUID.randomUUID().toString();
     }
 
-    public String createItem(Student student)
+    public String createStudent(Student student)
     {
         student.setKey(createKey());
-        logger.info("createItem {}", student);
+        logger.info("createStudent {}", student);
 
         Table table = dynamoDB.getTable(tableName);
 
         // TODO: There must be a way to do this with GSON or Lombok-Jackson.  Do it the verbose way for now.
-        final Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put(DB_VERSION, DB_VERSION_VALUE);
-        dataMap.put(DB_ID, student.getId());
-        dataMap.put(DB_NAME, student.getName());
-        dataMap.put(DB_PHOTO, student.getPhoto());
-
         try {
             logger.info("Adding a new item...");
             PutItemOutcome outcome = table.putItem(new Item()
                     .withPrimaryKey(DB_KEY, student.getKey())
-                    .withMap(DB_DATA, dataMap));
+                    .withString(DB_NAME, student.getName())
+                    .withString(DB_ID, student.getId())
+                    .withString(DB_VERSION, DB_VERSION_VALUE));
             logger.info("PutItem succeeded: {}\n" + outcome.getPutItemResult());
 
         } catch (Exception e) {
-            logger.error("Unable to add item - error: {}", e.getMessage());
+            logger.error("Unable to add Student - error: {}", e.getMessage());
             return null;
         }
 
         return student.getKey();
     }
 
-    public Student readItem(String key)
+    public Student getStudent(String key)
     {
-        logger.info("readItem ");
+        logger.info("getStudent: {}", key);
+        if (key == null) return null;
+
         Table table = dynamoDB.getTable(tableName);
 
         GetItemSpec spec = new GetItemSpec()
@@ -141,7 +187,7 @@ public class DaoStudentDynamo {
 
         Item outcome;
         try {
-            logger.info("Attempting to read the item...");
+            logger.info("Attempting to read the Student...");
             outcome = table.getItem(spec);
             logger.info("GetItem succeeded: {}", outcome);
         } catch (Exception e) {
@@ -149,32 +195,63 @@ public class DaoStudentDynamo {
             return null;
         }
 
+        return itemToStudent(outcome);
+    }
+
+    private Student itemToStudent(Item item) {
+        if (item == null) return null;
+
         // TODO: Yuck.  We definitely need some sort of JSON conversion...
         Student ret = new Student();
-        ret.setKey(key);
-        Map<String, Object> dataMap = outcome.getMap(DB_DATA);
-        if (dataMap != null) {
-            ret.setId((String) dataMap.get(DB_ID));
-            ret.setName((String) dataMap.get(DB_NAME));
-            //ret.setPhoto(outcome.get);
-        }
+        ret.setKey(item.getString(DB_KEY));
+        ret.setName(item.getString(DB_NAME));
+        ret.setId(item.getString(DB_ID));
+        //ret.setPhoto(outcome.get);
         return ret;
     }
 
-    public void updateItem() {
-        logger.info("updateItem ");
+    public List<Student> getStudentByName(String name)
+    {
+        logger.info("getStudentByName: {}", name);
+        if (name == null) return null;
+        Table table = dynamoDB.getTable(tableName);
+        Index index = table.getIndex(secIndexName);
+
+        QuerySpec spec = new QuerySpec()
+                .withKeyConditionExpression("#n = :v_name")
+                .withNameMap(new NameMap()
+                        .with("#n", DB_NAME))
+                .withValueMap(new ValueMap()
+                        .withString(":v_name", name));
+
+        logger.info("Attempting to query by name...");
+        List<Student> listStudent = new ArrayList<Student>();
+        try {
+            ItemCollection<QueryOutcome> items = index.query(spec);
+            Iterator<Item> iter = items.iterator();
+            logger.info("Query succeeded: {}", items);
+            while (iter.hasNext()) {
+                listStudent.add(itemToStudent(iter.next()));
+            }
+        } catch (Exception e) {
+            logger.error("Unable to query - error: {}", e.getMessage());
+            return null;
+        }
+        return listStudent;
+    }
+
+    public void updateStudent(Student student) {
+        logger.info("updateStudent: {}", student.getKey());
         Table table = dynamoDB.getTable(tableName);
 
-        int year = 2015;
-        String title = "The Big New Movie";
-
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
-                .withPrimaryKey("year", year, "title", title)
-                .withUpdateExpression("set info.rating = :r, info.plot=:p, info.actors=:a")
+                .withPrimaryKey(DB_KEY, student.getKey())
+                .withUpdateExpression("set #n=:n, " + DB_ID + "=:i")
+                .withNameMap(new NameMap()
+                        .with("#n", DB_NAME))
                 .withValueMap(new ValueMap()
-                        .withNumber(":r", 5.5)
-                        .withString(":p", "Everything happens all at once.")
-                        .withList(":a", Arrays.asList("Larry","Moe","Curly")))
+                        .withString(":n",student.getName())
+                        .withString(":i",student.getId()))
                 .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
@@ -184,29 +261,22 @@ public class DaoStudentDynamo {
         } catch (Exception e) {
             logger.error("Unable to update item - error: {}", e.getMessage());
         }
+
     }
 
-    public void deleteItem() {
-        logger.info("deleteItem ");
+    public void deleteStudent(String key) {
+        logger.info("deleteStudent {}", key);
         Table table = dynamoDB.getTable(tableName);
 
-        int year = 2015;
-        String title = "The Big New Movie";
-
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withPrimaryKey(new PrimaryKey("year", year, "title", title))
-                .withConditionExpression("info.rating <= :val")
-                .withValueMap(new ValueMap()
-                        .withNumber(":val", 5.0));
-
-        // Conditional delete (we expect this to fail)
+                .withPrimaryKey(DB_KEY, key);
 
         try {
-            logger.info("Attempting a conditional delete...");
+            logger.info("Attempting to delete...");
             table.deleteItem(deleteItemSpec);
-            logger.info("DeleteItem succeeded");
+            logger.info("DeleteStudent succeeded");
         } catch (Exception e) {
-            logger.error("Unable to delete item: error: {}", e.getMessage());
+            logger.error("Unable to delete student: error: {}", e.getMessage());
         }
     }
 

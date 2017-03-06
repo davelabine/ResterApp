@@ -13,19 +13,19 @@ public class Student {
 
     @Getter
     @Setter
-    private String key;
+    protected String key;
 
     @Getter
     @Setter
-    private String id;
+    protected String id;
 
     @Getter
     @Setter
-    private String name;
+    protected String name;
 
     @Getter
     @Setter
-    private BlobLocation photo;
+    protected BlobLocation photo;
 
     public Student() {}
 
