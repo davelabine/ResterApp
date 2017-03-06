@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.platform.model;
+package com.davelabine.resterapp.platform.api.model;
 
 import java.util.Random;
 

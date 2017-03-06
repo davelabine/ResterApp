@@ -1,8 +1,6 @@
-package com.davelabine.resterapp.platform.blob;
+package com.davelabine.resterapp.platform.service;
 
-import java.io.IOException;
 import java.io.File;
-import java.net.URL;
 import java.util.UUID;
 
 import com.amazonaws.AmazonClientException;
@@ -12,7 +10,9 @@ import com.amazonaws.services.s3.model.*;
 
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
-import com.davelabine.resterapp.platform.api.*;
+import com.davelabine.resterapp.platform.api.service.BlobStoreService;
+import com.davelabine.resterapp.platform.api.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

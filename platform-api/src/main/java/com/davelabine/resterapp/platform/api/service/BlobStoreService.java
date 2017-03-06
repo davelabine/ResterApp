@@ -1,6 +1,7 @@
-package com.davelabine.resterapp.platform.api;
+package com.davelabine.resterapp.platform.api.service;
 
-import java.net.URL;
+import com.davelabine.resterapp.platform.api.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
 
 /**
  * Created by davidl on 2/21/17.

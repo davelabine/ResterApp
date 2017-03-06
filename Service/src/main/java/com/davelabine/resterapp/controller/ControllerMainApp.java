@@ -1,6 +1,6 @@
 package com.davelabine.resterapp.controller;
 
-import com.davelabine.resterapp.platform.model.Student;
+import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
 import com.google.inject.Singleton;
 import freemarker.template.*;

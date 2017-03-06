@@ -1,7 +1,7 @@
 package com.davelabine.resterapp.module;
 
-import com.davelabine.resterapp.platform.api.BlobStoreService;
-import com.davelabine.resterapp.platform.blob.S3BlobStoreService;
+import com.davelabine.resterapp.platform.api.service.BlobStoreService;
+import com.davelabine.resterapp.platform.service.S3BlobStoreService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;

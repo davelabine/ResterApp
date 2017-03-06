@@ -1,9 +1,7 @@
-package com.davelabine.resterapp.platform.blob;
+package com.davelabine.resterapp.platform.service;
 
-import com.davelabine.resterapp.platform.api.BlobData;
-import com.davelabine.resterapp.platform.api.BlobLocation;
-
-import java.io.File;
+import com.davelabine.resterapp.platform.api.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
 
 import org.junit.Before;
 import org.junit.Test;

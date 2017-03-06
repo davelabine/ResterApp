@@ -1,10 +1,7 @@
-package com.davelabine.resterapp.platform.model;
+package com.davelabine.resterapp.platform.api.model;
 
-import com.davelabine.resterapp.platform.api.BlobLocation;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.inject.Inject;
 
 /**
  * Created by davidl on 9/29/16.

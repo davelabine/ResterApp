@@ -1,7 +1,9 @@
 package com.davelabine.resterapp.integration.platform;
 
-import com.davelabine.resterapp.platform.blob.*;
-import com.davelabine.resterapp.platform.api.*;
+import com.davelabine.resterapp.platform.api.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
+import com.davelabine.resterapp.platform.api.service.BlobStoreService;
+import com.davelabine.resterapp.platform.service.*;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.junit.Assert;
@@ -10,8 +12,6 @@ import org.junit.Test;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-
-import java.io.IOException;
 
 /**
  * Created by dave on 12/10/16.
