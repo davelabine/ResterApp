@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  * Created by davidl on 3/6/17.
  */
 public class DaoStudentSQLItTest {
-    private static final Config awsConfig = ConfigFactory.load("SQL.conf");
+    private static final Config sqlConfig = ConfigFactory.load("SQL.conf");
 
     DaoStudent daoStudent;
 
@@ -35,6 +35,9 @@ public class DaoStudentSQLItTest {
 
     @Test
     public void testCRUDStudentTable() {
+        daoStudent = new DaoStudentSQL(sqlConfig);
+        daoStudent.initialize();
+        daoStudent.close();
         /*
         daoStudent.createTable();
 

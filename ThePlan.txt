@@ -48,16 +48,17 @@ Basic AutoScaling App:
 
 
 New questions:
+- How to handle close() calls with JDBC classes?
 - What is the call chaining in java called?  Eg used w\ builders
 A: This is the builder pattern, look it up.
 - How to convert POJOs to JSON, etc for storage and re-hydration in the DB?
 Usually use a Jackson mapper.  Ravi will send a util file.
+
+Answered Questions:
 - Is there a simple way to map collections of one type to another?  For example, Dynamo's ItemCollection to a regular
 List<mytype>?
 A: Dynamo has an object mapper, is that the best option?  Probably, although Ravi thinks they do something similar with
  a Jackson mapper underneath the hood.
-
-Answered Questions:
 - How to deal with database exceptions in the DAO?
     - If it is a synchronous query, throw an exception back to the client (mapped to your interface class).
     - For transactions (asynchronous) can do retries (exponential backoff) and eventually the transaction fails.

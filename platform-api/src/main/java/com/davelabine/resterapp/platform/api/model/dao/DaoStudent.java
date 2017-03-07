@@ -18,14 +18,21 @@ public interface DaoStudent {
 
 
     /**
-     * Put an object into the blobstore and retrieve the BlobLocation.
+     * Initialize the dao
      * @param
-     * @return true if the table was created, false otherwise (eg table already present)
+     * @return true if the dao was initialized, false otherwise
      */
-    boolean createTable();
+    boolean initialize();
 
     /**
-     * Put an object into the blobstore and retrieve the BlobLocation.
+     * Release resources used by the dao when finished
+     * @param
+     * @return
+     */
+    void close();
+
+    /**
+     * Create a new student in the dao
      * @param Student object to create
      * @return  the key of the created student object
      */

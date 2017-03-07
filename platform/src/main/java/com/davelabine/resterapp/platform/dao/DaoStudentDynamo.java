@@ -81,8 +81,10 @@ public class DaoStudentDynamo implements DaoStudent {
     }
 
     @Override
-    public boolean createTable() {
-        logger.info("createTable {}", tableName);
+    public boolean initialize() {
+        logger.info("initialize {}", tableName);
+
+        // We're going to make sure the table we need is created.
 
         if (tableExists()) {
             logger.info("{} already exists!", tableName);
@@ -145,6 +147,9 @@ public class DaoStudentDynamo implements DaoStudent {
 
         return true;
     }
+
+    @Override
+    public void close() {}
 
     private String createKey() {
         return UUID.randomUUID().toString();
