@@ -1,16 +1,15 @@
 package com.davelabine.resterapp.integration.platform;
 
-import com.davelabine.resterapp.platform.api.model.dao.DaoStudent;
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.davelabine.resterapp.platform.dao.DaoStudentDynamo;
-import com.davelabine.resterapp.platform.api.model.model.RandomStudent;
-import com.davelabine.resterapp.platform.api.model.model.Student;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import com.davelabine.resterapp.platform.api.model.dao.DaoStudent;
+import com.davelabine.resterapp.platform.api.model.model.RandomStudent;
+import com.davelabine.resterapp.platform.api.model.model.Student;
+import com.davelabine.resterapp.platform.dao.DaoStudentSQL;
 
 import java.util.*;
 
@@ -18,29 +17,25 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by dave on 3/3/17.
+
+/*
+ *
+ * Created by davidl on 3/6/17.
  */
-public class DaoStudentDynamoItTest {
-    private static final Config awsConfig = ConfigFactory.load("aws.conf");
+public class DaoStudentSQLItTest {
+    private static final Config awsConfig = ConfigFactory.load("SQL.conf");
 
-    /* Comment this out for now...
-       I've decided not to use this class
-
-    AmazonDynamoDB   dynamoClient;
     DaoStudent daoStudent;
+
 
     @Before
     public void before() {
-        dynamoClient = AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(
-                            new AwsClientBuilder.EndpointConfiguration(
-                                awsConfig.getString("dynamo.host"), awsConfig.getString("dynamo.region")))
-                                    .build();
-        daoStudent = new DaoStudentDynamo(dynamoClient, awsConfig);
+
     }
 
     @Test
     public void testCRUDStudentTable() {
+        /*
         daoStudent.createTable();
 
         // Test create and read
@@ -66,8 +61,6 @@ public class DaoStudentDynamoItTest {
         daoStudent.deleteStudent(student.getKey());
         Student deleteStudent = daoStudent.getStudent(student.getKey());
         assertNull(deleteStudent);
+        */
     }
-    */
 }
-
-
