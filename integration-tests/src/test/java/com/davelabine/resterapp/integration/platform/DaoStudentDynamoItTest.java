@@ -1,12 +1,12 @@
 package com.davelabine.resterapp.integration.platform;
 
-import com.davelabine.resterapp.platform.api.dao.DaoStudent;
+import com.davelabine.resterapp.platform.api.model.dao.DaoStudent;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.davelabine.resterapp.platform.dao.DaoStudentDynamo;
-import com.davelabine.resterapp.platform.api.model.RandomStudent;
-import com.davelabine.resterapp.platform.api.model.Student;
+import com.davelabine.resterapp.platform.api.model.model.RandomStudent;
+import com.davelabine.resterapp.platform.api.model.model.Student;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.junit.Before;

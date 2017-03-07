@@ -1,7 +1,7 @@
-package com.davelabine.resterapp.platform.api.service;
+package com.davelabine.resterapp.platform.api.model.service;
 
-import com.davelabine.resterapp.platform.api.model.BlobData;
-import com.davelabine.resterapp.platform.api.model.BlobLocation;
+import com.davelabine.resterapp.platform.api.model.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.model.BlobLocation;
 
 /**
  * Created by davidl on 2/21/17.

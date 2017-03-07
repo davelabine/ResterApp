@@ -10,9 +10,9 @@ import com.amazonaws.services.s3.model.*;
 
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
-import com.davelabine.resterapp.platform.api.service.BlobStoreService;
-import com.davelabine.resterapp.platform.api.model.BlobData;
-import com.davelabine.resterapp.platform.api.model.BlobLocation;
+import com.davelabine.resterapp.platform.api.model.service.BlobStoreService;
+import com.davelabine.resterapp.platform.api.model.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.model.BlobLocation;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

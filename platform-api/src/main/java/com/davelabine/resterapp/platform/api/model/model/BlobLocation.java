@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.platform.api.model;
+package com.davelabine.resterapp.platform.api.model.model;
 
 /**
  * Created by davidl on 2/21/17.

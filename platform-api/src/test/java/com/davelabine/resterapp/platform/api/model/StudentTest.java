@@ -1,6 +1,6 @@
-package model;
+package com.davelabine.resterapp.platform.api.model;
 
-import com.davelabine.resterapp.platform.api.model.Student;
+import com.davelabine.resterapp.platform.api.model.model.Student;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
