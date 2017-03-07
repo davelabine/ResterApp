@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-mapping package="com.davelabine.resterapp.platform.api.model">
+    <class name="Student" table="T_PERSON">
+        <id name="key" column="KEY">
+            <generator class="native">
+            </generator></id>
+        <property name="name" column="NAME"></property>
+        <property name="id" column="STUDENT_ID"></property>
+    </class>
+</hibernate-mapping>

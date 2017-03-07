@@ -1,8 +1,8 @@
 package com.davelabine.resterapp.integration.platform;
 
-import com.davelabine.resterapp.platform.api.model.model.BlobData;
-import com.davelabine.resterapp.platform.api.model.model.BlobLocation;
-import com.davelabine.resterapp.platform.api.model.service.BlobStoreService;
+import com.davelabine.resterapp.platform.api.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
+import com.davelabine.resterapp.platform.api.service.BlobStoreService;
 import com.davelabine.resterapp.platform.service.*;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;

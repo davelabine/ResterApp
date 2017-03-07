@@ -4,7 +4,7 @@ package com.davelabine.resterapp.controller;
  * Created by davidl on 9/29/16.
  */
 import com.davelabine.resterapp.service.StudentManager;
-import com.davelabine.resterapp.platform.api.model.model.Student;
+import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.util.Busywork;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;

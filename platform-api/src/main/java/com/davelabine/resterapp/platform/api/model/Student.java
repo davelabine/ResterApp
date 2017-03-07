@@ -1,4 +1,4 @@
-package com.davelabine.resterapp.platform.api.model.model;
+package com.davelabine.resterapp.platform.api.model;
 
 import lombok.Getter;
 import lombok.Setter;

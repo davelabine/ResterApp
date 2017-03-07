@@ -1,6 +1,6 @@
-package com.davelabine.resterapp.platform.api.model.dao;
+package com.davelabine.resterapp.platform.api.dao;
 
-import com.davelabine.resterapp.platform.api.model.model.Student;
+import com.davelabine.resterapp.platform.api.model.Student;
 
 import java.util.List;
 

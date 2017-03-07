@@ -1,32 +1,28 @@
 package com.davelabine.resterapp.platform.dao;
 
-import com.davelabine.resterapp.platform.api.model.dao.DaoStudent;
-import com.davelabine.resterapp.platform.api.model.model.Student;
+import com.davelabine.resterapp.platform.api.dao.DaoStudent;
+import com.davelabine.resterapp.platform.api.model.Student;
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
-import oracle.jrockit.jfr.StringConstantPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.*;
 
 import java.util.List;
 
 /**
  * Created by davidl on 3/6/17.
  */
-public class DaoStudentSQL implements DaoStudent {
-    private static final Logger logger = LoggerFactory.getLogger(DaoStudentSQL.class);
+public class DaoStudentHbn implements DaoStudent {
+    private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbn.class);
 
+    /*
     private final Config sqlConfig;
     private final String studentTable; // A convenience
+    */
 
-    private Connection dbCon;
-
-    public DaoStudentSQL(final @Named("SQL.conf") Config sqlConfig) {
+    public DaoStudentHbn() {
         logger.info("constructor...");
-        this.sqlConfig = sqlConfig;
-        this.studentTable = sqlConfig.getString("db.student-table-name");
+
     }
 
     /**
@@ -36,17 +32,7 @@ public class DaoStudentSQL implements DaoStudent {
      */
     @Override
     public boolean initialize() {
-        String url = sqlConfig.getString("db.host") + "/" +
-                sqlConfig.getString("db.resterapp-db-name");
-        String user = sqlConfig.getString("db.user");
-        String password = sqlConfig.getString("db.password");
 
-        try {
-            dbCon = DriverManager.getConnection(url, user, password);
-        } catch (SQLException ex) {
-            logger.error("error with query: {}", ex.getMessage());
-            return false;
-        }
         return true;
     }
 
@@ -57,14 +43,7 @@ public class DaoStudentSQL implements DaoStudent {
      */
     @Override
     public void close() {
-        try {
-            if (dbCon != null) {
-                dbCon.close();
-                dbCon = null;
-            }
-        } catch (SQLException ex) {
-            logger.warn("Exception on close: {}", ex.getMessage());
-        }
+
     }
 
     /**
