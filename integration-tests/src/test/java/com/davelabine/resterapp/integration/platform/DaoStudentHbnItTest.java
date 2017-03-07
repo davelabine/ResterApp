@@ -1,6 +1,8 @@
 package com.davelabine.resterapp.integration.platform;
 
 
+import com.davelabine.resterapp.platform.api.model.RandomStudent;
+import com.davelabine.resterapp.platform.api.model.Student;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +15,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.Transaction;
+import org.hibernate.Query;
 
+
+import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -42,21 +48,40 @@ public class DaoStudentHbnItTest {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configHbn.getProperties()).build();
             sessionFactory = configHbn.buildSessionFactory(serviceRegistry);
             session = sessionFactory.openSession();
+
+            // Create and add a student
+            // TODO: figure out if we need to commit like this....
             Transaction transaction = session.getTransaction();
+            Student student = new Student("123456", "Billy Bob");
             transaction.begin();
+            session.save(student);
             transaction.commit();
+
+            // Query for a student
+            String hql = "from Student where id = :id";
+            Query query = session.createQuery(hql);
+            query.setString("id", "123456");
+            List<Student> results = (List<Student>)query.list();
+            Iterator<Student> it = results.iterator();
+            while (it.hasNext()) {
+                Student itStudent = it.next();
+            }
+
+
+            // Now go and find that student with a query
+
         } catch (Exception e) {
             // Log an exception
             int i=0;
         } finally {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
             if (session != null) {
                 session.close();
             }
             if (sessionFactory != null) {
                 sessionFactory.close();
-            }
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
             }
         }
 

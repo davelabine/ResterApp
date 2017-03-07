@@ -3,9 +3,9 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.davelabine.resterapp.platform.api.model">
-    <class name="Student" table="T_PERSON">
-        <id name="key" column="KEY">
-            <generator class="native">
+    <class name="Student" table="T_STUDENT">
+        <id name="key" column="SKEY">
+            <generator class="uuid">
             </generator></id>
         <property name="name" column="NAME"></property>
         <property name="id" column="STUDENT_ID"></property>
