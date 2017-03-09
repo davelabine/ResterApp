@@ -194,13 +194,12 @@ public class DaoStudentHbn implements DaoStudent {
      * @return  true if student was deleted, false otherwise.
      */
     @Override
-    public boolean deleteStudent(String key) {
-        logger.info("delete Student {}", key);
+    public boolean deleteStudent(Student delete) {
+        logger.info("delete Student {}", delete);
 
         try {
             startTransaction();
-            Student student = getStudent(key);
-            session.delete(student);
+            session.delete(delete);
             transaction.commit();
         } catch (HibernateException e) {
             handleError(transaction, "Can't delete student", e);

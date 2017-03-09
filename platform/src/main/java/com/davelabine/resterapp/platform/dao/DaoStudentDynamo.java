@@ -276,12 +276,12 @@ public class DaoStudentDynamo implements DaoStudent {
     }
 
     @Override
-    public boolean deleteStudent(String key) {
-        logger.info("deleteStudent {}", key);
+    public boolean deleteStudent(Student delete) {
+        logger.info("deleteStudent {}", delete);
         Table table = dynamoDB.getTable(tableName);
 
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withPrimaryKey(DB_KEY, key);
+                .withPrimaryKey(DB_KEY, delete.getKey());
 
         try {
             logger.info("Attempting to delete...");

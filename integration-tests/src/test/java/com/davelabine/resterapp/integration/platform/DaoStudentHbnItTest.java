@@ -78,10 +78,9 @@ public class DaoStudentHbnItTest {
         assertEquals(student.getId(), updateStudent.getId());
 
         // Finally, delete the student
-        /*
-        daoStudent.deleteStudent(student.getKey());
-        Student deleteStudent = daoStudent.getStudent(student.getKey());
+        String key = student.getKey();
+        daoStudent.deleteStudent(student);
+        Student deleteStudent = daoStudent.getStudent(key);
         assertNull(deleteStudent);
-        */
     }
 }

@@ -64,5 +64,5 @@ public interface DaoStudent {
      * @param  key of the student to delete
      * @return  true if student was deleted, false otherwise.
      */
-    boolean deleteStudent(String key);
+    boolean deleteStudent(Student student);
 }
