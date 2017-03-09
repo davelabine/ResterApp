@@ -3,8 +3,11 @@ package com.davelabine.resterapp.integration.platform;
 
 import com.davelabine.resterapp.platform.api.model.RandomStudent;
 import com.davelabine.resterapp.platform.api.model.Student;
+import org.hibernate.service.Service;
 import org.junit.Before;
 import org.junit.Test;
+
+import lombok.Cleanup;
 
 import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.davelabine.resterapp.platform.dao.DaoStudentHbn;
@@ -31,78 +34,36 @@ import static org.junit.Assert.assertTrue;
  * Created by davidl on 3/6/17.
  */
 public class DaoStudentHbnItTest {
-    private Configuration configHbn;
+    private static final Configuration hbnConfig = new Configuration().configure("hibernate.cfg.xml");
 
+    //TODO: Cleanup
+    private ServiceRegistry hbnServiceRegistry;
 
-    DaoStudent daoStudent;
+    private DaoStudent daoStudent;
 
 
     @Before
     public void before() {
-
         SessionFactory sessionFactory = null;
         Session session = null;
         try {
-            configHbn = new Configuration();
-            configHbn.configure("hibernate.cfg.xml");
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configHbn.getProperties()).build();
-            sessionFactory = configHbn.buildSessionFactory(serviceRegistry);
-            session = sessionFactory.openSession();
-
-            // Create and add a student
-            // TODO: figure out if we need to commit like this....
-            Transaction transaction = session.getTransaction();
-            Student student = new Student("123456", "Billy Bob");
-            transaction.begin();
-            session.save(student);
-            transaction.commit();
-
-            // Query for a student
-            String hql = "from Student where id = :id";
-            Query query = session.createQuery(hql);
-            query.setString("id", "123456");
-            List<Student> results = (List<Student>)query.list();
-            Iterator<Student> it = results.iterator();
-            while (it.hasNext()) {
-                Student itStudent = it.next();
-            }
-
-
-            // Now go and find that student with a query
-
+            hbnServiceRegistry = new StandardServiceRegistryBuilder().applySettings(hbnConfig.getProperties()).build();
+            daoStudent = new DaoStudentHbn(hbnConfig, hbnServiceRegistry);
+            daoStudent.initialize();
         } catch (Exception e) {
             // Log an exception
-            int i=0;
-        } finally {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            if (session != null) {
-                session.close();
-            }
-            if (sessionFactory != null) {
-                sessionFactory.close();
-            }
         }
-
     }
 
     @Test
     public void testCRUDStudentTable() {
-
-        /*
-        daoStudent = new DaoStudentHbn(sqlConfig);
-        daoStudent.initialize();
-        daoStudent.close();
-
-        daoStudent.createTable();
-
         // Test create and read
-        Student student = new RandomStudent();
+        Student student = new Student("666", "Mike Hunt");
         daoStudent.createStudent(student);
-        Student getStudent = daoStudent.getStudent(student.getKey());
 
+        Student getStudent = daoStudent.getStudent(student.getKey());
         assertEquals(student.getName(), getStudent.getName());
+
 
         // Now verify we can get by name
         List<Student> nameStudent = daoStudent.getStudentByName(student.getName());
@@ -116,7 +77,8 @@ public class DaoStudentHbnItTest {
         assertEquals(student.getName(), updateStudent.getName());
         assertEquals(student.getId(), updateStudent.getId());
 
-        // Finally, delete the item
+        // Finally, delete the student
+        /*
         daoStudent.deleteStudent(student.getKey());
         Student deleteStudent = daoStudent.getStudent(student.getKey());
         assertNull(deleteStudent);

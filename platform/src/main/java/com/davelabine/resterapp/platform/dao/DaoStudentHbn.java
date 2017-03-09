@@ -4,9 +4,14 @@ import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
+import lombok.Cleanup;
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,14 +20,19 @@ import java.util.List;
 public class DaoStudentHbn implements DaoStudent {
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbn.class);
 
-    /*
-    private final Config sqlConfig;
-    private final String studentTable; // A convenience
-    */
+    private final Configuration hbnConfig;
+    private final ServiceRegistry hbnRegistry;
+    SessionFactory hbnSessionFactory;
 
-    public DaoStudentHbn() {
+    // I need to define these variables with almost every transaction and handle setup and teardown in almost
+    // exactly the same way.  Member variables feel a little icky, but seem like the best solution.
+    Session session = null;
+    Transaction transaction = null;
+
+    public DaoStudentHbn(Configuration hbnConfig, ServiceRegistry hbnRegistry) {
         logger.info("constructor...");
-
+        this.hbnConfig = hbnConfig;
+        this.hbnRegistry = hbnRegistry;
     }
 
     /**
@@ -32,7 +42,13 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public boolean initialize() {
-
+        logger.info("Intialize");
+        try {
+            hbnSessionFactory = hbnConfig.buildSessionFactory(hbnRegistry);
+        } catch (HibernateException e) {
+            logger.error("Exception {}", e.getMessage());
+            return false;
+        }
         return true;
     }
 
@@ -43,7 +59,35 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public void close() {
+        hbnSessionFactory.close();
+    }
 
+    /**
+     * Helper methods to simplify repetitive transaction code.
+     * I tried a lot of fancy template-based handling and it was complicated and not very readable.
+     * This seems to do the trick.
+     * @param
+     * @return
+     */
+
+    private void startTransaction() throws HibernateException {
+        try {
+            session = hbnSessionFactory.getCurrentSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+        } catch (HibernateException e) {
+            handleError(transaction, "Can't start transaction", e);
+            throw e;
+        }
+        // Session automatically closed
+    }
+
+    private void handleError(Transaction transaction, String logMessage, HibernateException e) {
+        logger.error(logMessage + " {}", e.getMessage());
+        if (transaction.isActive()) {
+            transaction.rollback();
+        }
+        // Transaction automatically closed
     }
 
     /**
@@ -66,16 +110,16 @@ public class DaoStudentHbn implements DaoStudent {
     public String createStudent(Student student) {
         logger.info("createStudent {}", student);
 
-        /*
-        PreparedStatement pst = null;
         try {
-            pst = con.prepareStatement("INSERT INTO " + studentTable + " VALUES(?)");
-            pst.setString(1, author);
-            pst.executeUpdate();
+            startTransaction();
+            session.save(student);
+            transaction.commit();
+        } catch (HibernateException e) {
+            handleError(transaction, "Can't create student", e);
+            return null;
         }
-        */
 
-        return null;
+        return student.getKey();
     }
 
     /**
@@ -85,7 +129,19 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public Student getStudent(String key) {
-        return null;
+        logger.info("getStudent {}", key);
+        Student getStudent = null;
+        try {
+            startTransaction();
+            Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_KEY");
+            query.setString("key", key);
+            getStudent = (Student)query.uniqueResult();
+            transaction.commit();
+        } catch (HibernateException e) {
+            handleError(transaction, "Can't get student", e);
+            return null;
+        }
+        return getStudent;
     }
 
     /**
@@ -95,7 +151,20 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public List<Student> getStudentByName(String name) {
-        return null;
+        logger.info("getStudentByName {}", name);
+        List<Student> list = null;
+        try {
+            startTransaction();
+            Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_NAME_PARTIAL");
+            query.setString("name", name);
+            //@SuppressWarnings("unchecked")
+            list = (List<Student>)query.list();
+            transaction.commit();
+        } catch (HibernateException e) {
+            handleError(transaction, "Can't get student by name", e);
+            return null;
+        }
+        return list;
     }
 
     /**
@@ -105,6 +174,16 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public boolean updateStudent(Student student) {
+        logger.info("updateStudent {}", student);
+
+        try {
+            startTransaction();
+            session.update(student);
+            transaction.commit();
+        } catch (HibernateException e) {
+            handleError(transaction, "Can't update student", e);
+            return false;
+        }
 
         return true;
     }
@@ -116,6 +195,17 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public boolean deleteStudent(String key) {
+        logger.info("delete Student {}", key);
+
+        try {
+            startTransaction();
+            Student student = getStudent(key);
+            session.delete(student);
+            transaction.commit();
+        } catch (HibernateException e) {
+            handleError(transaction, "Can't delete student", e);
+            return false;
+        }
 
         return true;
     }
