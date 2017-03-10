@@ -2,6 +2,7 @@ package com.davelabine.resterapp.platform.dao;
 
 import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.davelabine.resterapp.platform.api.model.Student;
+import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
 import lombok.Cleanup;
@@ -11,6 +12,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,15 +43,13 @@ public class DaoStudentHbn implements DaoStudent {
      * @return true if the table exists in the configured db, false otherwise.
      */
     @Override
-    public boolean initialize() {
+    public void initialize() throws DaoException {
         logger.info("Intialize");
         try {
             hbnSessionFactory = hbnConfig.buildSessionFactory(hbnRegistry);
         } catch (HibernateException e) {
-            logger.error("Exception {}", e.getMessage());
-            return false;
+            throw new DaoException(("Initialize failed!"), e);
         }
-        return true;
     }
 
     /**
@@ -63,7 +63,7 @@ public class DaoStudentHbn implements DaoStudent {
     }
 
     /**
-     * Helper methods to simplify repetitive transaction code.
+     * Helper method to simplify repetitive transaction code.
      * I tried a lot of fancy template-based handling and it was complicated and not very readable.
      * This seems to do the trick.
      * @param
@@ -76,18 +76,9 @@ public class DaoStudentHbn implements DaoStudent {
             transaction = session.getTransaction();
             transaction.begin();
         } catch (HibernateException e) {
-            handleError(transaction, "Can't start transaction", e);
-            throw e;
+            throw new DaoException("Can't start a transaction", e);
         }
         // Session automatically closed
-    }
-
-    private void handleError(Transaction transaction, String logMessage, HibernateException e) {
-        logger.error(logMessage + " {}", e.getMessage());
-        if (transaction.isActive()) {
-            transaction.rollback();
-        }
-        // Transaction automatically closed
     }
 
     /**
@@ -107,7 +98,7 @@ public class DaoStudentHbn implements DaoStudent {
      * @return  the key of the created student object
      */
     @Override
-    public String createStudent(Student student) {
+    public String createStudent(Student student) throws DaoException {
         logger.info("createStudent {}", student);
 
         try {
@@ -115,8 +106,8 @@ public class DaoStudentHbn implements DaoStudent {
             session.save(student);
             transaction.commit();
         } catch (HibernateException e) {
-            handleError(transaction, "Can't create student", e);
-            return null;
+            if (transaction.isActive()) { transaction.rollback(); }
+            throw new DaoException("Can't create student: " + student.toString(), e);
         }
 
         return student.getKey();
@@ -128,7 +119,7 @@ public class DaoStudentHbn implements DaoStudent {
      * @return A Student object, or false if the student is not found.
      */
     @Override
-    public Student getStudent(String key) {
+    public Student getStudent(String key) throws DaoException {
         logger.info("getStudent {}", key);
         Student getStudent = null;
         try {
@@ -138,8 +129,8 @@ public class DaoStudentHbn implements DaoStudent {
             getStudent = (Student)query.uniqueResult();
             transaction.commit();
         } catch (HibernateException e) {
-            handleError(transaction, "Can't get student", e);
-            return null;
+            if (transaction.isActive()) { transaction.rollback(); }
+            throw new DaoException("Can't get student: " + key, e);
         }
         return getStudent;
     }
@@ -150,19 +141,18 @@ public class DaoStudentHbn implements DaoStudent {
      * @return A list of student objects, or null if no student was found.
      */
     @Override
-    public List<Student> getStudentByName(String name) {
+    public List<Student> getStudentByName(String name) throws DaoException {
         logger.info("getStudentByName {}", name);
         List<Student> list = null;
         try {
             startTransaction();
             Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_NAME_PARTIAL");
             query.setString("name", name);
-            //@SuppressWarnings("unchecked")
             list = (List<Student>)query.list();
             transaction.commit();
         } catch (HibernateException e) {
-            handleError(transaction, "Can't get student by name", e);
-            return null;
+            if (transaction.isActive()) { transaction.rollback(); }
+            throw new DaoException("Can't get student by name: " + name, e);
         }
         return list;
     }
@@ -173,7 +163,7 @@ public class DaoStudentHbn implements DaoStudent {
      * @return true if student was updated, false otherwise.
      */
     @Override
-    public boolean updateStudent(Student student) {
+    public void updateStudent(Student student) throws DaoException {
         logger.info("updateStudent {}", student);
 
         try {
@@ -181,11 +171,9 @@ public class DaoStudentHbn implements DaoStudent {
             session.update(student);
             transaction.commit();
         } catch (HibernateException e) {
-            handleError(transaction, "Can't update student", e);
-            return false;
+            if (transaction.isActive()) { transaction.rollback(); }
+            throw new DaoException("Can't update student: " + student.toString(), e);
         }
-
-        return true;
     }
 
     /**
@@ -194,7 +182,7 @@ public class DaoStudentHbn implements DaoStudent {
      * @return  true if student was deleted, false otherwise.
      */
     @Override
-    public boolean deleteStudent(Student delete) {
+    public void deleteStudent(Student delete) throws DaoException {
         logger.info("delete Student {}", delete);
 
         try {
@@ -202,10 +190,8 @@ public class DaoStudentHbn implements DaoStudent {
             session.delete(delete);
             transaction.commit();
         } catch (HibernateException e) {
-            handleError(transaction, "Can't delete student", e);
-            return false;
+            if (transaction.isActive()) { transaction.rollback(); }
+            throw new DaoException("Can't delete student: " + delete.toString(), e);
         }
-
-        return true;
     }
 }

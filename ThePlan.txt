@@ -48,6 +48,7 @@ Basic AutoScaling App:
 
 
 New questions:
+- How to manage checked and unchecked exceptions?  What are best practices for defining your own?
 - How to handle close() calls with JDBC classes?
 - What is the call chaining in java called?  Eg used w\ builders
 A: This is the builder pattern, look it up.

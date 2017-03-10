@@ -1,13 +1,10 @@
 package com.davelabine.resterapp.integration.platform;
 
 
-import com.davelabine.resterapp.platform.api.model.RandomStudent;
 import com.davelabine.resterapp.platform.api.model.Student;
 import org.hibernate.service.Service;
 import org.junit.Before;
 import org.junit.Test;
-
-import lombok.Cleanup;
 
 import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.davelabine.resterapp.platform.dao.DaoStudentHbn;
@@ -58,12 +55,11 @@ public class DaoStudentHbnItTest {
     @Test
     public void testCRUDStudentTable() {
         // Test create and read
-        Student student = new Student("666", "Mike Hunt");
+        Student student = Student.randomStudent();
         daoStudent.createStudent(student);
 
         Student getStudent = daoStudent.getStudent(student.getKey());
         assertEquals(student.getName(), getStudent.getName());
-
 
         // Now verify we can get by name
         List<Student> nameStudent = daoStudent.getStudentByName(student.getName());

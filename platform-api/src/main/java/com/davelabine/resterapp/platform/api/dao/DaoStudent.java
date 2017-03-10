@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.platform.api.dao;
 
+import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.davelabine.resterapp.platform.api.model.Student;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface DaoStudent {
      * @param
      * @return true if the dao was initialized, false otherwise
      */
-    boolean initialize();
+    void initialize() throws DaoException;
 
     /**
      * Release resources used by the dao when finished
@@ -36,33 +37,33 @@ public interface DaoStudent {
      * @param Student object to create
      * @return  the key of the created student object
      */
-    String createStudent(Student student);
+    String createStudent(Student student) throws DaoException;
 
     /**
      * Get the student associated with the provided key.
      * @param
      * @return A Student object, or false if the student is not found.
      */
-    Student getStudent(String key);
+    Student getStudent(String key) throws DaoException;
 
     /**
      * Get a list of students who match the provided name. (Name is not guaranteed to be unique)
      * @param
      * @return A list of student objects, or null if no student was found.
      */
-    List<Student> getStudentByName(String name);
+    List<Student> getStudentByName(String name) throws DaoException;
 
     /**
      * Update the student data with the key of the student provided.
      * @param Student - the data and key of the student to update
      * @return true if student was updated, false otherwise.
      */
-    boolean updateStudent(Student student);
+    void updateStudent(Student student) throws DaoException;
 
     /**
      * Delete a student referenced by the provided key.
      * @param  key of the student to delete
      * @return  true if student was deleted, false otherwise.
      */
-    boolean deleteStudent(Student student);
+    void deleteStudent(Student student) throws DaoException;
 }

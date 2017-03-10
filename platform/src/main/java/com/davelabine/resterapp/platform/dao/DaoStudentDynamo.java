@@ -19,6 +19,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.ReturnValue;
+import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.google.inject.Inject;
@@ -81,14 +82,14 @@ public class DaoStudentDynamo implements DaoStudent {
     }
 
     @Override
-    public boolean initialize() {
+    public void initialize() {
         logger.info("initialize {}", tableName);
 
         // We're going to make sure the table we need is created.
 
         if (tableExists()) {
             logger.info("{} already exists!", tableName);
-            return true;
+            return;
         }
 
         logger.info("Setting up table attribute definitions.");
@@ -142,10 +143,7 @@ public class DaoStudentDynamo implements DaoStudent {
             logger.info("Success.  Table status: {}" + table.getDescription().getTableStatus());
         } catch (Exception e) {
             logger.error("Exception creating table.  Error: {}", e.getMessage());
-            return false;
         }
-
-        return true;
     }
 
     @Override
@@ -174,15 +172,14 @@ public class DaoStudentDynamo implements DaoStudent {
             logger.info("PutItem succeeded: {}\n" + outcome.getPutItemResult());
 
         } catch (Exception e) {
-            logger.error("Unable to add Student - error: {}", e.getMessage());
-            return null;
+            throw new DaoException("Unable to add studentt: " + student.toString(), e);
         }
 
         return student.getKey();
     }
 
     @Override
-    public Student getStudent(String key)
+    public Student getStudent(String key) throws DaoException
     {
         logger.info("getStudent: {}", key);
         if (key == null) return null;
@@ -198,8 +195,7 @@ public class DaoStudentDynamo implements DaoStudent {
             outcome = table.getItem(spec);
             logger.info("GetItem succeeded: {}", outcome);
         } catch (Exception e) {
-            logger.error("Unable to read item: - error: {}", e.getMessage());
-            return null;
+            throw new DaoException("Unable to get student: " + key, e);
         }
 
         return itemToStudent(outcome);
@@ -218,7 +214,7 @@ public class DaoStudentDynamo implements DaoStudent {
     }
 
     @Override
-    public List<Student> getStudentByName(String name)
+    public List<Student> getStudentByName(String name) throws DaoException
     {
         logger.info("getStudentByName: {}", name);
         if (name == null) return null;
@@ -242,14 +238,13 @@ public class DaoStudentDynamo implements DaoStudent {
                 listStudent.add(itemToStudent(iter.next()));
             }
         } catch (Exception e) {
-            logger.error("Unable to query - error: {}", e.getMessage());
-            return null;
+            throw new DaoException("Unable to query for student by name: " + name, e);
         }
         return listStudent;
     }
 
     @Override
-    public boolean updateStudent(Student student) {
+    public void updateStudent(Student student) throws DaoException {
         logger.info("updateStudent: {}", student.getKey());
         Table table = dynamoDB.getTable(tableName);
 
@@ -268,15 +263,12 @@ public class DaoStudentDynamo implements DaoStudent {
             UpdateItemOutcome outcome = table.updateItem(updateItemSpec);
             logger.info("UpdateItem succeeded: {}" + outcome.getItem().toJSONPretty());
         } catch (Exception e) {
-            logger.error("Unable to update item - error: {}", e.getMessage());
-            return false;
+            throw new DaoException("Can't delete student: " + student.toString(), e);
         }
-
-        return true;
     }
 
     @Override
-    public boolean deleteStudent(Student delete) {
+    public void deleteStudent(Student delete) throws DaoException {
         logger.info("deleteStudent {}", delete);
         Table table = dynamoDB.getTable(tableName);
 
@@ -288,11 +280,8 @@ public class DaoStudentDynamo implements DaoStudent {
             table.deleteItem(deleteItemSpec);
             logger.info("DeleteStudent succeeded");
         } catch (Exception e) {
-            logger.error("Unable to delete student: error: {}", e.getMessage());
-            return false;
+            throw new DaoException("Can't delete student: " + delete.toString(), e);
         }
-
-        return true;
     }
 
 }

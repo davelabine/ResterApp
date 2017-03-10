@@ -70,9 +70,9 @@ public class StudentManager {
     // A throwaway method to populate a bit of fake data for testing
     // TODO: Remove me
     public void populateFakeData() {
-        createStudent(new Student("123456", "Harley Squirrelnuts"));
-        createStudent(new Student("123456", "Billy Eaglehead"));
-        createStudent(new Student("123456", "Jimmy Shotbothsides"));
+        for (int i=0; i < 10; i++) {
+            createStudent(Student.randomStudent());
+        }
     }
 
 }
