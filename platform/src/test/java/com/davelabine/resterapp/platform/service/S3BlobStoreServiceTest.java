@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.platform.service;
 
+import com.davelabine.resterapp.platform.api.exceptions.BlobStoreException;
 import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
 
@@ -59,21 +60,28 @@ public class S3BlobStoreServiceTest {
     }
 
     // Test that PutObject can handle exceptions appropriately
-    @Test
-    public void testPutObjectExceptions() {
-        BlobData data = new BlobData(FAKE_FILENAME);
-
-        when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
-        Assert.assertNull(underTest.putObject(data));
-
+    @Test(expected=BlobStoreException.class)
+    public void testPutObjectAseExceptionsCaught() {
         reset(mockS3);
+        BlobData data = new BlobData(FAKE_FILENAME);
+        when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
+        underTest.putObject(data); // Should throw an exception
+    }
+
+
+    @Test(expected=BlobStoreException.class)
+    public void testPutObjectACExceptionsCaught() {
+        reset(mockS3);
+        BlobData data = new BlobData(FAKE_FILENAME);
         when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonClientException("Fake Exception!"));
         Assert.assertNull(underTest.putObject(data));
     }
 
     @Test
     public void testGetUrl() {
-        BlobLocation location = BlobLocation.builder(FAKE_BUCKET, FAKE_KEY).build();
+        BlobLocation location = BlobLocation.builder()
+                                    .bucketName(FAKE_BUCKET)
+                                    .key(FAKE_KEY).build();
         Assert.assertNotNull(underTest.getObjectUrl(location));
     }
 }

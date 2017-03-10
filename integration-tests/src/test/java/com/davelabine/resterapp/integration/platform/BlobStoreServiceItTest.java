@@ -1,9 +1,11 @@
 package com.davelabine.resterapp.integration.platform;
 
+import com.amazonaws.services.s3.model.Region;
 import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.service.BlobStoreService;
 import com.davelabine.resterapp.platform.service.*;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.junit.Assert;
@@ -26,7 +28,10 @@ public class BlobStoreServiceItTest {
 
     @Before
     public void before() {
-        AmazonS3Client s3 = new AmazonS3Client(new ProfileCredentialsProvider());
+        AmazonS3 s3 = AmazonS3Client.builder()
+                                    .withCredentials(new ProfileCredentialsProvider())
+                                    .withRegion(awsConfig.getString("s3.region"))
+                                    .build();
         blobStore = new S3BlobStoreService(s3, awsConfig);
     }
 

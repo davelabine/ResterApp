@@ -141,6 +141,7 @@ public class DaoStudentHbn implements DaoStudent {
      * @return A list of student objects, or null if no student was found.
      */
     @Override
+    @SuppressWarnings("unchecked") // due to query.list() cast required
     public List<Student> getStudentByName(String name) throws DaoException {
         logger.info("getStudentByName {}", name);
         List<Student> list = null;

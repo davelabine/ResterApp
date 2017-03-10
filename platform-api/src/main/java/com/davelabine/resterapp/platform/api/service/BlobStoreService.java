@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.platform.api.service;
 
+import com.davelabine.resterapp.platform.api.exceptions.BlobStoreException;
 import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
 
@@ -12,7 +13,7 @@ public interface BlobStoreService {
      * @param data a valid data object
      * @return
      */
-    BlobLocation putObject(BlobData data);
+    BlobLocation putObject(BlobData data) throws BlobStoreException;
 
 
     /**
@@ -20,7 +21,7 @@ public interface BlobStoreService {
      * @param key a populated blob location (bucket and object id)
      * @return the handle to the object data.
      */
-    BlobData getObject(BlobLocation key);
+    BlobData getObject(BlobLocation key) throws BlobStoreException;
 
     /**
      * get an object's URL based on the BlobLocation provided.
@@ -36,5 +37,5 @@ public interface BlobStoreService {
      * @param key the location (including bucket and object ids).
      *
      */
-    boolean deleteObject(BlobLocation key);
+    boolean deleteObject(BlobLocation key) throws BlobStoreException;
 }
