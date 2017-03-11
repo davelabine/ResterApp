@@ -38,7 +38,8 @@ public class ControllerMainApp {
     @Produces(MediaType.TEXT_HTML)
     //TODO: Add some exception mappers
     public String get(
-            @QueryParam("name") String name) throws IOException, TemplateException {
+            @DefaultValue("")@QueryParam("name") String name)
+            throws IOException, TemplateException {
         logger.info("MainAppGet()");
 
         studentManager.populateFakeData();

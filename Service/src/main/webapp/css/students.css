@@ -1,4 +1,4 @@
-body {
+.body {
   padding-top: 50px;
 }
 
@@ -11,4 +11,8 @@ body {
 .buttons {
   text-align: right;
   margin: 1em 0;
+}
+
+.form {
+  text-align: left;
 }

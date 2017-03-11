@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <link href="/service/css/students.css" rel="stylesheet">
-    <title>${title!"Articles"}</title>
+    <title>${title!"ResterApp"}</title>
 </head>
-<body>
+<body class="main-site">
 </#macro>
 
 <#macro page_head>
