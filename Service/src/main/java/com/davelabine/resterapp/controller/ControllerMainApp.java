@@ -37,11 +37,12 @@ public class ControllerMainApp {
     @GET
     @Produces(MediaType.TEXT_HTML)
     //TODO: Add some exception mappers
-    public String get() throws IOException, TemplateException {
+    public String get(
+            @QueryParam("name") String name) throws IOException, TemplateException {
         logger.info("MainAppGet()");
 
         studentManager.populateFakeData();
-        List<Student> studentList = studentManager.getStudents("Krusty");
+        List<Student> studentList = studentManager.getStudents(name);
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig,
                                                     "studentList", studentList,

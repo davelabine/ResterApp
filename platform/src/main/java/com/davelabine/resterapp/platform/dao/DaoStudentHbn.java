@@ -151,7 +151,8 @@ public class DaoStudentHbn implements DaoStudent {
         try {
             startTransaction();
             Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_NAME_PARTIAL");
-            query.setString("name", name);
+            query.setString("name", name + "%");
+            query.setMaxResults(10);
             list = (List<Student>)query.list();
             transaction.commit();
         } catch (HibernateException e) {
