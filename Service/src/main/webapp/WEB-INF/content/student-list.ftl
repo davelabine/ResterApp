@@ -2,7 +2,7 @@
 
 <#macro page_body>
 <div class="well">
-<form class="form-inline" action="?" method="get">
+<form class="form-inline" action="" method="get">
     <div class="form-group">
         <label for="lname">Search Last Name: </label>
         <input type="text" name="name">
@@ -27,7 +27,7 @@
       <tr>
           <td>${student.name}</td>
           <td>${student.id}</td>
-          <td>Something helpful</td>
+          <td><a id="editStudent" href="${student.key}">edit</a></td>
       </tr>
       </#list>
     </tbody>

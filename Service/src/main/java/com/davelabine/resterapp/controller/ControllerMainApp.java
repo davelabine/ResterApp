@@ -37,16 +37,30 @@ public class ControllerMainApp {
     @GET
     @Produces(MediaType.TEXT_HTML)
     //TODO: Add some exception mappers
-    public String get(
+    public String getByName(
             @DefaultValue("")@QueryParam("name") String name)
             throws IOException, TemplateException {
-        logger.info("MainAppGet()");
+        logger.info("getByName() - {}", name);
 
-        studentManager.populateFakeData();
         List<Student> studentList = studentManager.getStudents(name);
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig,
                                                     "studentList", studentList,
-                                                    "WEB-INF/content/student-list.ftl");
+                                                    "student-list.ftl");
+    }
+
+    @GET
+    @Path("{key}")
+    @Produces(MediaType.TEXT_HTML)
+    public String getStudent(
+            String key)
+            throws IOException, TemplateException {
+        logger.info("getStudent() - {}", key);
+
+        Student student = studentManager.getStudent(key);
+
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig,
+                "data", student,
+                "student.ftl");
     }
 }

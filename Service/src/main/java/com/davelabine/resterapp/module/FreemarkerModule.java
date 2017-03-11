@@ -25,7 +25,7 @@ public class FreemarkerModule extends AbstractModule {
     @Singleton
     Configuration getFreemarkerConfig(@Context ServletContext context) {
         Configuration fmConfig = new Configuration(Configuration.VERSION_2_3_23);
-        fmConfig.setServletContextForTemplateLoading(context, "/");
+        fmConfig.setServletContextForTemplateLoading(context, "WEB-INF/content/");
         fmConfig.setDefaultEncoding("UTF-8");
         fmConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         return fmConfig;
