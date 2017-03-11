@@ -41,7 +41,7 @@ public class ControllerMainApp {
         logger.info("MainAppGet()");
 
         studentManager.populateFakeData();
-        List<Student> studentList = studentManager.getStudents();
+        List<Student> studentList = studentManager.getStudents("Krusty");
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig,
                                                     "studentList", studentList,

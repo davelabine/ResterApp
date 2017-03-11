@@ -1,5 +1,7 @@
 package com.davelabine.resterapp.service;
 
+import com.davelabine.resterapp.platform.api.dao.DaoStudent;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.model.Student;
 
 import com.davelabine.resterapp.platform.api.service.BlobStoreService;
@@ -39,7 +41,7 @@ public class StudentManagerTest {
     private StudentManager underTest;
 
     @Mock
-    private ConcurrentHashMap<String, Student> mockStudentMap;
+    private DaoStudent mockDaoStudent;
 
     @Mock
     private BlobStoreService mockBlobStore;
@@ -52,7 +54,7 @@ public class StudentManagerTest {
     // Test that a key is returned when creating a student
     @Test
     public void testCreateStudent() {
-        reset(mockStudentMap);
+        reset(mockDaoStudent);
 
         /* TODO: make sure to add tests to cover generation of photo URL.  Mabye a separate PUT call.
         BlobLocation location = new BlobLocation.Builder(FAKE_BUCKET, FAKE_KEY).build();
@@ -61,6 +63,7 @@ public class StudentManagerTest {
         */
 
         Student student = new Student(FAKE_ID, FAKE_NAME);
+        doReturn(student).when(mockDaoStudent).createStudent(any(BlobLocation.class));
         String key = underTest.createStudent(student);
 
         assertNotNull(key);
@@ -73,20 +76,20 @@ public class StudentManagerTest {
     // Test the case where a student cannot be found in the student list
     @Test
     public void testGetStudentMissing() {
-        reset(mockStudentMap);
+        reset(mockDaoStudent);
 
         // test a student that isn't present in the student list
-        doReturn(null).when(mockStudentMap).get(anyString());
+        doReturn(null).when(mockDaoStudent).getStudent(anyString());
         assertNull(underTest.getStudent(FAKE_KEY));
     }
 
     // Test a case where a student is found in the student list
     @Test
     public void testGetStudentFound() {
-        reset(mockStudentMap);
+        reset(mockDaoStudent);
 
         Student mockStudent = new Student(FAKE_ID, FAKE_NAME);
-        doReturn(mockStudent).when(mockStudentMap).get(FAKE_KEY);
+        doReturn(mockStudent).when(mockDaoStudent).getStudent(FAKE_KEY);
         Student studentGet = underTest.getStudent(FAKE_KEY);
         assertEquals(FAKE_ID, studentGet.getId());
         assertEquals(FAKE_NAME, studentGet.getName());

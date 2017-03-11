@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd" >
+<hibernate-configuration>
+<session-factory>
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/resterapp_dev?useSSL=false</property>
+        <property name="hibernate.connection.username">resterapp</property>
+        <property name="hibernate.connection.password">86753O9</property>
+
+        <!-- SQL Dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- JDBC connection pool size (build-in) - single threaded -->
+        <property name="connection.pool_size">1</property>
+
+        <!--- Have Hibernate manage sessions for us, more performant in single threaded mode, don't have to close() -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Disable the second-level cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+        <!-- Echo all executed SQL to stdout and use pretty formatting -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!-- Drop the existing tables and create new one -->
+        <!-- This would only be for dev...
+        <property name="hbm2ddl.auto">create</property>
+        -->
+
+        <!-- Object mappings file -->
+        <mapping resource="resterapp.hbm.xml"></mapping>
+</session-factory>
+</hibernate-configuration>

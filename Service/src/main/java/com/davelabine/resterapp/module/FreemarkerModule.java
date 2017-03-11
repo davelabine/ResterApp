@@ -6,8 +6,6 @@ import com.google.inject.Singleton;
 
 import freemarker.template.*;
 
-import com.davelabine.resterapp.controller.ControllerMainApp;
-
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.io.IOException;

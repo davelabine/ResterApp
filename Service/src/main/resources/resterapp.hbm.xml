@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.davelabine.resterapp.platform.api.model">
+    <class name="Student" table="T_STUDENT">
+        <id name="key" column="SKEY">
+            <generator class="uuid">
+            </generator></id>
+        <property name="name" column="NAME"></property>
+        <property name="id" column="STUDENT_ID"></property>
+    </class>
+    <query name="HQL_GET_STUDENT_BY_KEY">
+        <![CDATA[from Student where key = :key]]>
+    </query>
+    <query name="HQL_GET_STUDENT_BY_NAME_PARTIAL">
+        <![CDATA[from Student where name like :name]]>
+    </query>
+</hibernate-mapping>

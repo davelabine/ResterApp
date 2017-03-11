@@ -88,7 +88,7 @@ public class ControllerStudentsAPI {
 
         Busywork.doBusyWork(busyTime);
         studentManager.populateFakeData();
-        List<Student> studentList = studentManager.getStudents();
+        List<Student> studentList = studentManager.getStudents("");
         if (studentList == null) {
             logger.error("getStudents() failed");
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();

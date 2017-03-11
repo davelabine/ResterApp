@@ -19,7 +19,8 @@ public class ApplicationContextListener extends GuiceResteasyBootstrapServletCon
                 (Module) new ConfigModule(),
                 (Module) new FreemarkerModule(),
                 (Module) new WebModule(),
-                (Module) new AwsModule());
+                (Module) new AwsModule(),
+                (Module) new HibernateModule());
     }
 
 

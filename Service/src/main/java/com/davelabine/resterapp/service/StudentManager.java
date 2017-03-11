@@ -1,13 +1,11 @@
 package com.davelabine.resterapp.service;
 
+import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.platform.api.service.BlobStoreService;
 
 import javax.inject.Inject;
 
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,23 +15,20 @@ import java.util.List;
 public class StudentManager {
     private static String UPLOAD_FILE_NAME = "images/dave_monkey.jpg";
 
-    private ConcurrentHashMap<String, Student> studentMap;
+    private DaoStudent daoStudent;
     private BlobStoreService blobStore;
 
 
     @Inject
-    public StudentManager(ConcurrentHashMap<String, Student> studentMap, BlobStoreService blobStoreService) {
-        this.studentMap = studentMap;
+    public StudentManager(DaoStudent daoStudent, BlobStoreService blobStoreService) {
+        this.daoStudent = daoStudent;
+        daoStudent.initialize();
         this.blobStore = blobStoreService;
     }
 
     // Returns the Key of the student, or null on failure
     public String createStudent(Student student)
     {
-        // TODO handle bad inputs
-        String studentKey = UUID.randomUUID().toString();
-        student.setKey(studentKey);
-
         // Add a profile pic
         // TODO: Move this into its own put method
         /*
@@ -45,26 +40,19 @@ public class StudentManager {
             student.setUrlPhoto(url);
         }
         */
-
-        // Returns previous value if another value was mapped to same key
-        // or null if there was no key mapping
-        // and throws null pointer exceptions if key or value are empty
-        studentMap.put(studentKey, student);
-
-        return studentKey;
+        return daoStudent.createStudent(student);
     }
 
 
     // Returns the student at the key, or null on failure
     public Student getStudent(String studentKey) {
         // returns the value, or null on not found
-        return studentMap.get(studentKey);
+        return daoStudent.getStudent(studentKey);
     }
 
-    // Returns a list of students in the DB
-    public List<Student> getStudents() {
-        List<Student> studentList = new ArrayList<Student>(studentMap.values());
-        return studentList;
+    // Returns a list of students in the DB that start with a prefix
+    public List<Student> getStudents(String prefix) {
+        return daoStudent.getStudentByName(prefix);
     }
 
     // A throwaway method to populate a bit of fake data for testing

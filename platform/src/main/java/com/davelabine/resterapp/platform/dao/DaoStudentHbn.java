@@ -3,8 +3,10 @@ package com.davelabine.resterapp.platform.dao;
 import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.platform.api.exceptions.DaoException;
+import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
+import lombok.Builder;
 import lombok.Cleanup;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
@@ -31,6 +33,7 @@ public class DaoStudentHbn implements DaoStudent {
     Session session = null;
     Transaction transaction = null;
 
+    @Inject
     public DaoStudentHbn(Configuration hbnConfig, ServiceRegistry hbnRegistry) {
         logger.info("constructor...");
         this.hbnConfig = hbnConfig;
