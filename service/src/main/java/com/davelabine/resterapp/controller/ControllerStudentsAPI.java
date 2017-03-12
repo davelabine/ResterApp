@@ -47,7 +47,7 @@ public class ControllerStudentsAPI {
      * @return String that will be returned as a text/plain response.
      */
     @POST
-    @Path("/post")
+    @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(
@@ -89,6 +89,7 @@ public class ControllerStudentsAPI {
 
         Busywork.doBusyWork(busyTime);
         List<Student> studentList = studentManager.getStudents(name);
+        // A null result is acceptable - no students match the search
         logger.info("Students retrieved successfully:{}", studentList);
         return Response.ok().entity(studentList).build();
     }
@@ -121,4 +122,16 @@ public class ControllerStudentsAPI {
         logger.info("Student found: {}", studentGet);
         return Response.ok().entity(studentGet).build();
     }
+
+    @POST
+    @Path("/populate")
+    public Response populate(
+            @QueryParam("num") int numToPopulate) {
+        logger.info("Populating {} students...", numToPopulate);
+
+        studentManager.populateFakeData(numToPopulate);
+        logger.info("Done populating");
+        return Response.created(null).build();
+    }
+
 }
