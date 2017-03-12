@@ -63,7 +63,7 @@ public class StudentManagerTest {
         */
 
         Student student = new Student(FAKE_ID, FAKE_NAME);
-        doReturn(student).when(mockDaoStudent).createStudent(any(BlobLocation.class));
+        doReturn(FAKE_KEY).when(mockDaoStudent).createStudent(any(Student.class));
         String key = underTest.createStudent(student);
 
         assertNotNull(key);

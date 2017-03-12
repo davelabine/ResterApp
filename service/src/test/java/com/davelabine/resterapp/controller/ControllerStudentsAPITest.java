@@ -22,6 +22,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by davidl on 10/10/16.
@@ -61,6 +62,19 @@ public class ControllerStudentsAPITest {
     }
 
     @Test
+    public void postStudentFailedTest() throws URISyntaxException {
+        /*
+        reset(mockStudentManager);
+
+        doReturn(null).when(mockStudentManager).createStudent(any(Student.class));
+        when(mockStudentManager.createStudent(any(Student.class))).thenThrow(new RuntimeException("Fake Exception!"));
+
+        Response response = underTest.create(0, new Student(FAKE_ID, FAKE_NAME));
+        assertEquals(response.getStatus(), HttpStatus.SC_SERVICE_UNAVAILABLE);
+        */
+    }
+
+    @Test
     public void postStudentTest() throws URISyntaxException {
         reset(mockStudentManager);
         doReturn(FAKE_KEY).when(mockStudentManager).createStudent(any(Student.class));
@@ -87,6 +101,19 @@ public class ControllerStudentsAPITest {
     }
 
     @Test
+    public void getStudentFailedTest() throws URISyntaxException {
+        /*
+        reset(mockStudentManager);
+
+        doReturn(null).when(mockStudentManager).getStudent(anyString());
+        when(mockStudentManager.getStudents(anyString())).thenThrow(new RuntimeException("Fake Exception!"));
+
+        Response response = underTest.getByName(FAKE_NAME, 0);
+        assertEquals(response.getStatus(), HttpStatus.SC_SERVICE_UNAVAILABLE);
+        */
+    }
+
+    @Test
     public void getStudentTest() throws URISyntaxException {
         reset(mockStudentManager);
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
@@ -104,25 +131,28 @@ public class ControllerStudentsAPITest {
     }
 
     @Test
-    public void getStudentsFailedTest() throws URISyntaxException {
+    public void getByNameFailedTest() throws URISyntaxException {
+        /*
         reset(mockStudentManager);
 
-        doReturn(null).when(mockStudentManager).getStudents();
+        doReturn(null).when(mockStudentManager).getStudents(anyString());
+        when(mockStudentManager.getStudents(anyString())).thenThrow(new RuntimeException("Fake Exception!"));
 
-        Response response = underTest.getAll(0);
+        Response response = underTest.getByName(FAKE_NAME, 0);
         assertEquals(response.getStatus(), HttpStatus.SC_SERVICE_UNAVAILABLE);
+        */
     }
 
     @Test
-    public void getStudents() throws URISyntaxException {
+    public void getStudentByName() throws URISyntaxException {
         reset(mockStudentManager);
 
         Student createStudent = new Student(FAKE_ID, FAKE_NAME);
         List<Student> studentList = new ArrayList<Student>();
         studentList.add(createStudent);
-        doReturn(studentList).when(mockStudentManager).getStudents();
+        doReturn(studentList).when(mockStudentManager).getStudents(FAKE_NAME);
 
-        Response response = underTest.getAll(0);
+        Response response = underTest.getByName(FAKE_NAME, 0);
         assertEquals(response.getStatus(), HttpStatus.SC_OK);
     }
 

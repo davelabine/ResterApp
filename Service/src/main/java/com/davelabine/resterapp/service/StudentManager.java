@@ -55,10 +55,9 @@ public class StudentManager {
         return daoStudent.getStudentByName(prefix);
     }
 
-    // A throwaway method to populate a bit of fake data for testing
-    // TODO: Remove me
-    public void populateFakeData() {
-        for (int i=0; i < 10; i++) {
+    // A utility method to populate some fake data for testing
+    public void populateFakeData(int numStudents) {
+        for (int i=0; i < numStudents; i++) {
             createStudent(Student.randomStudent());
         }
     }

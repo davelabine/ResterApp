@@ -14,6 +14,6 @@
         <![CDATA[from Student where key = :key]]>
     </query>
     <query name="HQL_GET_STUDENT_BY_NAME_PARTIAL">
-        <![CDATA[from Student where name like :name]]>
+        <![CDATA[from Student where name like :name order by name asc ]]>
     </query>
 </hibernate-mapping>

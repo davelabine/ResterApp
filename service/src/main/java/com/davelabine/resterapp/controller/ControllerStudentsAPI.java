@@ -82,18 +82,13 @@ public class ControllerStudentsAPI {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(
-            @QueryParam("busyTime") int busyTime) {
-        logger.info("busyTime:{} ", busyTime);
+    public Response getByName(
+            @DefaultValue("")@QueryParam("name") String name,
+            @QueryParam("busyTime") int busyTime){
+        logger.info("name: {},  busyTime:{} ", name, busyTime);
 
         Busywork.doBusyWork(busyTime);
-        studentManager.populateFakeData();
-        List<Student> studentList = studentManager.getStudents("");
-        if (studentList == null) {
-            logger.error("getStudents() failed");
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
-
+        List<Student> studentList = studentManager.getStudents(name);
         logger.info("Students retrieved successfully:{}", studentList);
         return Response.ok().entity(studentList).build();
     }

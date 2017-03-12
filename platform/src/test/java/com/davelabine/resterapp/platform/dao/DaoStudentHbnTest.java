@@ -21,12 +21,13 @@ import static org.mockito.Mockito.when;
 /**
  * Created by davidl on 3/6/17.
  */
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class DaoStudentHbnTest {
     public static final String FAKE_STUDENT_NAME = "FAKE_BUCKET";
     public static final String FAKE_STUDENT_ID = "FAKE_ID";
     public static final String FAKE_KEY = "FAKE_KEY";
 
+    /* Hm, this will be trickier than I thought...
     @InjectMocks
     private DaoStudentHbn daoStudent;
 
@@ -40,8 +41,6 @@ public class DaoStudentHbnTest {
     public void before() {
 
     }
-
-    /* Hm, this will be trickier than I thought...
 
     @Test(expected = DaoException.class)
     public void testcreateStudent() {
