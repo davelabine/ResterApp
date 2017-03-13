@@ -28,7 +28,14 @@ public class Student {
     protected BlobLocation photo;
 
     public Student() {}
+
     public Student(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Student(String key, String id, String name) {
+        this.key = key;
         this.id = id;
         this.name = name;
     }

@@ -55,6 +55,10 @@ public class StudentManager {
         return daoStudent.getStudentByName(prefix);
     }
 
+    public void updateStudent(Student student) {
+        daoStudent.updateStudent(student);
+    }
+
     // A utility method to populate some fake data for testing
     public void populateFakeData(int numStudents) {
         for (int i=0; i < numStudents; i++) {

@@ -10,9 +10,6 @@
     </div>
     <a id="addStudentButton" type="button" class="btn btn-default pull-right" href="api/Student/">Add Student</a>
 </form>
-<div class="buttons">
-
-</div>
 <#if studentList??>
 <table class="table table-striped table-hover">
     <thead>

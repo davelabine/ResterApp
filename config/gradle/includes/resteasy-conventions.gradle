@@ -22,6 +22,8 @@ dependencies {
 
     compile("org.jboss.resteasy:resteasy-jackson-provider:$RESTEASY_VERSION");
 
+    compile("org.jboss.resteasy:resteasy-multipart-provider:$RESTEASY_VERSION");
+
     compile "com.google.code.gson:gson:$GSON_VERSION"
 
     compile 'javax.servlet:javax.servlet-api:3.0.1'

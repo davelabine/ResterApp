@@ -11,7 +11,12 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.davelabine.resterapp.module.FreemarkerModule;
 
@@ -53,14 +58,43 @@ public class ControllerMainApp {
     @Path("{key}")
     @Produces(MediaType.TEXT_HTML)
     public String getStudent(
-            String key)
+            @PathParam("key") String key)
             throws IOException, TemplateException {
         logger.info("getStudent() - {}", key);
 
         Student student = studentManager.getStudent(key);
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig,
-                "data", student,
+                "student", student,
                 "student.ftl");
     }
+
+    @POST
+    @Path("{key}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_HTML)
+    public String updateStudent(
+            @PathParam("key") String key,
+            MultipartFormDataInput multipart)
+            throws IOException, TemplateException {
+        logger.info("getStudent() - {}", key);
+
+        // TODO: input checking for null keys, ID and Name can be null though
+        Student upStudent = new Student(key,
+                                    multipart.getFormDataPart("id", String.class, null),
+                                    multipart.getFormDataPart("name", String.class, null));
+
+        try {
+            //InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
+        } catch (IOException e) {
+
+        }
+
+        studentManager.updateStudent(upStudent);
+
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig,
+                "student", upStudent,
+                "student.ftl");
+    }
+
 }
