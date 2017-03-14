@@ -10,8 +10,11 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +23,8 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.davelabine.resterapp.module.FreemarkerModule;
 
+
+
 /**
  * Root resource for the main app
  */
@@ -27,6 +32,11 @@ import com.davelabine.resterapp.module.FreemarkerModule;
 // We only want one instance shared across all servlet threads to make more efficient use of memory.
 @Path("/students")
 public class ControllerMainApp {
+    public enum EditState {
+        EDIT,
+        EDIT_SUCCESS;
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ControllerMainApp.class);
 
     @Inject
@@ -58,7 +68,8 @@ public class ControllerMainApp {
     @Path("{key}")
     @Produces(MediaType.TEXT_HTML)
     public String getStudent(
-            @PathParam("key") String key)
+            @PathParam("key") String key,
+            @QueryParam("edit") EditState edit)
             throws IOException, TemplateException {
         logger.info("getStudent() - {}", key);
 
@@ -73,10 +84,11 @@ public class ControllerMainApp {
     @Path("{key}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
-    public String updateStudent(
+    public Response updateStudent(
             @PathParam("key") String key,
+            @QueryParam("edit") EditState edit,
             MultipartFormDataInput multipart)
-            throws IOException, TemplateException {
+            throws IOException, TemplateException, URISyntaxException {
         logger.info("getStudent() - {}", key);
 
         // TODO: input checking for null keys, ID and Name can be null though
@@ -85,16 +97,16 @@ public class ControllerMainApp {
                                     multipart.getFormDataPart("name", String.class, null));
 
         try {
-            //InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
+            InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
         } catch (IOException e) {
-
+            logger.error("Error processing photo input stream: ", e.getMessage());
+            // Have the exception handlers deal with this.
+            throw e;
         }
 
         studentManager.updateStudent(upStudent);
 
-        return FreemarkerModule.ProcessTemplateUtil(fmConfig,
-                "student", upStudent,
-                "student.ftl");
+        return Response.seeOther(new URI("students/" + key + "?edit=" + EditState.EDIT_SUCCESS)).build();
     }
 
 }
