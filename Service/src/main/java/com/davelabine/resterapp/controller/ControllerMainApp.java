@@ -74,6 +74,8 @@ public class ControllerMainApp {
         logger.info("getStudent() - {}", key);
 
         Student student = studentManager.getStudent(key);
+        logger.info("getStudent returned {}", student);
+        // null is a legal result and means no student was found.
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig,
                 "student", student,

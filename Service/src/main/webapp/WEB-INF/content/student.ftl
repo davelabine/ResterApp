@@ -2,6 +2,7 @@
 
 <#macro page_body>
 <div class="well">
+<#if student?has_content>
   <div>${student.id}</div>
   <div>${student.name}</div>
 
@@ -20,7 +21,9 @@
       </div>
       <button type="submit" class="btn btn-primary">Save</button>
   </form>
-</div>
+<#else>
+<div> Student not found! </div>
+</#if>
+        </div> <!-- class="well" -->
 </#macro>
-
 <@display_page/>

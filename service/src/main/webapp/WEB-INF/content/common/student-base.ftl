@@ -23,9 +23,12 @@
 </#macro>
 
 <#macro page_footer>
-<p><a href="api/roster/">Rosters Web API</a>
-<p><a href="api/students/post">Students POST API</a>
-<P><a href="api/students/123456">Students GET API</a></P>
+<p>
+    <a href="students">Students Webapp</a><br>
+    <a href="api/roster/">Rosters Web API</a><br>
+    <a href="api/students/post">Students POST API</a><br>
+    <a href="api/students/123456">Students GET API</a>
+</p>
 
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
