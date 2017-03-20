@@ -4,7 +4,7 @@
 <div class="well">
 <#if student?has_content>
 
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="${submitUrl}" method="post" enctype="multipart/form-data">
       <div class="form-group">
           <label for="name">Name: </label>
           <input type="text" name="name" value="${student.name}">

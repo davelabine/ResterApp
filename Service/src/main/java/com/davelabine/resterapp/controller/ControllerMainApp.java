@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.naming.ldap.Control;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,15 +41,21 @@ public class ControllerMainApp {
 
     public static final String QUERY_NAME = "name";
 
-    @Inject
-    private Configuration fmConfig;
+    private final Configuration fmConfig;
+    private final Config appConfig;
+    // A convenience
+    private final String rootUrl;
+    private final StudentManager studentManager;
 
     @Inject
-    @Named("application.conf")
-    private  Config appConfig;
-
-    @Inject
-    private StudentManager studentManager;
+    public ControllerMainApp(final Configuration fmConfig,
+                             @Named("application.conf") final Config appConfig,
+                             final StudentManager studentManager) {
+        this.fmConfig = fmConfig;
+        this.appConfig = appConfig;
+        rootUrl = appConfig.getString("MainApp.rootUrl") + "/students/";
+        this.studentManager = studentManager;
+    }
 
     /**
      * Get a list of students
@@ -99,6 +106,10 @@ public class ControllerMainApp {
         // null is a legal result and meas no student was found.
         root.put("student", student);
 
+        String submitUrl = rootUrl + key;
+        logger.info("submitUrl - {}", submitUrl);
+        root.put("submitUrl", submitUrl);
+
         return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-edit.ftl");
     }
 
@@ -126,7 +137,7 @@ public class ControllerMainApp {
         }
 
         studentManager.updateStudent(upStudent);
-        String url = appConfig.getString("MainApp.root-url") + key;
+        String url = rootUrl + key;
         logger.info("Redirecting to {}", url);
         return Response.seeOther(new URI(url)).build();
     }
@@ -135,9 +146,8 @@ public class ControllerMainApp {
     private HashMap<String, Object> getDefaultHashMap() {
         HashMap<String, Object> root = new HashMap<String,Object>();
 
-        String rootUrl = appConfig.getString("MainApp.rootUrl");
-        logger.info("rootURL - {}", rootUrl);
-        root.put("rootUrl", rootUrl + "/students/");
+        logger.info("rootUrl: {}", rootUrl);
+        root.put("rootUrl", rootUrl);
 
         return root;
     }
