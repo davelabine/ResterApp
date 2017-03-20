@@ -3,6 +3,9 @@ package com.davelabine.resterapp.controller;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import freemarker.template.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,19 +36,19 @@ import com.davelabine.resterapp.module.FreemarkerModule;
 // We only want one instance shared across all servlet threads to make more efficient use of memory.
 @Path("/students")
 public class ControllerMainApp {
-    public enum EditState {
-        EDIT,
-        EDIT_SUCCESS;
-    }
-
     private static final Logger logger = LoggerFactory.getLogger(ControllerMainApp.class);
+
+    public static final String QUERY_NAME = "name";
 
     @Inject
     private Configuration fmConfig;
 
     @Inject
-    private StudentManager studentManager;
+    @Named("application.conf")
+    private  Config appConfig;
 
+    @Inject
+    private StudentManager studentManager;
 
     /**
      * Get a list of students
@@ -53,33 +57,49 @@ public class ControllerMainApp {
     @Produces(MediaType.TEXT_HTML)
     //TODO: Add some exception mappers
     public String getByName(
-            @DefaultValue("")@QueryParam("name") String name)
+            @DefaultValue("")@QueryParam(QUERY_NAME) String name)
             throws IOException, TemplateException {
         logger.info("getByName() - {}", name);
 
         List<Student> studentList = studentManager.getStudents(name);
+        HashMap<String, Object> root = getDefaultHashMap();
+        root.put("studentList", studentList);
 
-        return FreemarkerModule.ProcessTemplateUtil(fmConfig,
-                                                    "studentList", studentList,
-                                                    "student-list.ftl");
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-list.ftl");
     }
 
     @GET
-    @Path("{key}")
+    @Path("{key}/")
     @Produces(MediaType.TEXT_HTML)
     public String getStudent(
-            @PathParam("key") String key,
-            @QueryParam("edit") EditState edit)
+            @PathParam("key") String key)
             throws IOException, TemplateException {
-        logger.info("getStudent() - {}", key);
+        logger.info("getStudent() - key: {}, edit: {}", key);
 
+        HashMap<String, Object> root = getDefaultHashMap();
         Student student = studentManager.getStudent(key);
         logger.info("getStudent returned {}", student);
-        // null is a legal result and means no student was found.
+        // null is a legal result and meas no student was found.
+        root.put("student", student);
 
-        return FreemarkerModule.ProcessTemplateUtil(fmConfig,
-                "student", student,
-                "student.ftl");
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student.ftl");
+    }
+
+    @GET
+    @Path("{key}/edit")
+    @Produces(MediaType.TEXT_HTML)
+    public String getStudentEdit(
+            @PathParam("key") String key)
+            throws IOException, TemplateException {
+        logger.info("getStudentEdit() - key: {}", key);
+
+        HashMap<String, Object> root = getDefaultHashMap();
+        Student student = studentManager.getStudent(key);
+        logger.info("getStudent returned {}", student);
+        // null is a legal result and meas no student was found.
+        root.put("student", student);
+
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-edit.ftl");
     }
 
     @POST
@@ -88,10 +108,9 @@ public class ControllerMainApp {
     @Produces(MediaType.TEXT_HTML)
     public Response updateStudent(
             @PathParam("key") String key,
-            @QueryParam("edit") EditState edit,
             MultipartFormDataInput multipart)
             throws IOException, TemplateException, URISyntaxException {
-        logger.info("getStudent() - {}", key);
+        logger.info("updateStudent() - key: {}, edit: {}", key);
 
         // TODO: input checking for null keys, ID and Name can be null though
         Student upStudent = new Student(key,
@@ -107,8 +126,20 @@ public class ControllerMainApp {
         }
 
         studentManager.updateStudent(upStudent);
+        String url = appConfig.getString("MainApp.root-url") + key;
+        logger.info("Redirecting to {}", url);
+        return Response.seeOther(new URI(url)).build();
+    }
 
-        return Response.seeOther(new URI("students/" + key + "?edit=" + EditState.EDIT_SUCCESS)).build();
+    /* Helper to add any default config or page values we need */
+    private HashMap<String, Object> getDefaultHashMap() {
+        HashMap<String, Object> root = new HashMap<String,Object>();
+
+        String rootUrl = appConfig.getString("MainApp.rootUrl");
+        logger.info("rootURL - {}", rootUrl);
+        root.put("rootUrl", rootUrl + "/students/");
+
+        return root;
     }
 
 }

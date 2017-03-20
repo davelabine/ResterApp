@@ -11,7 +11,7 @@
     <a id="addStudentButton" type="button" class="btn btn-default pull-right" href="api/Student/">Add Student</a>
 </form>
 <#if studentList?has_content>
-<table class="table table-striped table-hover">
+<table class="table table-striped table-sm table-hover">
     <thead>
       <tr>
           <th>Name</th>
@@ -24,7 +24,8 @@
       <tr>
           <td>${student.name}</td>
           <td>${student.id}</td>
-          <td><a id="editStudent" href="students/${student.key}">edit</a></td>
+          <td><a id="viewStudent" href="${rootUrl}${student.key}">view</a></td>
+          <td><a id="editStudent" href="${rootUrl}${student.key}/edit">edit</a></td>
       </tr>
       </#list>
     </tbody>

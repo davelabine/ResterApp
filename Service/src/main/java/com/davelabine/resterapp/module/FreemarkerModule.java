@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 
 /**
  * Created by dave on 3/1/17.
@@ -32,16 +33,10 @@ public class FreemarkerModule extends AbstractModule {
     }
 
     // * A simple helper method for processing Freemarker templates across multiple controllers
-    public static String ProcessTemplateUtil(Configuration configuration, String dataName, Object data,
+    public static String ProcessTemplateUtil(Configuration configuration, HashMap<String, Object> root,
                                              String templateName)
             throws IOException, TemplateException {
         StringWriter out = new StringWriter();
-        SimpleHash root = new SimpleHash();
-
-        if (data != null) {
-            root.put(dataName, data);
-        }
-
         Template template = configuration.getTemplate(templateName);
         template.process(root, out);
         return out.toString();

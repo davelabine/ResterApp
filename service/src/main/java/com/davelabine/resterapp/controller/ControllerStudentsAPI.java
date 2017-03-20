@@ -33,6 +33,8 @@ public class ControllerStudentsAPI {
     private static final String STUDENTS_ENDPOINT_BASE_PATH = "http://localhost:8080/resterapp/students/";
     private static final String STUDENT_KEY_HEADER = "student-key";
 
+    private static final String QUERY_PARAM_BUSYTIME = "busyTime";
+    private static final String QUERY_PARAM_NAME = "name";
     private static final int BUSYTIME_MS = 200; // Milliseconds
 
     private static final Logger logger = LoggerFactory.getLogger(ControllerStudentsAPI.class);
@@ -51,7 +53,7 @@ public class ControllerStudentsAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(
-            @QueryParam("busyTime") int busyTime,
+            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
             Student student)
             throws URISyntaxException {
         logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
@@ -83,8 +85,8 @@ public class ControllerStudentsAPI {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByName(
-            @DefaultValue("")@QueryParam("name") String name,
-            @QueryParam("busyTime") int busyTime){
+            @DefaultValue("")@QueryParam(QUERY_PARAM_NAME) String name,
+            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime){
         logger.info("name: {},  busyTime:{} ", name, busyTime);
 
         Busywork.doBusyWork(busyTime);
@@ -101,7 +103,7 @@ public class ControllerStudentsAPI {
     @Path("{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
-            @QueryParam("busyTime") int busyTime,
+            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
             @PathParam("key")
             String key) {
         logger.info("Student:{} busyTime:{}", key, busyTime);
