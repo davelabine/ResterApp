@@ -2,6 +2,7 @@ package com.davelabine.resterapp.controller;
 
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.naming.ldap.Control;
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,18 +45,25 @@ public class ControllerMainApp {
 
     private final Configuration fmConfig;
     private final Config appConfig;
-    // A convenience
-    private final String rootUrl;
     private final StudentManager studentManager;
+
+    // Convenience variables
+    private final String rootUrl;
+    private final String createUrl;
+    private final String blobUrl;
 
     @Inject
     public ControllerMainApp(final Configuration fmConfig,
-                             @Named("application.conf") final Config appConfig,
+                             @Named("application.conf")  final Config appConfig,
                              final StudentManager studentManager) {
         this.fmConfig = fmConfig;
         this.appConfig = appConfig;
-        rootUrl = appConfig.getString("MainApp.rootUrl") + "/students/";
         this.studentManager = studentManager;
+
+        rootUrl = appConfig.getString("MainApp.rootUrl") + "/students/";
+        //String createUrl = rootUrl + "create/";
+        createUrl = appConfig.getString("MainApp.rootUrl") + "/studentcreate";
+        blobUrl = appConfig.getString("MainApp.blobUrl");
     }
 
     /**
@@ -73,6 +82,71 @@ public class ControllerMainApp {
         root.put("studentList", studentList);
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-list.ftl");
+    }
+
+
+    /**
+     * Show a form to create a new student
+     */
+    @GET
+    @Path("studentcreate/")
+    @Produces(MediaType.TEXT_HTML)
+    //TODO: Figure out how to add a path for /student/create
+    //TODO: Add some exception mappers
+    public String getCreate()
+            throws IOException, TemplateException {
+        logger.info("getCreate()");
+
+        HashMap<String, Object> root = getDefaultHashMap();
+        // Put nothing in student, means there is no existing student
+        // We could populate with defaults this way though
+        // root.put("student", student);
+
+        // POST to the root URL to create students
+        root.put("submitUrl", rootUrl);
+
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-edit.ftl");
+    }
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_HTML)
+    public Response createStudent(
+            MultipartFormDataInput multipart)
+            throws IOException, TemplateException, URISyntaxException {
+        logger.info("createStudent()");
+
+        // TODO: input checking for null keys, ID and Name can be null though
+        Student newStudent = new Student(
+                multipart.getFormDataPart("id", String.class, null),
+                multipart.getFormDataPart("name", String.class, null));
+
+        try {
+            InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
+        } catch (IOException e) {
+            logger.error("Error processing photo input stream: ", e.getMessage());
+            // Have the exception handlers deal with this.
+            throw e;
+        }
+
+        studentManager.createStudent(newStudent);
+        String url = rootUrl + newStudent.getKey();
+        logger.info("Redirecting to {}", url);
+        return Response.created(new URI(url)).build();
+    }
+
+    @GET
+    @Path("delete/")
+    @Produces(MediaType.TEXT_HTML)
+    //TODO: Figure out how to add a path for /student/delete
+    //TODO: Add some exception mappers
+    public String getDelete()
+            throws IOException, TemplateException {
+        logger.info("getDelete()");
+
+        HashMap<String, Object> root = getDefaultHashMap();
+
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-del.ftl");
     }
 
     @GET
@@ -121,7 +195,7 @@ public class ControllerMainApp {
             @PathParam("key") String key,
             MultipartFormDataInput multipart)
             throws IOException, TemplateException, URISyntaxException {
-        logger.info("updateStudent() - key: {}, edit: {}", key);
+        logger.info("updateStudent() - key: {}", key);
 
         // TODO: input checking for null keys, ID and Name can be null though
         Student upStudent = new Student(key,
@@ -142,12 +216,36 @@ public class ControllerMainApp {
         return Response.seeOther(new URI(url)).build();
     }
 
+    @DELETE
+    @Path("{key}")
+    @Produces(MediaType.TEXT_HTML)
+    public Response deleteStudent(
+            @PathParam("key") String key)
+            throws IOException, TemplateException, URISyntaxException {
+        logger.info("deleteStudent - key: {}", key);
+
+        Student student = studentManager.getStudent(key);
+        logger.info("getStudent returned: {}", student);
+        if (student == null) {
+            return Response.notModified().build();
+        }
+
+        studentManager.deleteStudent(student);
+
+        String url = rootUrl + "/delete/";
+        logger.info("Redirecting to {}", url);
+        return Response.seeOther(new URI(url)).build();
+    }
+
     /* Helper to add any default config or page values we need */
     private HashMap<String, Object> getDefaultHashMap() {
         HashMap<String, Object> root = new HashMap<String,Object>();
 
-        logger.info("rootUrl: {}", rootUrl);
         root.put("rootUrl", rootUrl);
+        root.put("createUrl", createUrl);
+        root.put("blobUrl", blobUrl);
+
+        logger.info("rootUrl: {}, createUrl: {}, blobUrl: {}", rootUrl, createUrl, blobUrl);
 
         return root;
     }

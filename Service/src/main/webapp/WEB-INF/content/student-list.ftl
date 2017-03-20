@@ -8,7 +8,7 @@
         <input type="text" name="name">
         <button type="submit" class="btn btn-default">Search</button>
     </div>
-    <a id="addStudentButton" type="button" class="btn btn-default pull-right" href="api/Student/">Add Student</a>
+    <a id="addStudentButton" type="button" class="btn btn-default pull-right" href="${createUrl}">Add Student</a>
 </form>
 <#if studentList?has_content>
 <table class="table table-striped table-sm table-hover">

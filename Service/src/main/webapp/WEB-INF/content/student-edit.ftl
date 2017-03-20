@@ -15,9 +15,11 @@
       </div>
       <div class="form-group">
           <label for="photo">Photo: </label>
+          <div><img src="${blobUrl}"></div>
           <input type="file" name="photo" accept="image/*"></input>
       </div>
       <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" href="${submitUrl}" method="delete">Delete</button>
     </form>
 
 <#else> <!-- no student hash found -->

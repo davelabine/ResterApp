@@ -50,6 +50,11 @@ public class StudentManager {
         return daoStudent.getStudent(studentKey);
     }
 
+    // Deletes a student
+    public void deleteStudent(Student student) {
+        daoStudent.deleteStudent(student);
+    }
+
     // Returns a list of students in the DB that start with a prefix
     public List<Student> getStudents(String prefix) {
         return daoStudent.getStudentByName(prefix);

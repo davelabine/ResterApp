@@ -6,6 +6,7 @@
 
     <div>${student.name}</div>
     <div>${student.id}</div>
+    <div><img src="${blobUrl}"></div>
 
 <#else> <!-- no student hash found -->
   <div> Student not found! </div>
