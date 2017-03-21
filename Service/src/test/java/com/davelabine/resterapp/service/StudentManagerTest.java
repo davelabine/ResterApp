@@ -64,7 +64,7 @@ public class StudentManagerTest {
 
         Student student = new Student(FAKE_ID, FAKE_NAME);
         doReturn(FAKE_KEY).when(mockDaoStudent).createStudent(any(Student.class));
-        String key = underTest.createStudent(student);
+        String key = underTest.createStudent(student, null);
 
         assertNotNull(key);
         //Assert.assertNotNull(student.getUrlPhoto());

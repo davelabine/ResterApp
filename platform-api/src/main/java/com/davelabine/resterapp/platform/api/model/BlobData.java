@@ -2,16 +2,18 @@ package com.davelabine.resterapp.platform.api.model;
 
 import lombok.Getter;
 
+import java.io.InputStream;
+
 @Getter
 
 /**
  * Created by davidl on 2/21/17.
  */
 public class BlobData {
-    private String fileName;
+    private InputStream inputStream;
 
-    public BlobData(String fileName) {
-        this.fileName = fileName;
+    public BlobData(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 
 }

@@ -24,8 +24,8 @@
       <tr>
           <td>${student.name}</td>
           <td>${student.id}</td>
-          <td><a id="viewStudent" href="${rootUrl}${student.key}">view</a></td>
-          <td><a id="editStudent" href="${rootUrl}${student.key}/edit">edit</a></td>
+          <td><a id="viewStudent" href="${rootUrl}id/${student.key}">view</a></td>
+          <td><a id="editStudent" href="${rootUrl}id/${student.key}/edit">edit</a></td>
       </tr>
       </#list>
     </tbody>

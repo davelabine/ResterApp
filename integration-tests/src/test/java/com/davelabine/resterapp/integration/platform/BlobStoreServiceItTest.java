@@ -15,6 +15,8 @@ import org.junit.Test;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
+import java.io.*;
+
 /**
  * Created by dave on 12/10/16.
  */
@@ -38,7 +40,13 @@ public class BlobStoreServiceItTest {
     @Test
     public void testPutObjectAndGetUrl() {
         String fileName = Thread.currentThread().getContextClassLoader().getResource(UPLOAD_FILE_NAME).getPath();
-        BlobData data = new BlobData(fileName);
+        BlobData data = null;
+        try {
+            FileInputStream inputStream = new FileInputStream(fileName);
+            data = new BlobData(inputStream);
+        } catch (FileNotFoundException e) {
+
+        }
         BlobLocation location = blobStore.putObject(data);
         Assert.assertNotNull(location);
 

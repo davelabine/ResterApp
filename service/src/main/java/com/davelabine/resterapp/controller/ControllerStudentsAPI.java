@@ -65,7 +65,8 @@ public class ControllerStudentsAPI {
 
         Busywork.doBusyWork(busyTime);
 
-        String studentKey = studentManager.createStudent(student);
+        // TODO: Add profile photo
+        String studentKey = studentManager.createStudent(student, null);
 
         if (studentKey == null) {
             logger.error("Student create failed");

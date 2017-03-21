@@ -3,9 +3,12 @@ package com.davelabine.resterapp.service;
 import com.davelabine.resterapp.platform.api.dao.DaoStudent;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.platform.api.service.BlobStoreService;
+import com.davelabine.resterapp.platform.api.model.BlobData;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
 
 import javax.inject.Inject;
 
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -27,19 +30,12 @@ public class StudentManager {
     }
 
     // Returns the Key of the student, or null on failure
-    public String createStudent(Student student)
+    public String createStudent(Student student, InputStream inputStream)
     {
-        // Add a profile pic
-        // TODO: Move this into its own put method
-        /*
-        String fileName = Thread.currentThread().getContextClassLoader().getResource(UPLOAD_FILE_NAME).getPath();
-        BlobData data = new BlobData(fileName);
-        BlobLocation location = blobStore.putObject(data);
-        if (location != null ) {
-            String url = blobStore.getObjectUrl(location);
-            student.setUrlPhoto(url);
+        BlobLocation location = putPhoto(inputStream);
+        if (inputStream != null) {
+            student.setPhoto(location);
         }
-        */
         return daoStudent.createStudent(student);
     }
 
@@ -64,10 +60,26 @@ public class StudentManager {
         daoStudent.updateStudent(student);
     }
 
+    public String getPhotoUrl(BlobLocation location) {
+        return "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg";
+        /*
+        if (location == null) {
+            return "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg";
+        } else {
+            return blobStore.getObjectUrl(location);
+        }
+        */
+    }
+
+    private BlobLocation putPhoto(InputStream inputStream) {
+        BlobData data = new BlobData(inputStream);
+        return blobStore.putObject(data);
+    }
+
     // A utility method to populate some fake data for testing
     public void populateFakeData(int numStudents) {
         for (int i=0; i < numStudents; i++) {
-            createStudent(Student.randomStudent());
+            createStudent(Student.randomStudent(), null);
         }
     }
 

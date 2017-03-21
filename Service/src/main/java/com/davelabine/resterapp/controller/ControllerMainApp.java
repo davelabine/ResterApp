@@ -35,8 +35,8 @@ import com.davelabine.resterapp.module.FreemarkerModule;
 /**
  * Root resource for the main app
  */
-@Singleton
 // We only want one instance shared across all servlet threads to make more efficient use of memory.
+@Singleton
 @Path("/students")
 public class ControllerMainApp {
     private static final Logger logger = LoggerFactory.getLogger(ControllerMainApp.class);
@@ -50,7 +50,6 @@ public class ControllerMainApp {
     // Convenience variables
     private final String rootUrl;
     private final String createUrl;
-    private final String blobUrl;
 
     @Inject
     public ControllerMainApp(final Configuration fmConfig,
@@ -61,9 +60,7 @@ public class ControllerMainApp {
         this.studentManager = studentManager;
 
         rootUrl = appConfig.getString("MainApp.rootUrl") + "/students/";
-        //String createUrl = rootUrl + "create/";
-        createUrl = appConfig.getString("MainApp.rootUrl") + "/studentcreate";
-        blobUrl = appConfig.getString("MainApp.blobUrl");
+        createUrl = rootUrl + "create/";
     }
 
     /**
@@ -89,9 +86,8 @@ public class ControllerMainApp {
      * Show a form to create a new student
      */
     @GET
-    @Path("studentcreate/")
+    @Path("create/")
     @Produces(MediaType.TEXT_HTML)
-    //TODO: Figure out how to add a path for /student/create
     //TODO: Add some exception mappers
     public String getCreate()
             throws IOException, TemplateException {
@@ -105,7 +101,7 @@ public class ControllerMainApp {
         // POST to the root URL to create students
         root.put("submitUrl", rootUrl);
 
-        return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-edit.ftl");
+        return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-create.ftl");
     }
 
     @POST
@@ -123,16 +119,16 @@ public class ControllerMainApp {
 
         try {
             InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
+            studentManager.createStudent(newStudent, in);
         } catch (IOException e) {
             logger.error("Error processing photo input stream: ", e.getMessage());
             // Have the exception handlers deal with this.
             throw e;
         }
 
-        studentManager.createStudent(newStudent);
-        String url = rootUrl + newStudent.getKey();
+        String url = rootUrl + "id/" + newStudent.getKey();
         logger.info("Redirecting to {}", url);
-        return Response.created(new URI(url)).build();
+        return Response.seeOther(new URI(url)).build();
     }
 
     @GET
@@ -150,7 +146,7 @@ public class ControllerMainApp {
     }
 
     @GET
-    @Path("{key}/")
+    @Path("id/{key}/")
     @Produces(MediaType.TEXT_HTML)
     public String getStudent(
             @PathParam("key") String key)
@@ -162,12 +158,13 @@ public class ControllerMainApp {
         logger.info("getStudent returned {}", student);
         // null is a legal result and meas no student was found.
         root.put("student", student);
+        root.put("photoUrl", studentManager.getPhotoUrl(student.getPhoto()));
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student.ftl");
     }
 
     @GET
-    @Path("{key}/edit")
+    @Path("id/{key}/edit")
     @Produces(MediaType.TEXT_HTML)
     public String getStudentEdit(
             @PathParam("key") String key)
@@ -179,8 +176,9 @@ public class ControllerMainApp {
         logger.info("getStudent returned {}", student);
         // null is a legal result and meas no student was found.
         root.put("student", student);
+        root.put("photoUrl", studentManager.getPhotoUrl(student.getPhoto()));
 
-        String submitUrl = rootUrl + key;
+        String submitUrl = rootUrl + "id/" + key;
         logger.info("submitUrl - {}", submitUrl);
         root.put("submitUrl", submitUrl);
 
@@ -188,7 +186,7 @@ public class ControllerMainApp {
     }
 
     @POST
-    @Path("{key}")
+    @Path("id/{key}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
     public Response updateStudent(
@@ -243,9 +241,8 @@ public class ControllerMainApp {
 
         root.put("rootUrl", rootUrl);
         root.put("createUrl", createUrl);
-        root.put("blobUrl", blobUrl);
 
-        logger.info("rootUrl: {}, createUrl: {}, blobUrl: {}", rootUrl, createUrl, blobUrl);
+        logger.info("rootUrl: {}, createUrl: {}", rootUrl, createUrl);
 
         return root;
     }

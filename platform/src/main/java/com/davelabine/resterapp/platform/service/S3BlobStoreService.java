@@ -41,11 +41,13 @@ public class S3BlobStoreService implements BlobStoreService {
         BlobLocation blobLocation = BlobLocation.builder()
                                         .bucketName(awsConfig.getString("s3.bucket"))
                                         .key(generateUniqueKey(data)).build();
-        File file = new File(data.getFileName());
         try {
-            s3.putObject(
-                    new PutObjectRequest(awsConfig.getString("s3.bucket"), blobLocation.getKey(), file)
-                            .withCannedAcl(CannedAccessControlList.PublicRead));
+            //ObjectMetadata metadata = new ObjectMetadata()
+            PutObjectRequest putReq = new PutObjectRequest(awsConfig.getString("s3.bucket"),
+                                                        blobLocation.getKey(),
+                                                        data.getInputStream(),
+                                                        null);
+            s3.putObject(putReq.withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (AmazonServiceException ase) {
             throw new BlobStoreException("Request made it to Amazon S3, but was rejected with an error response. Error: " +
                     ase.getMessage() + ", HTTP Status Code: " + ase.getStatusCode() + ", AWS Error Code: " + ase.getErrorCode()
@@ -98,10 +100,13 @@ public class S3BlobStoreService implements BlobStoreService {
     private String generateUniqueKey(BlobData data) {
         String fileName = UUID.randomUUID().toString();
 
+        /*
         int i = data.getFileName().lastIndexOf('.');
         if (i > 0) {
             fileName += data.getFileName().substring(i);
         }
+        */
+
         return  fileName;
     }
 }
