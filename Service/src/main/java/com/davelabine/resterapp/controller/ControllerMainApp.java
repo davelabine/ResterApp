@@ -179,8 +179,10 @@ public class ControllerMainApp {
         root.put("photoUrl", studentManager.getPhotoUrl(student.getPhoto()));
 
         String submitUrl = rootUrl + "id/" + key;
-        logger.info("submitUrl - {}", submitUrl);
+        String deleteUrl = submitUrl + "/delete";
+        logger.info("submitUrl - {}, deleteUrl - {}", submitUrl, deleteUrl);
         root.put("submitUrl", submitUrl);
+        root.put("deleteUrl", deleteUrl);
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-edit.ftl");
     }
@@ -209,13 +211,13 @@ public class ControllerMainApp {
         }
 
         studentManager.updateStudent(upStudent);
-        String url = rootUrl + key;
+        String url = rootUrl + "id/" + key;
         logger.info("Redirecting to {}", url);
         return Response.seeOther(new URI(url)).build();
     }
 
-    @DELETE
-    @Path("{key}")
+    @POST
+    @Path("id/{key}/delete")
     @Produces(MediaType.TEXT_HTML)
     public Response deleteStudent(
             @PathParam("key") String key)
@@ -230,7 +232,7 @@ public class ControllerMainApp {
 
         studentManager.deleteStudent(student);
 
-        String url = rootUrl + "/delete/";
+        String url = rootUrl + "delete/";
         logger.info("Redirecting to {}", url);
         return Response.seeOther(new URI(url)).build();
     }

@@ -24,7 +24,7 @@
 
 <#macro page_footer>
 <p>
-    <a href="students">Students Webapp</a><br>
+    <a href="${rootUrl}">Students Webapp</a><br>
     <a href="api/roster/">Rosters Web API</a><br>
     <a href="api/students/post">Students POST API</a><br>
     <a href="api/students/123456">Students GET API</a>

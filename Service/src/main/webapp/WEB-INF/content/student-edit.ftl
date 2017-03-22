@@ -1,7 +1,7 @@
 <#include "common/student-base.ftl">
 
 <#macro page_body>
-<div class="well">
+<div class="well" xmlns="http://www.w3.org/1999/html">
 <#if student?has_content>
 
     <form action="${submitUrl}" method="post" enctype="multipart/form-data">
@@ -18,9 +18,14 @@
           <div><img src="${photoUrl}" class="img-thumbnail" ></div>
           <input type="file" name="photo" accept="image/*"></input>
       </div>
-      <button type="submit" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-primary" href="${submitUrl}" method="delete">Delete</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
+    <div>
+        <form action="${deleteUrl}" method='post'>
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+    </div>
+
 
 <#else> <!-- no student hash found -->
   <div> Student not found! </div>
