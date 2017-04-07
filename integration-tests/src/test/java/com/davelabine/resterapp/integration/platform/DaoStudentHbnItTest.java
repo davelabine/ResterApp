@@ -16,6 +16,8 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.Transaction;
 import org.hibernate.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.util.Iterator;
@@ -31,6 +33,7 @@ import static org.junit.Assert.assertTrue;
  * Created by davidl on 3/6/17.
  */
 public class DaoStudentHbnItTest {
+    private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbnItTest.class);
     private static final Configuration hbnConfig = new Configuration().configure("hibernate.cfg.xml");
 
     //TODO: Cleanup
@@ -48,7 +51,7 @@ public class DaoStudentHbnItTest {
             daoStudent = new DaoStudentHbn(hbnConfig, hbnServiceRegistry);
             daoStudent.initialize();
         } catch (Exception e) {
-            // Log an exception
+            logger.error("init exception: {}", e.getMessage());
         }
     }
 
@@ -56,27 +59,34 @@ public class DaoStudentHbnItTest {
     public void testCRUDStudentTable() {
         // Test create and read
         Student student = Student.randomStudent();
-        daoStudent.createStudent(student);
 
-        Student getStudent = daoStudent.getStudent(student.getKey());
-        assertEquals(student.getName(), getStudent.getName());
+        try {
+            daoStudent.createStudent(student);
 
-        // Now verify we can get by name
-        List<Student> nameStudent = daoStudent.getStudentByName(student.getName());
-        assertTrue(nameStudent.stream().anyMatch(item -> student.getName().equals(item.getName())));
+            Student getStudent = daoStudent.getStudent(student.getKey());
+            assertEquals(student.getName(), getStudent.getName());
 
-        // Now verify we can update a student
-        student.setName("Oderus Urungus");
-        student.setId("123456");
-        daoStudent.updateStudent(student);
-        Student updateStudent = daoStudent.getStudent(student.getKey());
-        assertEquals(student.getName(), updateStudent.getName());
-        assertEquals(student.getId(), updateStudent.getId());
+            // Now verify we can get by name
+            List<Student> nameStudent = daoStudent.getStudentByName(student.getName());
+            assertTrue(nameStudent.stream().anyMatch(item -> student.getName().equals(item.getName())));
 
-        // Finally, delete the student
-        String key = student.getKey();
-        daoStudent.deleteStudent(student);
-        Student deleteStudent = daoStudent.getStudent(key);
-        assertNull(deleteStudent);
+            // Now verify we can update a student
+            student.setName("Oderus Urungus");
+            student.setId("123456");
+            daoStudent.updateStudent(student);
+            Student updateStudent = daoStudent.getStudent(student.getKey());
+            assertEquals(student.getName(), updateStudent.getName());
+            assertEquals(student.getId(), updateStudent.getId());
+
+            // Finally, delete the student
+            String key = student.getKey();
+            daoStudent.deleteStudent(student);
+            Student deleteStudent = daoStudent.getStudent(key);
+            assertNull(deleteStudent);
+
+        } catch (Exception e) {
+            // Log an exception
+            logger.error("DB Exception: {}", e.getMessage());
+        }
     }
 }
