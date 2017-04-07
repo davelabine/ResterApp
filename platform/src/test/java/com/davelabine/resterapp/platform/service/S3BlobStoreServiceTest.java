@@ -19,6 +19,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import com.typesafe.config.Config;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import static org.mockito.Mockito.*;
 
 
@@ -29,7 +32,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class S3BlobStoreServiceTest {
-    public static final String FAKE_FILENAME = "FAKE_FILE";
     public static final String FAKE_URL = "http://fakety.fake";
     public static final String FAKE_BUCKET = "FAKE_BUCKET";
     public static final String FAKE_KEY = "FAKE_KEY";
@@ -43,6 +45,9 @@ public class S3BlobStoreServiceTest {
     @Mock
     private Config mockConfig;
 
+    @Mock
+    private FileInputStream inputStream;
+
     @Before
     public void before() {
         when(mockConfig.getString("s3.bucket")).thenReturn(FAKE_BUCKET);
@@ -51,8 +56,8 @@ public class S3BlobStoreServiceTest {
     // Test that a blob location is returned when an object is put
     @Test
     public void testPutObject() {
-        BlobData data = new BlobData(FAKE_FILENAME);
-
+        BlobData data = new BlobData(inputStream);
+        //when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
         BlobLocation returned = underTest.putObject(data);
         Assert.assertNotNull(returned);
         Assert.assertNotNull(returned.getBucketName());
@@ -63,7 +68,7 @@ public class S3BlobStoreServiceTest {
     @Test(expected=BlobStoreException.class)
     public void testPutObjectAseExceptionsCaught() {
         reset(mockS3);
-        BlobData data = new BlobData(FAKE_FILENAME);
+        BlobData data = new BlobData(inputStream);
         when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
         underTest.putObject(data); // Should throw an exception
     }
@@ -72,7 +77,7 @@ public class S3BlobStoreServiceTest {
     @Test(expected=BlobStoreException.class)
     public void testPutObjectACExceptionsCaught() {
         reset(mockS3);
-        BlobData data = new BlobData(FAKE_FILENAME);
+        BlobData data = new BlobData(inputStream);
         when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonClientException("Fake Exception!"));
         Assert.assertNull(underTest.putObject(data));
     }

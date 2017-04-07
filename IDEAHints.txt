@@ -1,0 +1,18 @@
+Special key refresher:
+⌘ is command, (windows key on win keyboards)
+⌥ is option (alt on windows keyboards)
+⌃ is control
+⇧ is shift
+
+http://www.loveittobits.com/blog/what-do-these-symbols-mean-
+
+Common IDEA shortcuts refresher:
+https://www.jetbrains.com/help/idea/2017.1/keyboard-shortcuts-you-cannot-miss.html
+https://hackpad.com/Intellij-IDEA-key-shortcuts-for-Mac-OS-X-yisyQoIGERW
+
+Find class or file by name:
+shift-opt-o
+
+Switch tabs:
+opt-comm-arrow
+
