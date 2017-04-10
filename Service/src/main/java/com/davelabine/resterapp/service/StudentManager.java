@@ -72,6 +72,10 @@ public class StudentManager {
     }
 
     private BlobLocation putPhoto(InputStream inputStream) {
+        if (inputStream == null) {
+            return null;
+        }
+
         BlobData data = new BlobData(inputStream);
         return blobStore.putObject(data);
     }
