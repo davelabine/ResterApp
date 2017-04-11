@@ -35,7 +35,6 @@ public class ControllerStudentsAPI {
 
     private static final String QUERY_PARAM_BUSYTIME = "busyTime";
     private static final String QUERY_PARAM_NAME = "name";
-    private static final int BUSYTIME_MS = 200; // Milliseconds
 
     private static final Logger logger = LoggerFactory.getLogger(ControllerStudentsAPI.class);
 
