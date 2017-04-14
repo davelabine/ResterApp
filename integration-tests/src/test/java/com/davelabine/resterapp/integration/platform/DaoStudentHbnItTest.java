@@ -33,6 +33,8 @@ import static org.junit.Assert.assertTrue;
  * Created by davidl on 3/6/17.
  */
 public class DaoStudentHbnItTest {
+    private static final String DB_ENV_UNAME = "DB_ENV_UNAME";
+    private static final String DB_ENV_PW = "DB_ENV_PW";
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbnItTest.class);
     private static final Configuration hbnConfig = new Configuration().configure("hibernate.cfg.xml");
 
@@ -46,6 +48,17 @@ public class DaoStudentHbnItTest {
     public void before() {
         SessionFactory sessionFactory = null;
         Session session = null;
+        String uname = System.getenv(DB_ENV_UNAME).replace("\r","");
+        String pw = System.getenv(DB_ENV_PW).replace("\r","");
+
+        if (!uname.isEmpty() && !pw.isEmpty()) {
+            hbnConfig.setProperty("hibernate.connection.username", uname);
+            hbnConfig.setProperty("hibernate.connection.password", pw);
+        } else {
+            logger.error("Hibernate DB username ({}) or password ({}) are not set!  Set these environment variables.",
+                    DB_ENV_UNAME, DB_ENV_PW);
+        }
+
         try {
             hbnServiceRegistry = new StandardServiceRegistryBuilder().applySettings(hbnConfig.getProperties()).build();
             daoStudent = new DaoStudentHbn(hbnConfig, hbnServiceRegistry);
