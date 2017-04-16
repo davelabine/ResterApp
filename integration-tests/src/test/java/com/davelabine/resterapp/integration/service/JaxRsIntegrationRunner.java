@@ -59,7 +59,7 @@ public class JaxRsIntegrationRunner {
         // Post student data, save the key, then do a GET on the key to make sure it is retrievable.
         CloseableHttpClient client = HttpClients.createDefault();
 
-        HttpPost studentPost = new HttpPost("http://localhost:8080/api/students/post");
+        HttpPost studentPost = new HttpPost("http://localhost:8080/api/students/create");
         // TODO: add some sort of automatic toJson() for the Student data object
         StringEntity stringEntity = new StringEntity("{\"id\":\"12345\",\"name\":\"Billy Bob\"}");
         studentPost.setEntity(stringEntity);

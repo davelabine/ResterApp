@@ -38,7 +38,8 @@ public class ConfigModule extends AbstractModule {
     @Provides
     @Singleton
     Configuration getHbnConfig() {
-        Configuration hbnConfig = new Configuration().configure("hibernate.cfg.xml");
+        Configuration hbnConfig = new Configuration();
+        hbnConfig.configure("hibernate.cfg.xml");
         String uname = System.getenv(DB_ENV_UNAME).replace("\r","");
         String pw = System.getenv(DB_ENV_PW).replace("\r","");
 
