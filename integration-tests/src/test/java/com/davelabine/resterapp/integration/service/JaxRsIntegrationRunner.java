@@ -17,6 +17,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * JAX-RS Integration Test.
@@ -28,6 +30,7 @@ import com.google.common.base.Preconditions;
  *     a. pass a flag parameter that instructs the controller to throw a mapped exception - then verify we see the status + body we expect.
  */
 public class JaxRsIntegrationRunner {
+    private static final Logger logger = LoggerFactory.getLogger(JaxRsIntegrationRunner.class);
     private static final Config config = ConfigFactory.load("application.conf");
     private static Runner runner = null;
 
@@ -43,6 +46,7 @@ public class JaxRsIntegrationRunner {
 
     @Test
     public void verifyTextPlainRosters() throws IOException {
+        logger.info("verifyTextPlainRosters()");
         CloseableHttpClient client = HttpClients.createDefault();
 
         HttpGet rosterGet = new HttpGet("http://localhost:8080/api/roster");
@@ -55,6 +59,7 @@ public class JaxRsIntegrationRunner {
 
     @Test
     public void verifyStudentCreate() throws IOException {
+        logger.info("verifyStudentCreate()");
 
         // Post student data, save the key, then do a GET on the key to make sure it is retrievable.
         CloseableHttpClient client = HttpClients.createDefault();
