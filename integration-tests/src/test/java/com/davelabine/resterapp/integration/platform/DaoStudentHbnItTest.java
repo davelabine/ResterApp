@@ -31,7 +31,7 @@ public class DaoStudentHbnItTest {
     private static final String DB_ENV_UNAME = "DB_ENV_UNAME";
     private static final String DB_ENV_PW = "DB_ENV_PW";
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbnItTest.class);
-    private static final Configuration hbnConfig = new Configuration().configure("hibernate.cfg.xml");
+
 
     private ServiceRegistry hbnServiceRegistry;
     private DaoStudent daoStudent;
@@ -39,6 +39,8 @@ public class DaoStudentHbnItTest {
 
     @Before
     public void before() {
+        Configuration hbnConfig = new Configuration();
+        hbnConfig.addResource("hibernate.cfg.xml");
         SessionFactory sessionFactory = null;
         Session session = null;
         String uname = System.getenv(DB_ENV_UNAME).replace("\r","");

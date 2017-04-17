@@ -19,7 +19,4 @@ dependencies {
 
 repositories { jcenter() }
 
-task ResterAppRun(dependsOn: [build, jettyRunWar]) {
-}
-
 

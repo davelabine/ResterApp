@@ -85,8 +85,11 @@ public class JaxRsIntegrationRunner {
 
         assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(200));
         // TODO: Fix me
+
+        String str = getResp.getEntity().toString();
+        logger.info("GetStudent returned {}", str);
         /*
-        Student retStudent = gson.fromJson(getResp.getEntity().toString(), Student.class);
+        Student retStudent = gson.fromJson(str, Student.class);
         assertThat("Student IDs are not equal", retStudent.getId(), is(student.getId()));
         assertThat("Student names are not equal", retStudent.getName(), is(student.getName()));
         */

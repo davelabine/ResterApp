@@ -9,7 +9,7 @@ group = "com.davelabine"
 
 dependencies {
     compile 'cglib:cglib:2.2.2'
-    compile 'org.slf4j:slf4j-api:1.6.6'
+    compile 'org.slf4j:slf4j-api:1.7.5'
     compile 'com.google.guava:guava:16.0.1';
 
     testCompile 'org.jmock:jmock-junit4:2.6.0'
