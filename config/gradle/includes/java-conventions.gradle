@@ -9,7 +9,9 @@ group = "com.davelabine"
 
 dependencies {
     compile 'cglib:cglib:2.2.2'
-    compile 'org.slf4j:slf4j-api:1.7.5'
+
+    // API dependency for Slf4j.
+    compile 'org.slf4j:slf4j-api:1.7.7'
     compile 'com.google.guava:guava:16.0.1';
 
     testCompile 'org.jmock:jmock-junit4:2.6.0'
@@ -18,7 +20,6 @@ dependencies {
     testCompile 'cglib:cglib-nodep:2.1_3'
     testCompile 'org.objenesis:objenesis:1.0'
     testCompile 'junit:junit:4.11'
-
 }
 
 buildscript {
@@ -26,7 +27,6 @@ buildscript {
         mavenCentral()
         mavenLocal()
     }
-
 }
 
 repositories {
@@ -63,7 +63,3 @@ configurations {
     all*.exclude group: "junit", module: "junit-dep"
 }
 
-
-dependencies{
-
-}

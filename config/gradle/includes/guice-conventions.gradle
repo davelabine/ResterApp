@@ -16,11 +16,8 @@ dependencies {
     compile "com.google.inject.extensions:guice-multibindings:$GUICE_VERSION"
     compile "com.google.inject:guice:$GUICE_VERSION";
 
-
     compile 'javax.annotation:jsr250-api:1.0'
     compile 'org.slf4j:slf4j-api:1.7.5'
-
-
 }
 
 

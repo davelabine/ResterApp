@@ -1,13 +1,17 @@
 ext {
     GSON_VERSION = "2.2.4"
     RESTEASY_VERSION = "3.0.6.Final"
-    LOGBACK_VERSION = "1.1.3"
 }
 
-
 configurations {
+    // Create new dependency configuration
+    // for dependencies to be added in
+    // WAR file.
+    //warLib.extendsFrom runtime
+
     all*.exclude group: 'javax.servlet', module: 'servlet-api'
     all*.exclude group: "javax.rs.ws", module: 'jsr311-api' //we don't want JSR311 jars- they are the wrong version.
+
     //doclet
     //docletExtSrc
 }
@@ -29,8 +33,8 @@ dependencies {
     compile 'javax.servlet:javax.servlet-api:3.0.1'
     compile 'commons-net:commons-net:3.3';
 
-    compile 'org.slf4j:slf4j-api:1.7.5'
-
+    // API dependency for Slf4j.
+    compile 'org.slf4j:slf4j-api:1.7.7'
 
 
 }

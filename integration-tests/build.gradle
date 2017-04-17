@@ -10,6 +10,9 @@ dependencies {
     testCompile "org.projectlombok:lombok:1.16.10"
     testCompile project(":platform")
     testCompile project(":platform-api")
+
+    // Slf4j implementation used for tests.
+    testRuntime 'org.slf4j:slf4j-simple:1.7.7'
 }
 
 task runIntegrationTests(type: Test, dependsOn: ":service:war") {
