@@ -3,7 +3,9 @@ package com.davelabine.resterapp.integration.service;
 import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
+import com.davelabine.resterapp.platform.api.model.Student;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -13,10 +15,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import com.google.common.base.Preconditions;
+import com.google.gson.Gson;
 
 /**
  * JAX-RS Integration Test.
@@ -30,6 +32,7 @@ import com.google.common.base.Preconditions;
 public class JaxRsIntegrationRunner {
     private static final Config config = ConfigFactory.load("application.conf");
     private static Runner runner = null;
+    private static Gson gson = new Gson();
 
     @BeforeClass
     public static void startServer() throws Exception {
@@ -49,7 +52,7 @@ public class JaxRsIntegrationRunner {
 
         CloseableHttpResponse rosterResp = client.execute(rosterGet);
 
-        Assert.assertThat("Non 200 status response received", rosterResp.getStatusLine().getStatusCode(), is(200));
+        assertThat("Non 200 status response received", rosterResp.getStatusLine().getStatusCode(), is(200));
         // TODO: Something to check that the returned page contains the text roster string.
     }
 
@@ -60,60 +63,34 @@ public class JaxRsIntegrationRunner {
         CloseableHttpClient client = HttpClients.createDefault();
 
         HttpPost studentPost = new HttpPost("http://localhost:8080/api/students/create");
-        // TODO: add some sort of automatic toJson() for the Student data object
-        StringEntity stringEntity = new StringEntity("{\"id\":\"12345\",\"name\":\"Billy Bob\"}");
+
+        Student student = Student.randomStudent();
+        StringEntity stringEntity = new StringEntity(gson.toJson(student));
         studentPost.setEntity(stringEntity);
         studentPost.setHeader("Content-type", "application/json");
 
         CloseableHttpResponse postResp = client.execute(studentPost);
 
-        Assert.assertThat("Non 201 (created) status response received", postResp.getStatusLine().getStatusCode(), is(201));
+        assertThat("Non 201 (created) status response received", postResp.getStatusLine().getStatusCode(), is(201));
         String studentKey = postResp.getFirstHeader("Student-Key").getValue();
-        Assert.assertThat("Empty Student-Key header", studentKey, notNullValue());
+        assertThat("Empty Student-Key header", studentKey, notNullValue());
 
         HttpGet studentGet = new HttpGet("http://localhost:8080/api/students/" + studentKey);
         CloseableHttpResponse getResp = client.execute(studentGet);
 
-        Assert.assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(200));
-        // TODO: add test that checks returned JSON object is valid
-
+        assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(200));
+        // TODO: Fix me
+        /*
+        Student retStudent = gson.fromJson(getResp.getEntity().toString(), Student.class);
+        assertThat("Student IDs are not equal", retStudent.getId(), is(student.getId()));
+        assertThat("Student names are not equal", retStudent.getName(), is(student.getName()));
+        */
     }
 
-/*
-
-
-    @Test
-    public void verifyServiceHealthy() throws IOException {
-        CloseableHttpClient client = HttpClients.createDefault();
-
-        HttpGet getStatus = new HttpGet("http://localhost:8080/status");
-
-        CloseableHttpResponse statusResp = client.execute(getStatus);
-
-        Assert.assertThat("Non 200 status response received", statusResp.getStatusLine().getStatusCode(), is(200));
-    }
-
-    @Test
-    public void verifyJaxRsGETAndParamsWorkAsAssumed() throws IOException {
-
-        CloseableHttpClient client = HttpClients.createDefault();
-
-        HttpGet getStatus = new HttpGet("http://localhost:8080/testing?url=http://input.com/long/url");
-
-        CloseableHttpResponse statusResp = client.execute(getStatus);
-
-        Assert.assertThat("Non 200 status response received", statusResp.getStatusLine().getStatusCode(), is(200));
-        Assert.assertThat("X-Testing-Orignal-URL header was not present in the response", statusResp.getFirstHeader("X-Testing-Orignal-URL").getValue(), is ("http://input.com/long/url"));
-        Assert.assertThat("Location header was not present in the response", statusResp.getFirstHeader("Location").getValue(), is ("http://g.og/shortened"));
-    }
-
-*/
 
     @AfterClass
     public static void stopServer() throws Exception {
         runner.stop();
     }
-
-
 
 }
