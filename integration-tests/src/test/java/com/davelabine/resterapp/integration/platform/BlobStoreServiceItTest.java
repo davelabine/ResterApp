@@ -1,6 +1,5 @@
 package com.davelabine.resterapp.integration.platform;
 
-import com.amazonaws.services.s3.model.Region;
 import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.service.BlobStoreService;

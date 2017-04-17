@@ -28,10 +28,9 @@ public class AwsModule extends AbstractModule {
     @Singleton
     @Inject
     AmazonS3 getAmazonS3Client(@Named("aws.conf") final Config awsConfig) {
-        AmazonS3 s3 = AmazonS3Client.builder()
+        return AmazonS3Client.builder()
                 .withCredentials(new ProfileCredentialsProvider())
                 .withRegion(awsConfig.getString("s3.region"))
                 .build();
-        return new AmazonS3Client(new ProfileCredentialsProvider());
     }
 }

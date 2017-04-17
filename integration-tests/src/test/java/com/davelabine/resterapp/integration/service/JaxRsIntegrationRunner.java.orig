@@ -18,9 +18,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import com.google.common.base.Preconditions;
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+=======
 import com.google.gson.Gson;
+>>>>>>> 458ddc598c2d0e52651f807651431f3085126319
 
 /**
  * JAX-RS Integration Test.

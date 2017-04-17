@@ -2,7 +2,6 @@ package com.davelabine.resterapp.integration.platform;
 
 
 import com.davelabine.resterapp.platform.api.model.Student;
-import org.hibernate.service.Service;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,13 +13,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.Transaction;
-import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,9 +33,7 @@ public class DaoStudentHbnItTest {
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbnItTest.class);
     private static final Configuration hbnConfig = new Configuration().configure("hibernate.cfg.xml");
 
-    //TODO: Cleanup
     private ServiceRegistry hbnServiceRegistry;
-
     private DaoStudent daoStudent;
 
 

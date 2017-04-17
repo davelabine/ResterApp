@@ -3,10 +3,6 @@ package com.davelabine.resterapp.integration.platform;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 /**
  * Created by dave on 3/3/17.
  */

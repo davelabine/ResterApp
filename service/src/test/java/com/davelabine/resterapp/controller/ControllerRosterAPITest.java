@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 /**
  * Created by davidl on 10/10/16.

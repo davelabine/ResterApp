@@ -1,0 +1,7 @@
+To debug tomcat...
+
+export JPDA_ADDRESS=5006
+export JPDA_TRANSPORT=dt_socket
+
+
+%TOMCAT_HOME%/bin/catalina.sh jpda start

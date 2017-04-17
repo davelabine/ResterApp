@@ -11,9 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.concurrent.ConcurrentHashMap;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.anyString;
@@ -68,9 +66,6 @@ public class StudentManagerTest {
 
         assertNotNull(key);
         //Assert.assertNotNull(student.getUrlPhoto());
-
-        // Used to verify unit tests are working correctly
-        // Assert.assertEquals("fun", "icepick-in-eye");
     }
 
     // Test the case where a student cannot be found in the student list
