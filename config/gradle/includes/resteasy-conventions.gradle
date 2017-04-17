@@ -4,11 +4,6 @@ ext {
 }
 
 configurations {
-    // Create new dependency configuration
-    // for dependencies to be added in
-    // WAR file.
-    //warLib.extendsFrom runtime
-
     all*.exclude group: 'javax.servlet', module: 'servlet-api'
     all*.exclude group: "javax.rs.ws", module: 'jsr311-api' //we don't want JSR311 jars- they are the wrong version.
 
@@ -35,8 +30,6 @@ dependencies {
 
     // API dependency for Slf4j.
     compile 'org.slf4j:slf4j-api:1.7.7'
-
-
 }
 
 war {

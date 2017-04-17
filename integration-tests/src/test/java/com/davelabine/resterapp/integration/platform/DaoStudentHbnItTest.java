@@ -43,8 +43,10 @@ public class DaoStudentHbnItTest {
         hbnConfig.addResource("hibernate.cfg.xml");
         SessionFactory sessionFactory = null;
         Session session = null;
-        String uname = System.getenv(DB_ENV_UNAME).replace("\r","");
-        String pw = System.getenv(DB_ENV_PW).replace("\r","");
+        //String uname = System.getenv(DB_ENV_UNAME).replace("\r","");
+        String uname = "ResterApp";
+        //String pw = System.getenv(DB_ENV_PW).replace("\r","");
+        String pw = "5mart-123";
 
         if (!uname.isEmpty() && !pw.isEmpty()) {
             hbnConfig.setProperty("hibernate.connection.username", uname);
