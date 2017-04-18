@@ -7,6 +7,8 @@ import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.util.Busywork;
 import com.google.inject.Singleton;
+import freemarker.template.TemplateException;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -104,8 +108,7 @@ public class ControllerStudentsAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
             @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
-            @PathParam("key")
-            String key) {
+            @PathParam("key") String key) {
         logger.info("Student:{} busyTime:{}", key, busyTime);
 
         if (key == null ) {
@@ -123,6 +126,31 @@ public class ControllerStudentsAPI {
 
         logger.info("Student found: {}", studentGet);
         return Response.ok().entity(studentGet).build();
+    }
+
+    @POST
+    @Path("{key}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateStudent(
+            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
+            @PathParam("key") String key,
+            Student student)
+            throws URISyntaxException {
+        logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
+
+        if ( (student == null) || (key == null)) {
+            logger.info("Student data not set");
+            return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+        }
+
+        Busywork.doBusyWork(busyTime);
+
+        // TODO: Add profile photo
+        student.setKey(key);
+        studentManager.updateStudent(student);
+
+        return Response.ok().build();
     }
 
     @POST

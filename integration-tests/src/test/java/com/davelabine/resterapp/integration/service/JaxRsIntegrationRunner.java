@@ -4,16 +4,19 @@ import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.apache.http.HttpStatus.*;
 
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,10 +35,16 @@ import com.google.gson.Gson;
  *     a. pass a flag parameter that instructs the controller to throw a mapped exception - then verify we see the status + body we expect.
  */
 public class JaxRsIntegrationRunner {
+    private static final String URI_BASE = "http://localhost:8080/api";
+    private static final String URI_ROSTER = URI_BASE + "/roster";
+    private static final String URI_STUDENTS = URI_BASE + "/students";
+    private static final String URI_STUDENTS_CREATE = URI_STUDENTS + "/create";
+
     private static final Logger logger = LoggerFactory.getLogger(JaxRsIntegrationRunner.class);
     private static final Config config = ConfigFactory.load("application.conf");
     private static Runner runner = null;
     private static Gson gson = new Gson();
+    private static CloseableHttpClient client = HttpClients.createDefault();
 
     @BeforeClass
     public static void startServer() throws Exception {
@@ -44,55 +53,59 @@ public class JaxRsIntegrationRunner {
 
         runner = new Runner(war_file);
         runner.start();
-
     }
 
     @Test
     public void verifyTextPlainRosters() throws IOException {
         logger.info("verifyTextPlainRosters()");
-        CloseableHttpClient client = HttpClients.createDefault();
 
-        HttpGet rosterGet = new HttpGet("http://localhost:8080/api/roster");
-
+        HttpGet rosterGet = new HttpGet(URI_ROSTER);
         CloseableHttpResponse rosterResp = client.execute(rosterGet);
-
-        assertThat("Non 200 status response received", rosterResp.getStatusLine().getStatusCode(), is(200));
-        // TODO: Something to check that the returned page contains the text roster string.
+        assertThat("Non 200 status response received", rosterResp.getStatusLine().getStatusCode(), is(SC_OK));
     }
 
     @Test
-    public void verifyStudentCreate() throws IOException {
-        logger.info("verifyStudentCreate()");
+    public void verifyStudentCRUD() throws IOException {
+        logger.info("verifyStudentCRUD()");
 
-        // Post student data, save the key, then do a GET on the key to make sure it is retrievable.
-        CloseableHttpClient client = HttpClients.createDefault();
+        // Create a random student and post it to the create URI
+        Student studentCreate = Student.randomStudent();
+        CloseableHttpResponse postResp = postStudent(URI_STUDENTS_CREATE, studentCreate);
+        assertThat("Unexpected create response", postResp.getStatusLine().getStatusCode(), is(SC_CREATED));
 
-        HttpPost studentPost = new HttpPost("http://localhost:8080/api/students/create");
-
-        Student student = Student.randomStudent();
-        StringEntity stringEntity = new StringEntity(gson.toJson(student));
-        studentPost.setEntity(stringEntity);
-        studentPost.setHeader("Content-type", "application/json");
-
-        CloseableHttpResponse postResp = client.execute(studentPost);
-
-        assertThat("Non 201 (created) status response received", postResp.getStatusLine().getStatusCode(), is(201));
         String studentKey = postResp.getFirstHeader("Student-Key").getValue();
         assertThat("Empty Student-Key header", studentKey, notNullValue());
 
-        HttpGet studentGet = new HttpGet("http://localhost:8080/api/students/" + studentKey);
-        CloseableHttpResponse getResp = client.execute(studentGet);
+        // Verify you can access the student in a subsequent get
+        Student studentGet = getStudent(studentKey);
+        assertThat("IDs for created student are not equal", studentGet.getId(), is(studentCreate.getId()));
+        assertThat("Names for created student are not equal", studentGet.getName(), is(studentCreate.getName()));
 
-        assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(200));
-        // TODO: Fix me
+        // Verify you can update the student
+        studentCreate.setName("Oderus Urungus");
+        postResp = postStudent(URI_STUDENTS + "/" + studentKey, studentCreate);
+        assertThat("Unexpected update response", postResp.getStatusLine().getStatusCode(), is(SC_OK));
+        studentGet = getStudent(studentKey);
+        assertThat("Names for updated student are not equal", studentGet.getName(), is(studentCreate.getName()));
 
-        String str = getResp.getEntity().toString();
-        logger.info("GetStudent returned {}", str);
-        /*
-        Student retStudent = gson.fromJson(str, Student.class);
-        assertThat("Student IDs are not equal", retStudent.getId(), is(student.getId()));
-        assertThat("Student names are not equal", retStudent.getName(), is(student.getName()));
-        */
+        // Delete the student
+
+    }
+
+    public CloseableHttpResponse postStudent(String uri, Student postStudent) throws IOException {
+        HttpPost post = new HttpPost(uri);
+        StringEntity stringEntity = new StringEntity(gson.toJson(postStudent));
+        post.setEntity(stringEntity);
+        post.setHeader("Content-type", "application/json");
+        return client.execute(post);
+    }
+
+    public Student getStudent(String key) throws IOException {
+        HttpGet get = new HttpGet(URI_STUDENTS + "/" + key);
+        CloseableHttpResponse getResp = client.execute(get);
+
+        assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(SC_OK));
+        return gson.fromJson(EntityUtils.toString(getResp.getEntity()), Student.class);
     }
 
 
