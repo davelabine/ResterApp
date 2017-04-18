@@ -18,3 +18,13 @@ task runIntegrationTests(type: Test, dependsOn: ":service:war") {
 
 test.dependsOn runIntegrationTests
 
+task testDebug(type: Test) {
+    jvmArgs '-Xdebug',
+            '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005'
+    test
+}
+
+configure(testDebug) {
+    group = 'verification'
+    description = 'run the test task with debug flags.'
+}
