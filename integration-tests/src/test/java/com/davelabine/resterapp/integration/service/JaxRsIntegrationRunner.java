@@ -44,7 +44,7 @@ public class JaxRsIntegrationRunner {
     private static final Config config = ConfigFactory.load("application.conf");
     private static Runner runner = null;
     private static Gson gson = new Gson();
-    private static CloseableHttpClient client = HttpClients.createDefault();
+    private static CloseableHttpClient client = null;
 
     @BeforeClass
     public static void startServer() throws Exception {
@@ -58,6 +58,7 @@ public class JaxRsIntegrationRunner {
     @Test
     public void verifyTextPlainRosters() throws IOException {
         logger.info("verifyTextPlainRosters()");
+        refreshHTTPClient();
 
         HttpGet rosterGet = new HttpGet(URI_ROSTER);
         CloseableHttpResponse rosterResp = client.execute(rosterGet);
@@ -67,6 +68,7 @@ public class JaxRsIntegrationRunner {
     @Test
     public void verifyStudentCRUD() throws IOException {
         logger.info("verifyStudentCRUD()");
+        refreshHTTPClient();
 
         // Create a random student and post it to the create URI
         Student studentCreate = Student.randomStudent();
@@ -92,6 +94,15 @@ public class JaxRsIntegrationRunner {
 
     }
 
+    public void closeHTTPClient() throws IOException {
+        if (client != null) { client.close(); } ;
+    }
+
+    public void refreshHTTPClient() throws IOException {
+        closeHTTPClient();
+        client = HttpClients.createDefault();
+    }
+
     public CloseableHttpResponse postStudent(String uri, Student postStudent) throws IOException {
         HttpPost post = new HttpPost(uri);
         StringEntity stringEntity = new StringEntity(gson.toJson(postStudent));
@@ -108,6 +119,41 @@ public class JaxRsIntegrationRunner {
         return gson.fromJson(EntityUtils.toString(getResp.getEntity()), Student.class);
     }
 
+    @Test
+    public void verifyStudentCreateBadParams() throws IOException {
+        logger.info("verifyStudentCreateBadParams()");
+        refreshHTTPClient();
+
+        // Create a null student
+        CloseableHttpResponse postResp = postNullStudent(URI_STUDENTS_CREATE);
+
+        assertThat("Unexpected create response", postResp.getStatusLine().getStatusCode(), is(SC_BAD_REQUEST));
+    }
+
+    @Test
+    public void verifyStudentUpdateBadParams() throws IOException {
+        logger.info("verifyStudentCreateBadParams()");
+        refreshHTTPClient();
+
+        // Update Student with no key
+        Student studentUpdate = Student.randomStudent();
+        CloseableHttpResponse postResp = postStudent(URI_STUDENTS, studentUpdate);
+        assertThat("Can't post a student with no key", postResp.getStatusLine().getStatusCode(), is(SC_METHOD_NOT_ALLOWED));
+
+        // Update a valid key, with a null student
+        postResp = postStudent(URI_STUDENTS_CREATE, studentUpdate);
+        String studentKey = postResp.getFirstHeader("Student-Key").getValue();
+        postResp = postNullStudent(URI_STUDENTS + "/" + studentKey);
+        assertThat("Can't post null student", postResp.getStatusLine().getStatusCode(), is(SC_BAD_REQUEST));
+    }
+
+    public CloseableHttpResponse postNullStudent(String uri) throws IOException {
+        HttpPost post = new HttpPost(uri);
+        StringEntity stringEntity = new StringEntity("");
+        post.setEntity(stringEntity);
+        post.setHeader("Content-type", "application/json");
+        return client.execute(post);
+    }
 
     @AfterClass
     public static void stopServer() throws Exception {

@@ -7,17 +7,16 @@ import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.util.Busywork;
 import com.google.inject.Singleton;
-import freemarker.template.TemplateException;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import static javax.ws.rs.core.Response.Status.*;
+import javax.validation.constraints.NotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -57,13 +56,13 @@ public class ControllerStudentsAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(
             @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
-            Student student)
+            @NotNull Student student)
             throws URISyntaxException {
         logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
 
-        if (student == null) {
-            logger.info("Student data not set");
-            return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+        if ( (student.getName() == null) || (student.getId() == null) ) {
+            logger.info("Student name or ID is null");
+            return Response.status(BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
         }
 
         Busywork.doBusyWork(busyTime);
@@ -108,40 +107,38 @@ public class ControllerStudentsAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
             @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
-            @PathParam("key") String key) {
+            @NotNull @PathParam("key") String key) {
         logger.info("Student:{} busyTime:{}", key, busyTime);
-
-        if (key == null ) {
-            logger.info("No ID set");
-            return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
-        }
 
         Busywork.doBusyWork(busyTime);
 
         Student studentGet = studentManager.getStudent(key);
         if (studentGet == null) {
             logger.info("Student not found");
-            return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(NOT_FOUND).type(MediaType.APPLICATION_JSON).build();
         }
 
         logger.info("Student found: {}", studentGet);
         return Response.ok().entity(studentGet).build();
     }
 
+    /**
+     * Update an existing resource.
+     */
     @POST
     @Path("{key}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateStudent(
             @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
-            @PathParam("key") String key,
-            Student student)
+            @NotNull @PathParam("key") String key,
+            @NotNull Student student)
             throws URISyntaxException {
         logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
 
-        if ( (student == null) || (key == null)) {
-            logger.info("Student data not set");
-            return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+        if ( (student.getName() == null) || (student.getId() == null) ) {
+            logger.info("Student name or ID is null");
+            return Response.status(BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
         }
 
         Busywork.doBusyWork(busyTime);
@@ -156,7 +153,7 @@ public class ControllerStudentsAPI {
     @POST
     @Path("/populate")
     public Response populate(
-            @QueryParam("num") int numToPopulate) {
+            @DefaultValue("1") @QueryParam("num") int numToPopulate) {
         logger.info("Populating {} students...", numToPopulate);
 
         studentManager.populateFakeData(numToPopulate);

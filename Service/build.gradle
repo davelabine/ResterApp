@@ -13,6 +13,7 @@ dependencies {
     compileOnly "org.projectlombok:lombok:1.16.10"
     compile 'org.freemarker:freemarker:2.3.23'
     compile 'ch.qos.logback:logback-classic:1.1.2'
+    compile 'org.jboss.resteasy:resteasy-validator-provider-11:3.0.12.Final'
 
     compile project(":platform")
     compile project(":platform-api")
@@ -20,5 +21,15 @@ dependencies {
     testCompile "org.mockito:mockito-core:+"
 }
 
+task testDebug(type: Test) {
+    jvmArgs '-Xdebug',
+            '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005'
+    test
+}
+
+configure(testDebug) {
+    group = 'verification'
+    description = 'run the test task with debug flags.'
+}
 
 

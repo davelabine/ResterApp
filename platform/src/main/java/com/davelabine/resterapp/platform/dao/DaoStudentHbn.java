@@ -73,7 +73,7 @@ public class DaoStudentHbn implements DaoStudent {
      * @return
      */
 
-    private void startTransaction() throws HibernateException {
+    private void startTransaction()  {
         try {
             session = hbnSessionFactory.getCurrentSession();
             transaction = session.getTransaction();
