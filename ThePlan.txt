@@ -3,25 +3,23 @@ TODOS:
 ** IN PRIORITY ORDER, WITH COMPLETED AT THE BOTTOM ***
 
 Handling POST of complex content types, storing to S3:
-- Implement a database backend on DynamoDB, with indexes to get students by name
-    - Look into Java: DynamoDBMapper
-    - Make sure to do interfaces and unit tests
-    - Hook into existing StudentManager classes
-    - Add something to the front page to list the first couple students and allow you to search for students.
 - Accept a student picture as part of the students POST endpoint, upload it to blob store (synchronously), and return
-the URL in GET.  May require implementing Multipart MIME
+the URL in GET.  Do with an HTML form first, then afterwards implement Multipart MIME
 - Figure out how to make the servlet respond to the request asynchronously (with a thread pool?) so we don't tie up a
 response thread from the serving container (eg Tomcat)
 - Figure out how to make the S3 code asynchronous with a thread pool.
 - More JMeter load tests to stress this.
 
-SQL Database
-- Make the students data a MySQL or similar table.
+Build a continuous integration server that automatically deploys to docker container hosting.
+
+Add Google ID authorization for accessing methods.
 
 Using SQS for batch processing of messages:
 - Use /rosters endpoint to post a OneRoster standard CSV that populates the /students endpoint
 - Develop a separate processor that reads from the queue and adds students using the /students endpoint
 - Might involve throwing data in a database somewhere to keep memory from blowing up.
+
+
 
 Logging and other Metrics?
 Adding an external Cache?
@@ -29,6 +27,10 @@ Adding an external Cache?
 - DONE Swagger docs?
 
 Basic AutoScaling App:
+- DONE Get simple manual deploy of ResterApp working on docker with Jetty.
+- DONE Add a basic Freemarker HTML front end with flows for add, list, update, delete students.
+- DONE Implement another database backend using Hibernate \ MySQL.  Ensure interfaces and unit tests in place.
+- DONE Implement a database backend on DynamoDB, with indexes to get students by name
 - DONE Figure out why index.jsp is not serving up
 - DONE Switch to integrated Gradle build
 - DONE Switch to RestEasy with Guice DI
@@ -48,14 +50,36 @@ Basic AutoScaling App:
 
 
 New questions:
-- How to manage checked and unchecked exceptions?  What are best practices for defining your own?
-- How to handle close() calls with JDBC classes?
-- What is the call chaining in java called?  Eg used w\ builders
-A: This is the builder pattern, look it up.
-- How to convert POJOs to JSON, etc for storage and re-hydration in the DB?
-Usually use a Jackson mapper.  Ravi will send a util file.
+
+
 
 Answered Questions:
+
+- When to use exception mappers?
+A: For large classes of exceptions specific to your app.  For example, auth exceptions, or 404s on resources.  If they
+need to be handled in a way specific to our app we can simply add a mapper that handles all of them in a similar way
+rather than replicating the same code for each endpoint.
+
+- How to handle close() calls with JDBC classes?
+A: Should be using templates for this.
+
+- How to manage checked and unchecked exceptions?  What are best practices for defining your own?
+A:
+    - Checked exceptions are recoverable error cases that clients should handle.  For example FileNotFound.  The client
+    must deal with these as a part of calling methods that throw these exceptions.  Either by declaring our method
+    throws the exception or by using a try | catch statement.
+    - Unchecked (runtime) exceptions are error conditions that don't normally come up - eg null pointers.  They don't
+     need to be dealt with.
+    - Guidance: if a client can reasonably be expected to deal with the exception (eg FileNotFound) then use checked
+    exception, otherwise use unchecked
+- How to convert POJOs to JSON, etc for storage and re-hydration in the DB?
+
+A: Usually use a Jackson mapper.  Ravi will send a util file.  Dave L: I implemented this in resteasy.  You can also use
+GSON to map this out without other framework depdencies.
+
+- What is the call chaining in java called?  Eg used w\ builders
+A: This is the builder pattern, look it up.
+
 - Is there a simple way to map collections of one type to another?  For example, Dynamo's ItemCollection to a regular
 List<mytype>?
 A: Dynamo has an object mapper, is that the best option?  Probably, although Ravi thinks they do something similar with
@@ -64,22 +88,27 @@ A: Dynamo has an object mapper, is that the best option?  Probably, although Rav
     - If it is a synchronous query, throw an exception back to the client (mapped to your interface class).
     - For transactions (asynchronous) can do retries (exponential backoff) and eventually the transaction fails.
     - For CS - get is synchronous, client POST is not (use SQS to )
+
 - How do you return a list of data in a DI friendly way?  Using new feels a little dirty...
 A: DI is primarily concerned with construction, to decouple dependencies between classes.  For basic collection classes
 new is fine.  You might use factor\@provides for something more involved with interfaces its own dependencies that need
 to be injected, etc.
+
 - How to do pagination in search APIs?  A query parameter w\ offset?  Do you store query results in memory or cache?
 A: A little depends on database.  In mongo use offset and limit.  Client can set offset and limit.  Just use query
 params.  All this is doing is giving cues to the index.  But some DBs like Dynamo require a scan to do pagination (!)
+
 - How to organize typesafe configs in code?  How to deal with multiple config files, and have the correct one selected
 when using DI?
 A: Typesafe is designed to work with a single large Config file that you pass around.  This should be fine for my
 purposes.
+
 - Re: @Provides: Wow.  How does it track which method to use, the return value?  That is, the S3 client method could be
 @Provides AmazonS3Client getSomeObject()
 A: Say if you have more than one method returning the same instance type, then Guice will throw errors saying an object
 of same instance type is already bound.  But if you have a need to say return more than one instance of same instance
 type then you will have to use @Named and bind based on the name.
+
 - Review how my library is organized.  How do we separate setup code like config and module vs actual implementation?
 What about API vs actual implementation.  I kept them in the same package under different namespaces for convenience,
 if I was doing this *for real* I would separate implementation into a different lib and wire in using Guice?
@@ -87,6 +116,7 @@ A: The idea with keeping API models \ interfaces seperate is that they can be in
 For example, if a client needs a POJO model object to do something slightly different or additional.
 You always want to keep config and DI code with the consumers of the library, not the library itself.  The lib should
 not know where its config comes from, or how its objects are created, that is a client concern.
+
 - What is the best way to model SQL data in java objects?  I am implementing a table of student info.  I'm thinking of
 using a DAO pattern.  I have a student POJO object already.  Implement an interface for how to get \ set students,
 StudentDAOImpl would actually implement this interface with MySQL or similar.  What are advantages of Repo pattern over
@@ -99,35 +129,47 @@ completely (even SQL->NoSQL) all you would have to do is implement the base repo
 model.  In other words, the base repo object and db implementations can be shared between projects and have minimal
 coupling to the application that implements them.
 Bottom line: it is fine to go with DAO to start.
+
 - Why builder pattern?  Advantages \ disadvantages.  Another name for Factory pattern?
 A: Makes it easier to enforce creation rules for objects, particularly when you have lengthy constructors where a base
 set of members need to be defined.  Look at how Lobok does Builders.  Also, you can chain together multiple calls.
+
 - How to get autocomplete fixed up in IntelliJ?
 A: Refresh Gradle configs in IntelliJ... :D
+
 - Explain gradle testCompile vs compile?  Compile is the group of dependencies you need for your app while testCompile
 are the dependencies only needed for test.  If you testCompile, the dependencies won't be available for the main app.
+
 - What is appropriate to store in a properties or config file?  Basically anything you'd want to be configurable, like
 names of your buckets, queues, regions, etc.  Timeouts.  That sort of thing.
+
 - What's with Web.xml and the Servlet 3.x spec?  Many of the tutorials configure this through code, but
 in CS we still seem to use Web.xml.  Why?  Force of habit, and some inconsistencies between Tomcat, Jetty.
 In other words Web.xml is more compatible and consistent between containers.
+
 - When is appropriate to inject dependencies? Generally use DI whenever you use "new" and only create POJOs on the
 stack.  DI automatically defers loading of dependencies to optimize startup.  Eg, Loads class files, but not objects
 until they are needed.
+
 - Explain how we wire up dependency injection via in CS (so I can mirror).  Use Servlet Context Listeners, which
 are the primary hook for when your app loads up - getModules is where the magic is for Guice.  Modules are def'ns
 for what beans get wired to which other beans, with a namespace.
+
 - Probably this will also involve standing up some configuration code, especially when I start
 introducing dependencies like S3 and SQS
+
 - Explain rules of thumb for code organization - generally across seams in your app - eg controllers (external
 endpoint def'n and communication), services which are business logic to do stuff, a Repo tier.
+
 - Good basic MVP project for all of this stuff is here:
 https://github.com/patrickianwilson/blog-testing-demonstration
+
 - Explain @Provides vs regular @Inject.  This implements the provider\factory pattern and is used when creating an
  object is very complex or not possible with the usual DI framework.  Allows you to create an instance (eg with new)
  or select an instance and return it to the framework.  @Inject is the opposite, it tells the framework to create your
  object and inject all of the dependencies it needs.
 objects you create with new to be added into the DI chain?  Why not just use a regular class?
+
 - What are advantages\disadvantages of concurrency model for Java vs other technologies like node.js?  Node.js and
 event-based programming makes everything asynchronous, which is actually pretty good in many cases since this improves
 utilization of a single process, allowing you to get the most out of it.  Complexity in spreading this across many cores
@@ -136,11 +178,13 @@ leverage lighter weight mechanisms like threads to implement concurrency.  It is
 a lot of complexity.  Using this method, the container (eg Tomcat) can scale across multiple cores in a system.  It also
 offers more advanced features like connection throttling that prevent the server from being bottlenecked on a single
 task as can happen with Node.js.
+
 - What's the best way to make a Java Servlet asynchronous?  There are typically only a limited number of request threads
 and these need to be treated like gold.  Ideally you only want these accepting and responding to requests, and not doing
 any grunt work.  Offloading the grunt work can be done with a request queue, put a job on the queue and have another
 process grab it.  Another way to do this is by making the servlet handler respond asynchronously.  That way, you can
 have bocking code in dependent services that is handled by a thread pool without tying up your main request threads.
+
 - How do you integration test a component that uses a DI framework to inject its dependencies?  Especially when
 you want to use the real objects (eg a database connection), and not mocks.  Can use the JUnit framework, and create\
 inject the dependencies by hand with new.  You can bootstrap the DI framework, but this is generally overkill and adds

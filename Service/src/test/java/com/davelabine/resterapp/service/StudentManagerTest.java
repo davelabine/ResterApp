@@ -49,6 +49,8 @@ public class StudentManagerTest {
     public void before() {
     }
 
+    // TODO: Beef these up once I add in photo handling.
+
     // Test that a key is returned when creating a student
     @Test
     public void testCreateStudent() {
