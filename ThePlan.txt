@@ -50,10 +50,15 @@ Basic AutoScaling App:
 
 
 New questions:
-
+- Discuss how generics work, and what the syntax means
 
 
 Answered Questions:
+
+    /* For Ravi:
+     * - What about automatically closing the tx?  AutoCloseable only seems appropriate for method-level.  Sessopm
+     * object lives with the object and needs to be closed before object is deleted.
+     */
 
 - When to use exception mappers?
 A: For large classes of exceptions specific to your app.  For example, auth exceptions, or 404s on resources.  If they

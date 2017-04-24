@@ -2,6 +2,8 @@ package com.davelabine.resterapp.integration.platform;
 
 
 import com.davelabine.resterapp.platform.api.model.Student;
+import com.davelabine.resterapp.platform.dao.HbnTxManager;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,6 +36,7 @@ public class DaoStudentHbnItTest {
 
 
     private ServiceRegistry hbnServiceRegistry;
+    private HbnTxManager hbnTxManager;
     private DaoStudent daoStudent;
 
 
@@ -56,12 +59,19 @@ public class DaoStudentHbnItTest {
 
         try {
             hbnServiceRegistry = new StandardServiceRegistryBuilder().applySettings(hbnConfig.getProperties()).build();
-            daoStudent = new DaoStudentHbn(hbnConfig, hbnServiceRegistry);
+            hbnTxManager = new HbnTxManager(hbnConfig, hbnServiceRegistry);
+            daoStudent = new DaoStudentHbn(hbnTxManager);
             daoStudent.initialize();
         } catch (Exception e) {
             logger.error("init exception: {}", e.getMessage());
         }
     }
+
+    /*
+    @After
+    public void after() {
+        hbnTxManager.close();
+    }*/
 
     @Test
     public void testCRUDStudentTable() {
@@ -91,7 +101,6 @@ public class DaoStudentHbnItTest {
             daoStudent.deleteStudent(student);
             Student deleteStudent = daoStudent.getStudent(key);
             assertNull(deleteStudent);
-
         } catch (Exception e) {
             // Log an exception
             logger.error("DB Exception: {}", e.getMessage());
@@ -106,5 +115,12 @@ public class DaoStudentHbnItTest {
             // Log an exception
             logger.error("DB Exception: {}", e.getMessage());
         }
+    }
+
+    @Test
+    public void testGetNullStudent() {
+        // Try to find a student that doesn't exist
+        Student fakeStudent = daoStudent.getStudent("FAKE_KEY");
+        int i=0;
     }
 }
