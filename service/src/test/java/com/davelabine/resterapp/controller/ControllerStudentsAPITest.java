@@ -3,8 +3,11 @@ package com.davelabine.resterapp.controller;
 import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
+import static com.davelabine.resterapp.controller.ControllerStudentsAPI.*;
 import static org.apache.http.HttpStatus.*;
 
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -44,50 +48,68 @@ public class ControllerStudentsAPITest {
     @Mock
     private StudentManager mockStudentManager;
 
+    @Mock
+    private MultipartFormDataInput formDataInput;
+
     @Before
     public void before() throws Exception {
 
     }
 
+    private void setupStudentFormPost(String id, String name) throws IOException {
+        reset(formDataInput);
+        doReturn(id).when(formDataInput).getFormDataPart(FORM_STUDENT_ID, String.class, null);
+        doReturn(name).when(formDataInput).getFormDataPart(FORM_STUDENT_NAME, String.class, null);
+    }
+
     @Test
-    public void postCreateStudentSuccess() throws URISyntaxException {
+    public void postCreateStudentSuccess() throws URISyntaxException, IOException {
+        setupStudentFormPost(FAKE_ID, FAKE_NAME);
         reset(mockStudentManager);
         doReturn(FAKE_KEY).when(mockStudentManager).createStudent(any(Student.class), nullable(InputStream.class));
 
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
-        Response response = underTest.create(0, fakeStudent);
+        Response response = underTest.create(formDataInput, 0);
         assertEquals(response.getStatus(), SC_CREATED);
         assertTrue(response.getLocation().toString().contains(FAKE_KEY));
     }
 
+
     @Test
-    public void postCreateStudentBadParams() throws URISyntaxException {
+    public void postCreateStudentBadParams() throws URISyntaxException, IOException {
         reset(mockStudentManager);
+
+        // Don't bother testing an empty form.
         // Null params is done for us by the framework, just test other object business logic
-        //Response response = underTest.create(0, null);
-        Response response = underTest.create(0, new Student(null, FAKE_NAME));
+
+        setupStudentFormPost(null, FAKE_NAME);
+        Response response = underTest.create(formDataInput, 0);
         assertEquals(response.getStatus(), SC_BAD_REQUEST);
-        response = underTest.create(0, new Student(FAKE_ID, null));
+
+        setupStudentFormPost(FAKE_NAME, null);
+        response = underTest.create(formDataInput, 0);
         assertEquals(response.getStatus(), SC_BAD_REQUEST);
     }
 
+
     @Test
-    public void postCreateStudentFailed() throws URISyntaxException {
+    public void postCreateStudentFailed() throws URISyntaxException, IOException {
         reset(mockStudentManager);
         doReturn(null).when(mockStudentManager).createStudent(any(Student.class), nullable(InputStream.class));
 
-        Student createStudent = new Student(FAKE_ID, FAKE_NAME);
-        Response response = underTest.create(0, createStudent);
+        setupStudentFormPost(FAKE_ID, FAKE_NAME);
+        Response response = underTest.create(formDataInput, 0);
         assertEquals(response.getStatus(), SC_SERVICE_UNAVAILABLE);
     }
 
     /* Make sure we bubble up exceptions on this method */
     @Test(expected = DaoException.class)
-    public void postCreateStudentException() throws URISyntaxException {
+    public void postCreateStudentException() throws URISyntaxException, IOException {
         reset(mockStudentManager);
-        Student student = Student.randomStudent();
-        when(mockStudentManager.createStudent(student, null)).thenThrow(new DaoException("Fake Exception!"));
-        mockStudentManager.createStudent(student, null);
+        setupStudentFormPost(FAKE_ID, FAKE_NAME);
+        when(mockStudentManager.createStudent(any(Student.class), null))
+                                    .thenThrow(new DaoException("Fake Exception!"));
+        underTest.create(formDataInput, 0);
     }
 
     /* No useful way to unit test this since code assumes success unless an exception is thrown.

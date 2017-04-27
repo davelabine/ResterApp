@@ -8,15 +8,19 @@ import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.util.Busywork;
 import com.google.inject.Singleton;
 
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static javax.ws.rs.core.Response.Status.*;
 import javax.validation.constraints.NotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -33,11 +37,15 @@ import java.util.List;
 @Path("/api/students")
 public class ControllerStudentsAPI {
     // TODO: get config working so I don't have to hardcode stuff like this
-    private static final String STUDENTS_ENDPOINT_BASE_PATH = "http://localhost:8080/resterapp/students/";
-    private static final String STUDENT_KEY_HEADER = "student-key";
+    public static final String STUDENTS_ENDPOINT_BASE_PATH = "http://localhost:8080/resterapp/students/";
+    public static final String STUDENT_KEY_HEADER = "student-key";
 
-    private static final String QUERY_PARAM_BUSYTIME = "busyTime";
-    private static final String QUERY_PARAM_NAME = "name";
+    public static final String QUERY_PARAM_BUSYTIME = "busyTime";
+    public static final String QUERY_PARAM_NAME = "name";
+
+    public static final String FORM_STUDENT_NAME = "name";
+    public static final String FORM_STUDENT_ID = "id";
+    public static final String FORM_STUDENT_PHOTO = "photo";
 
     private static final Logger logger = LoggerFactory.getLogger(ControllerStudentsAPI.class);
 
@@ -52,28 +60,44 @@ public class ControllerStudentsAPI {
      */
     @POST
     @Path("/create")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_HTML)
     public Response create(
-            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
-            @NotNull Student student)
-            throws URISyntaxException {
-        logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
+            @NotNull MultipartFormDataInput formDataInput,
+            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime)
+            throws IOException, URISyntaxException {
+        logger.info("Students/post busyTime:{} ", busyTime);
 
+        /*
+        long fileSize = 0;
+        HttpServletRequest request = JaxContextUtils.getHttpServletRequest();
+        if (request != null && request.getHeader(CONTENT_LENGTH) != null) {
+            fileSize = Long.valueOf(request.getHeader(CONTENT_LENGTH));
+
+            if (fileSize > ApiConstants.FILE_SIZE_LIMIT) {
+                logger.warn("too large of a file uploaded: " + fileSize + "/" + ApiConstants.FILE_SIZE_LIMIT);
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        } */
+
+        Student student = new Student(
+                formDataInput.getFormDataPart(FORM_STUDENT_ID, String.class, null),
+                formDataInput.getFormDataPart(FORM_STUDENT_NAME, String.class, null));
         if ( (student.getName() == null) || (student.getId() == null) ) {
             logger.info("Student name or ID is null");
             return Response.status(BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
         }
+        logger.info("Student:{} ", student);
 
-        Busywork.doBusyWork(busyTime);
+        InputStream in = formDataInput.getFormDataPart(FORM_STUDENT_PHOTO, InputStream.class, null);
 
-        // TODO: Add profile photo
-        String studentKey = studentManager.createStudent(student, null);
-
+        String studentKey = studentManager.createStudent(student, in);
         if (studentKey == null) {
             logger.error("Student create failed");
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
+
+        Busywork.doBusyWork(busyTime);
 
         URI retURI = new URI(STUDENTS_ENDPOINT_BASE_PATH + studentKey);
         logger.info("Student created successfully:{}", retURI.toString());
