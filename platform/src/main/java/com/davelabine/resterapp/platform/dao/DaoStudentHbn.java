@@ -63,8 +63,8 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public String createStudent(Student student) {
+        logger.info("createStudent {}", student);
         return hbnTxManager.processTx((studentTx, session) -> {
-            logger.info("createStudent {}",studentTx);
             session.save(studentTx);
             return studentTx.getKey();
         }, student);
@@ -77,8 +77,8 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public Student getStudent(String key) {
+        logger.info("getStudent {}", key);
         return hbnTxManager.processTx((keyTx, session) -> {
-            logger.info("getStudent {}", keyTx);
             Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_KEY");
             query.setString("key", key);
             return (Student) query.uniqueResult();
@@ -90,10 +90,11 @@ public class DaoStudentHbn implements DaoStudent {
      * @param A string prefix for the name to be queried for
      * @return A list of student objects, or null if no student was found.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public List<Student> getStudentByName(String name) {
+        logger.info("getStudentByName {}", name);
         return hbnTxManager.processTx((nameTx, session) -> {
-            logger.info("getStudentByName {}", name);
             Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_NAME_PARTIAL");
             query.setString("name", nameTx + "%");
             query.setMaxResults(10);
@@ -107,8 +108,8 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public void updateStudent(Student student) {
+        logger.info("updateStudent {}", student);
         hbnTxManager.processTx((studentTx, session) -> {
-            logger.info("updateStudent {}",studentTx);
             session.update(studentTx);
             return null;
         }, student);
@@ -120,8 +121,8 @@ public class DaoStudentHbn implements DaoStudent {
      */
     @Override
     public void deleteStudent(Student student) {
+        logger.info("deleteStudent {}",student);
         hbnTxManager.processTx((studentTx, session) -> {
-            logger.info("deleteStudent {}",studentTx);
             session.delete(studentTx);
             return null;
         }, student);

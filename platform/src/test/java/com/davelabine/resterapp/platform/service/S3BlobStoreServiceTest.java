@@ -6,7 +6,6 @@ import com.davelabine.resterapp.platform.api.model.BlobLocation;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,7 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import static org.mockito.Mockito.*;
-
+import static org.junit.Assert.*;
 
 
 /**
@@ -59,9 +58,9 @@ public class S3BlobStoreServiceTest {
         BlobData data = new BlobData(inputStream);
         //when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
         BlobLocation returned = underTest.putObject(data);
-        Assert.assertNotNull(returned);
-        Assert.assertNotNull(returned.getBucketName());
-        Assert.assertNotNull(returned.getKey());
+        assertNotNull(returned);
+        assertNotNull(returned.getBucketName());
+        assertNotNull(returned.getKey());
     }
 
     // Test that PutObject can handle exceptions appropriately
@@ -79,7 +78,7 @@ public class S3BlobStoreServiceTest {
         reset(mockS3);
         BlobData data = new BlobData(inputStream);
         when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonClientException("Fake Exception!"));
-        Assert.assertNull(underTest.putObject(data));
+        assertNull(underTest.putObject(data));
     }
 
     @Test
@@ -87,6 +86,6 @@ public class S3BlobStoreServiceTest {
         BlobLocation location = BlobLocation.builder()
                                     .bucketName(FAKE_BUCKET)
                                     .key(FAKE_KEY).build();
-        Assert.assertNotNull(underTest.getObjectUrl(location));
+        assertNotNull(underTest.getObjectUrl(location));
     }
 }

@@ -2,7 +2,6 @@ package com.davelabine.resterapp.platform.dao;
 
 import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.davelabine.resterapp.platform.api.model.Student;
-import org.hibernate.service.ServiceRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,44 +16,60 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
 
 /**
  * Created by davidl on 3/6/17.
  */
-//@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("unchecked")
 public class DaoStudentHbnTest {
-    public static final String FAKE_STUDENT_NAME = "FAKE_BUCKET";
-    public static final String FAKE_STUDENT_ID = "FAKE_ID";
+    public static final String FAKE_EXCEPTION = "Fake Exception!";
     public static final String FAKE_KEY = "FAKE_KEY";
 
-    /* Hm, this will be trickier than I thought...
     @InjectMocks
-    private DaoStudentHbn daoStudent;
+    private DaoStudentHbn underTest;
 
     @Mock
-    Configuration hbnConfig;
+    HbnTxManager hbnTxManager;
 
-    @Mock
-    ServiceRegistry hbnRegistry;
+    /*
+     * In general, we want to verify this class is passing exceptions back properly.
+     * Unit testing happy cases is basically unit testing Hibernate, so don't bother
+     * Instead, cover happy cases in our integration tests.
+     */
 
-    @Before
-    public void before() {
-
+    @Test(expected = DaoException.class)
+    public void testCreateStudentException() {
+        reset(hbnTxManager);
+        when(hbnTxManager.processTx(any(HbnTxManager.HbnTxFunction.class), any(Student.class))).
+                thenThrow(new DaoException(FAKE_EXCEPTION));
+        underTest.createStudent(Student.randomStudent());
     }
 
     @Test(expected = DaoException.class)
-    public void testcreateStudent() {
-        reset(hbnRegistry);
-
-        // Just a reference to delete when we implement for reals
-        BlobData data = new BlobData(FAKE_FILENAME);
-        when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
-        underTest.putObject(data); // Should throw an exception
-
-        Student student = new Student(FAKE_STUDENT_ID, FAKE_STUDENT_NAME);
-        String key = daoStudent.createStudent(student);
-
+    public void testGetStudentException() {
+        reset(hbnTxManager);
+        when(hbnTxManager.processTx(any(HbnTxManager.HbnTxFunction.class), any(String.class))).
+                thenThrow(new DaoException(FAKE_EXCEPTION));
+        underTest.getStudent(FAKE_KEY);
     }
-    */
+
+
+    @Test(expected = DaoException.class)
+    public void testUpdateStudentException() {
+        reset(hbnTxManager);
+        when(hbnTxManager.processTx(any(HbnTxManager.HbnTxFunction.class), any(Student.class))).
+                thenThrow(new DaoException(FAKE_EXCEPTION));
+        underTest.updateStudent(Student.randomStudent());
+    }
+
+    @Test(expected = DaoException.class)
+    public void testDeleteStudentException() {
+        reset(hbnTxManager);
+        when(hbnTxManager.processTx(any(HbnTxManager.HbnTxFunction.class), any(Student.class))).
+                thenThrow(new DaoException(FAKE_EXCEPTION));
+        underTest.deleteStudent(Student.randomStudent());
+    }
 
 }

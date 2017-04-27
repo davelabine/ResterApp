@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.service;
 
 import com.davelabine.resterapp.platform.api.dao.DaoStudent;
+import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.model.Student;
 
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.reset;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by dave on 10/1/16.
@@ -34,6 +36,7 @@ public class StudentManagerTest {
     public static final String FAKE_NAME = "FAKE_NAME";
     public static final String FAKE_BUCKET = "FAKE_BUCKET";
     public static final String FAKE_URL = "http://fake.url.com";
+    public static final String FAKE_EXCEPTION = "FAKE EXCEPTION!!!";
 
     @InjectMocks
     private StudentManager underTest;
@@ -64,20 +67,18 @@ public class StudentManagerTest {
 
         Student student = new Student(FAKE_ID, FAKE_NAME);
         doReturn(FAKE_KEY).when(mockDaoStudent).createStudent(any(Student.class));
+
         String key = underTest.createStudent(student, null);
 
         assertNotNull(key);
         //Assert.assertNotNull(student.getUrlPhoto());
     }
 
-    // Test the case where a student cannot be found in the student list
-    @Test
-    public void testGetStudentMissing() {
+    @Test(expected = DaoException.class)
+    public void testCreateStudentException()  {
         reset(mockDaoStudent);
-
-        // test a student that isn't present in the student list
-        doReturn(null).when(mockDaoStudent).getStudent(anyString());
-        assertNull(underTest.getStudent(FAKE_KEY));
+        when(mockDaoStudent.createStudent(any(Student.class))).thenThrow(new DaoException(FAKE_EXCEPTION));
+        mockDaoStudent.createStudent(Student.randomStudent());
     }
 
     // Test a case where a student is found in the student list
@@ -91,4 +92,16 @@ public class StudentManagerTest {
         assertEquals(FAKE_ID, studentGet.getId());
         assertEquals(FAKE_NAME, studentGet.getName());
     }
+
+    // Test the case where a student cannot be found in the student list
+    @Test
+    public void testGetStudentMissing() {
+        reset(mockDaoStudent);
+
+        // test a student that isn't present in the student list
+        doReturn(null).when(mockDaoStudent).getStudent(anyString());
+        assertNull(underTest.getStudent(FAKE_KEY));
+    }
+
+
 }

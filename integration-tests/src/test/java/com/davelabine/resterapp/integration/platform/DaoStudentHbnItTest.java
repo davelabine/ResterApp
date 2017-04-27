@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.integration.platform;
 
 
+import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.platform.dao.HbnTxManager;
 import org.junit.After;
@@ -43,7 +44,7 @@ public class DaoStudentHbnItTest {
     @Before
     public void before() {
         Configuration hbnConfig = new Configuration();
-        hbnConfig.addResource("hibernate.cfg.xml");
+        hbnConfig.configure("hibernate.cfg.xml");
         SessionFactory sessionFactory = null;
         Session session = null;
         String uname = System.getenv(DB_ENV_UNAME).replace("\r","");
@@ -67,6 +68,7 @@ public class DaoStudentHbnItTest {
         }
     }
 
+    // TODO: determine when we close the TxManager
     /*
     @After
     public void after() {
@@ -78,49 +80,50 @@ public class DaoStudentHbnItTest {
         // Test create and read
         Student student = Student.randomStudent();
 
-        try {
-            daoStudent.createStudent(student);
+        daoStudent.createStudent(student);
 
-            Student getStudent = daoStudent.getStudent(student.getKey());
-            assertEquals(student.getName(), getStudent.getName());
+        Student getStudent = daoStudent.getStudent(student.getKey());
+        assertEquals(student.getName(), getStudent.getName());
 
-            // Now verify we can get by name
-            List<Student> nameStudent = daoStudent.getStudentByName(student.getName());
-            assertTrue(nameStudent.stream().anyMatch(item -> student.getName().equals(item.getName())));
+        // Now verify we can get by name
+        List<Student> nameStudent = daoStudent.getStudentByName(student.getName());
+        assertTrue(nameStudent.stream().anyMatch(item -> student.getName().equals(item.getName())));
 
-            // Now verify we can update a student
-            student.setName("Oderus Urungus");
-            student.setId("123456");
-            daoStudent.updateStudent(student);
-            Student updateStudent = daoStudent.getStudent(student.getKey());
-            assertEquals(student.getName(), updateStudent.getName());
-            assertEquals(student.getId(), updateStudent.getId());
+        // Now verify we can update a student
+        student.setName("Oderus Urungus");
+        student.setId("123456");
+        daoStudent.updateStudent(student);
+        Student updateStudent = daoStudent.getStudent(student.getKey());
+        assertEquals(student.getName(), updateStudent.getName());
+        assertEquals(student.getId(), updateStudent.getId());
 
-            // Finally, delete the student
-            String key = student.getKey();
-            daoStudent.deleteStudent(student);
-            Student deleteStudent = daoStudent.getStudent(key);
-            assertNull(deleteStudent);
-        } catch (Exception e) {
-            // Log an exception
-            logger.error("DB Exception: {}", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testCreateNullStudent() {
-        try {
-            daoStudent.createStudent(null);
-        } catch (Exception e) {
-            // Log an exception
-            logger.error("DB Exception: {}", e.getMessage());
-        }
+        // Finally, delete the student
+        String key = student.getKey();
+        daoStudent.deleteStudent(student);
+        Student deleteStudent = daoStudent.getStudent(key);
+        assertNull(deleteStudent);
     }
 
     @Test
     public void testGetNullStudent() {
-        // Try to find a student that doesn't exist
-        Student fakeStudent = daoStudent.getStudent("FAKE_KEY");
-        int i=0;
+        assertNull(daoStudent.getStudent("FAKE_KEY"));
     }
+
+    @Test(expected = DaoException.class)
+    public void testCreateNullStudent() {
+        daoStudent.createStudent(null);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testUpdateNullStudent() {
+        daoStudent.updateStudent(null);
+    }
+
+    @Test(expected = DaoException.class)
+    public void testDeleteNullStudent() {
+        daoStudent.deleteStudent(null);
+    }
+
+
+
 }

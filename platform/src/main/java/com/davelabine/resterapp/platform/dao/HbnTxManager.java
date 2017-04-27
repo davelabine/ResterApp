@@ -36,7 +36,7 @@ public class HbnTxManager {
     }
 
     public void initialize() {
-        logger.info("Intialize");
+        logger.info("Initialize");
         try {
             hbnSessionFactory = hbnConfig.buildSessionFactory(hbnRegistry);
         } catch (HibernateException e) {
@@ -59,6 +59,11 @@ public class HbnTxManager {
     }
 
     public <A, R> R processTx(HbnTxFunction<A, R> func, A arg) {
+        if ( (func == null) || (arg == null) ) {
+            throw new DaoException("processTx null arg.");
+        }
+        logger.info("process {}", arg);
+
         R ret = null;
         Session session = null;
         Transaction transaction = null;
@@ -66,12 +71,11 @@ public class HbnTxManager {
             session = hbnSessionFactory.getCurrentSession();
             transaction = session.getTransaction();
             transaction.begin();
-            logger.info("process {}", arg);
             ret = func.apply(arg, session);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction.isActive()) { transaction.rollback(); }
-            throw new DaoException("processTx exception: ", e);
+            throw new DaoException("processTx hibernate exception: ", e);
         } finally {
             // When getCurrentSession is used, close() is handled automatically
             //session.close();
