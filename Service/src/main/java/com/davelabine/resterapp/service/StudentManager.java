@@ -16,7 +16,8 @@ import java.util.List;
  * Created by davidl on 9/29/16.
  */
 public class StudentManager {
-    private static String UPLOAD_FILE_NAME = "images/dave_monkey.jpg";
+    //TODO: Put this in config
+    private String DEFAULT_PHOTO_URL = "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg";
 
     private DaoStudent daoStudent;
     private BlobStoreService blobStore;
@@ -61,14 +62,11 @@ public class StudentManager {
     }
 
     public String getPhotoUrl(BlobLocation location) {
-        return "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg";
-        /*
         if (location == null) {
-            return "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg";
+            return DEFAULT_PHOTO_URL;
         } else {
             return blobStore.getObjectUrl(location);
         }
-        */
     }
 
     private BlobLocation putPhoto(InputStream inputStream) {

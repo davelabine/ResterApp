@@ -98,16 +98,7 @@ public class S3BlobStoreService implements BlobStoreService {
     }
 
     private String generateUniqueKey(BlobData data) {
-        String fileName = UUID.randomUUID().toString();
-
-        /*
-        int i = data.getFileName().lastIndexOf('.');
-        if (i > 0) {
-            fileName += data.getFileName().substring(i);
-        }
-        */
-
-        return  fileName;
+        return UUID.randomUUID().toString();
     }
 }
 

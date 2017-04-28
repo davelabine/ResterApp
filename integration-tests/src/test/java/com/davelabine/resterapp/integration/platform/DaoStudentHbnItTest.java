@@ -2,6 +2,7 @@ package com.davelabine.resterapp.integration.platform;
 
 
 import com.davelabine.resterapp.platform.api.exceptions.DaoException;
+import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.platform.dao.HbnTxManager;
 import org.junit.After;
@@ -33,6 +34,10 @@ import static org.junit.Assert.assertTrue;
 public class DaoStudentHbnItTest {
     private static final String DB_ENV_UNAME = "DB_ENV_UNAME";
     private static final String DB_ENV_PW = "DB_ENV_PW";
+
+    private static final String FAKE_BUCKET = "FAKE-BUCKET";
+    private static final String FAKE_KEY = "FAKE-KEY";
+
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbnItTest.class);
 
 
@@ -79,6 +84,7 @@ public class DaoStudentHbnItTest {
     public void testCRUDStudentTable() {
         // Test create and read
         Student student = Student.randomStudent();
+        student.setPhoto(BlobLocation.builder().bucketName(FAKE_BUCKET).key(FAKE_KEY).build());
 
         daoStudent.createStudent(student);
 
