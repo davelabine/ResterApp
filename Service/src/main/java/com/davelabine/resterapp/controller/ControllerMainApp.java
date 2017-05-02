@@ -2,18 +2,16 @@ package com.davelabine.resterapp.controller;
 
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
-import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
+
 import freemarker.template.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.naming.ldap.Control;
-import javax.print.attribute.standard.Media;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,9 +21,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Function;
 
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.davelabine.resterapp.module.FreemarkerModule;
@@ -112,23 +109,61 @@ public class ControllerMainApp {
             throws IOException, TemplateException, URISyntaxException {
         logger.info("createStudent()");
 
-        // TODO: input checking for null keys, ID and Name can be null though
-        Student newStudent = new Student(
+        Response response = parseStudentSubmission(null, multipart, (student, inputStream) -> {
+            studentManager.createStudent(student, inputStream);
+            String url = rootUrl + "id/" + student.getSkey();
+            logger.info("Redirecting to {}", url);
+            return Response.seeOther(new URI(url)).build();
+        });
+
+        return response;
+    }
+
+    @POST
+    @Path("id/{key}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_HTML)
+    public Response updateStudent(
+            @NotNull @PathParam("key") String key,
+            MultipartFormDataInput multipart)
+            throws IOException, TemplateException, URISyntaxException {
+        logger.info("updateStudent() - key: {}", key);
+
+        Response response = parseStudentSubmission(key, multipart, (student, inputStream) -> {
+            studentManager.updateStudent(student);
+            String url = rootUrl + "id/" + key;
+            logger.info("Redirecting to {}", url);
+            return Response.seeOther(new URI(url)).build();
+        });
+
+        return response;
+    }
+
+    @FunctionalInterface
+    interface StudentPostFunction {
+        public Response apply(Student student, InputStream in) throws URISyntaxException;
+    }
+
+    private Response parseStudentSubmission(String key,
+                                            MultipartFormDataInput multipart,
+                                            StudentPostFunction func)
+            throws IOException, URISyntaxException {
+        Student student = new Student(key,
                 multipart.getFormDataPart("id", String.class, null),
                 multipart.getFormDataPart("name", String.class, null));
+        if ( student.getId().isEmpty() || student.getName().isEmpty() ) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
+        // TODO: check size of submitted photo
         try {
             InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
-            studentManager.createStudent(newStudent, in);
+            return func.apply(student, in);
         } catch (IOException e) {
             logger.error("Error processing photo input stream: ", e.getMessage());
             // Have the exception handlers deal with this.
             throw e;
         }
-
-        String url = rootUrl + "id/" + newStudent.getSkey();
-        logger.info("Redirecting to {}", url);
-        return Response.seeOther(new URI(url)).build();
     }
 
     @GET
@@ -149,7 +184,7 @@ public class ControllerMainApp {
     @Path("id/{key}/")
     @Produces(MediaType.TEXT_HTML)
     public String getStudent(
-            @PathParam("key") String key)
+            @NotNull @PathParam("key") String key)
             throws IOException, TemplateException {
         logger.info("getStudent() - key: {}, edit: {}", key);
 
@@ -167,7 +202,7 @@ public class ControllerMainApp {
     @Path("id/{key}/edit")
     @Produces(MediaType.TEXT_HTML)
     public String getStudentEdit(
-            @PathParam("key") String key)
+            @NotNull @PathParam("key") String key)
             throws IOException, TemplateException {
         logger.info("getStudentEdit() - key: {}", key);
 
@@ -185,35 +220,6 @@ public class ControllerMainApp {
         root.put("deleteUrl", deleteUrl);
 
         return FreemarkerModule.ProcessTemplateUtil(fmConfig, root,"student-edit.ftl");
-    }
-
-    @POST
-    @Path("id/{key}")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_HTML)
-    public Response updateStudent(
-            @PathParam("key") String key,
-            MultipartFormDataInput multipart)
-            throws IOException, TemplateException, URISyntaxException {
-        logger.info("updateStudent() - key: {}", key);
-
-        // TODO: input checking for null keys, ID and Name can be null though
-        Student upStudent = new Student(key,
-                                    multipart.getFormDataPart("id", String.class, null),
-                                    multipart.getFormDataPart("name", String.class, null));
-
-        try {
-            InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
-        } catch (IOException e) {
-            logger.error("Error processing photo input stream: ", e.getMessage());
-            // Have the exception handlers deal with this.
-            throw e;
-        }
-
-        studentManager.updateStudent(upStudent);
-        String url = rootUrl + "id/" + key;
-        logger.info("Redirecting to {}", url);
-        return Response.seeOther(new URI(url)).build();
     }
 
     @POST

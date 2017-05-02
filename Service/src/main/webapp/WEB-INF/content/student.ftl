@@ -6,8 +6,8 @@
 
     <div>${student.name}</div>
     <div>${student.id}</div>
-    <div><img src="${photoUrl}" class="img-responsive"></div>
-    <div><button type="button" class="btn btn-primary" href="/edit">Edit</button></div>
+    <div><img src="${photoUrl}" class="img-thumbnail" style="width:25%" height="auto"></div>
+    <div><a type="button" class="btn btn-primary" href="${rootUrl}id/${student.skey}/edit">Edit</a></div>
 
 <#else> <!-- no student hash found -->
   <div> Student not found! </div>

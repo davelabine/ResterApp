@@ -15,7 +15,7 @@
       </div>
       <div class="form-group">
           <label for="photo">Photo: </label>
-          <div><img src="${photoUrl}" class="img-thumbnail" ></div>
+          <div><img src="${photoUrl}" class="img-thumbnail" style="width:25%" height="auto"></div>
           <input type="file" name="photo" accept="image/*"></input>
       </div>
         <button type="submit" class="btn btn-primary">Save</button>
