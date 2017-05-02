@@ -74,8 +74,12 @@ public class HbnTxManager {
             ret = func.apply(arg, session);
             transaction.commit();
         } catch (HibernateException e) {
-            if (transaction.isActive()) { transaction.rollback(); }
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             throw new DaoException("processTx hibernate exception: ", e);
+        } catch (RuntimeException e) {
+            int i=0;
         } finally {
             // When getCurrentSession is used, close() is handled automatically
             //session.close();

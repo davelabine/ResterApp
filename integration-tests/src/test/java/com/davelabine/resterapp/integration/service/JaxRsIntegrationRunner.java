@@ -55,6 +55,29 @@ public class JaxRsIntegrationRunner {
         runner.start();
     }
 
+    @AfterClass
+    public static void stopServer() throws Exception {
+        runner.stop();
+    }
+
+    public void closeHTTPClient() throws IOException {
+        if (client != null) { client.close(); } ;
+    }
+
+    public void refreshHTTPClient() throws IOException {
+        closeHTTPClient();
+        client = HttpClients.createDefault();
+    }
+
+    public CloseableHttpResponse postStudent(String uri, Student postStudent) throws IOException {
+        HttpPost post = new HttpPost(uri);
+        StringEntity stringEntity = new StringEntity(gson.toJson(postStudent));
+        post.setEntity(stringEntity);
+        post.setHeader("Content-type", "application/json");
+        return client.execute(post);
+    }
+
+
     @Test
     public void verifyTextPlainRosters() throws IOException {
         logger.info("verifyTextPlainRosters()");
@@ -94,23 +117,6 @@ public class JaxRsIntegrationRunner {
 
     }
 
-    public void closeHTTPClient() throws IOException {
-        if (client != null) { client.close(); } ;
-    }
-
-    public void refreshHTTPClient() throws IOException {
-        closeHTTPClient();
-        client = HttpClients.createDefault();
-    }
-
-    public CloseableHttpResponse postStudent(String uri, Student postStudent) throws IOException {
-        HttpPost post = new HttpPost(uri);
-        StringEntity stringEntity = new StringEntity(gson.toJson(postStudent));
-        post.setEntity(stringEntity);
-        post.setHeader("Content-type", "application/json");
-        return client.execute(post);
-    }
-
     public Student getStudent(String key) throws IOException {
         HttpGet get = new HttpGet(URI_STUDENTS + "/" + key);
         CloseableHttpResponse getResp = client.execute(get);
@@ -118,6 +124,7 @@ public class JaxRsIntegrationRunner {
         assertThat("Non 200 status response received", getResp.getStatusLine().getStatusCode(), is(SC_OK));
         return gson.fromJson(EntityUtils.toString(getResp.getEntity()), Student.class);
     }
+
 
     @Test
     public void verifyStudentCreateBadParams() throws IOException {
@@ -153,11 +160,6 @@ public class JaxRsIntegrationRunner {
         post.setEntity(stringEntity);
         post.setHeader("Content-type", "application/json");
         return client.execute(post);
-    }
-
-    @AfterClass
-    public static void stopServer() throws Exception {
-        runner.stop();
     }
 
 }

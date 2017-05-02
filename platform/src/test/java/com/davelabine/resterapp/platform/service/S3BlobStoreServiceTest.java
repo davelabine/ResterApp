@@ -83,9 +83,7 @@ public class S3BlobStoreServiceTest {
 
     @Test
     public void testGetUrl() {
-        BlobLocation location = BlobLocation.builder()
-                                    .bucketName(FAKE_BUCKET)
-                                    .key(FAKE_KEY).build();
+        BlobLocation location = new BlobLocation(FAKE_BUCKET, FAKE_KEY);
         assertNotNull(underTest.getObjectUrl(location));
     }
 }

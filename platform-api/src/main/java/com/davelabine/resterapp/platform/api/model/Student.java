@@ -1,6 +1,5 @@
 package com.davelabine.resterapp.platform.api.model;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -12,21 +11,21 @@ import java.util.Random;
 /**
  * Created by davidl on 9/29/16.
  */
-@Entity(name = "student")
+@Entity(name = "Student")
 @Table(name = "T_STUDENT")
 @NamedQueries({
-        @NamedQuery(name = "HQL_GET_STUDENT_BY_KEY", query = "![CDATA[from Student where key = :key]]"),
-        @NamedQuery(name = "HQL_GET_STUDENT_BY_NAME_PARTIAL", query = "![CDATA[from Student where name like :name order by name asc ]]")
+        @NamedQuery(name = "HQL_GET_STUDENT_BY_KEY", query = "from Student where skey = :skey"),
+        @NamedQuery(name = "HQL_GET_STUDENT_BY_NAME_PARTIAL", query = "from Student where name like :name order by name asc")
 })
 public class Student {
 
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy="uuid")
-    @Column(columnDefinition = "CHAR(32)")
+    @Column(name="STUDENT_KEY", columnDefinition = "CHAR(32)")
     @Id
     @Getter
     @Setter
-    protected String key;
+    protected String skey;
 
     @Column(name="STUDENT_ID")
     @Getter
@@ -38,7 +37,7 @@ public class Student {
     @Setter
     protected String name;
 
-    @Transient
+    @Embedded
     @Getter
     @Setter
     protected BlobLocation photo;
@@ -51,7 +50,7 @@ public class Student {
     }
 
     public Student(String key, String id, String name) {
-        this.key = key;
+        this.skey = key;
         this.id = id;
         this.name = name;
     }

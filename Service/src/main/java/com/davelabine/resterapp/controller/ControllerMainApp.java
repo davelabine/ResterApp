@@ -126,7 +126,7 @@ public class ControllerMainApp {
             throw e;
         }
 
-        String url = rootUrl + "id/" + newStudent.getKey();
+        String url = rootUrl + "id/" + newStudent.getSkey();
         logger.info("Redirecting to {}", url);
         return Response.seeOther(new URI(url)).build();
     }

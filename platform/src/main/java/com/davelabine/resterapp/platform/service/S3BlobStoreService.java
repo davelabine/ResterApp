@@ -38,9 +38,9 @@ public class S3BlobStoreService implements BlobStoreService {
     @Override
     public BlobLocation putObject(BlobData data) {
         logger.info("data: {}", data);
-        BlobLocation blobLocation = BlobLocation.builder()
-                                        .bucketName(awsConfig.getString("s3.bucket"))
-                                        .key(generateUniqueKey(data)).build();
+        BlobLocation blobLocation = new BlobLocation(
+                                        awsConfig.getString("s3.bucket"),
+                                        generateUniqueKey(data));
         try {
             //ObjectMetadata metadata = new ObjectMetadata()
             PutObjectRequest putReq = new PutObjectRequest(awsConfig.getString("s3.bucket"),

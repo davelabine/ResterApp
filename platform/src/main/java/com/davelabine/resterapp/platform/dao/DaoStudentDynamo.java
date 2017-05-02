@@ -156,7 +156,7 @@ public class DaoStudentDynamo implements DaoStudent {
     @Override
     public String createStudent(Student student)
     {
-        student.setKey(createKey());
+        student.setSkey(createKey());
         logger.info("createStudent {}", student);
 
         Table table = dynamoDB.getTable(tableName);
@@ -165,7 +165,7 @@ public class DaoStudentDynamo implements DaoStudent {
         try {
             logger.info("Adding a new item...");
             PutItemOutcome outcome = table.putItem(new Item()
-                    .withPrimaryKey(DB_KEY, student.getKey())
+                    .withPrimaryKey(DB_KEY, student.getSkey())
                     .withString(DB_NAME, student.getName())
                     .withString(DB_ID, student.getId())
                     .withString(DB_VERSION, DB_VERSION_VALUE));
@@ -175,7 +175,7 @@ public class DaoStudentDynamo implements DaoStudent {
             throw new DaoException("Unable to add studentt: " + student.toString(), e);
         }
 
-        return student.getKey();
+        return student.getSkey();
     }
 
     @Override
@@ -206,7 +206,7 @@ public class DaoStudentDynamo implements DaoStudent {
 
         // TODO: Yuck.  We definitely need some sort of JSON conversion...
         Student ret = new Student();
-        ret.setKey(item.getString(DB_KEY));
+        ret.setSkey(item.getString(DB_KEY));
         ret.setName(item.getString(DB_NAME));
         ret.setId(item.getString(DB_ID));
         //ret.setPhoto(outcome.get);
@@ -245,11 +245,11 @@ public class DaoStudentDynamo implements DaoStudent {
 
     @Override
     public void updateStudent(Student student) throws DaoException {
-        logger.info("updateStudent: {}", student.getKey());
+        logger.info("updateStudent: {}", student.getSkey());
         Table table = dynamoDB.getTable(tableName);
 
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
-                .withPrimaryKey(DB_KEY, student.getKey())
+                .withPrimaryKey(DB_KEY, student.getSkey())
                 .withUpdateExpression("set #n=:n, " + DB_ID + "=:i")
                 .withNameMap(new NameMap()
                         .with("#n", DB_NAME))
@@ -273,7 +273,7 @@ public class DaoStudentDynamo implements DaoStudent {
         Table table = dynamoDB.getTable(tableName);
 
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withPrimaryKey(DB_KEY, delete.getKey());
+                .withPrimaryKey(DB_KEY, delete.getSkey());
 
         try {
             logger.info("Attempting to delete...");

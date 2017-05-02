@@ -84,11 +84,10 @@ public class DaoStudentHbnItTest {
     public void testCRUDStudentTable() {
         // Test create and read
         Student student = Student.randomStudent();
-        student.setPhoto(BlobLocation.builder().bucketName(FAKE_BUCKET).key(FAKE_KEY).build());
+        student.setPhoto(new BlobLocation(FAKE_BUCKET, FAKE_KEY));
 
         daoStudent.createStudent(student);
-
-        Student getStudent = daoStudent.getStudent(student.getKey());
+        Student getStudent = daoStudent.getStudent(student.getSkey());
         assertEquals(student.getName(), getStudent.getName());
 
         // Now verify we can get by name
@@ -99,16 +98,17 @@ public class DaoStudentHbnItTest {
         student.setName("Oderus Urungus");
         student.setId("123456");
         daoStudent.updateStudent(student);
-        Student updateStudent = daoStudent.getStudent(student.getKey());
+        Student updateStudent = daoStudent.getStudent(student.getSkey());
         assertEquals(student.getName(), updateStudent.getName());
         assertEquals(student.getId(), updateStudent.getId());
 
         // Finally, delete the student
-        String key = student.getKey();
+        String key = student.getSkey();
         daoStudent.deleteStudent(student);
         Student deleteStudent = daoStudent.getStudent(key);
         assertNull(deleteStudent);
     }
+
 
     @Test
     public void testGetNullStudent() {
@@ -129,7 +129,5 @@ public class DaoStudentHbnItTest {
     public void testDeleteNullStudent() {
         daoStudent.deleteStudent(null);
     }
-
-
 
 }

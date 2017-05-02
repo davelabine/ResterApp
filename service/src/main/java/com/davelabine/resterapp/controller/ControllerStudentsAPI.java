@@ -168,7 +168,7 @@ public class ControllerStudentsAPI {
         Busywork.doBusyWork(busyTime);
 
         // TODO: Add profile photo
-        student.setKey(key);
+        student.setSkey(key);
         studentManager.updateStudent(student);
 
         return Response.ok().build();

@@ -107,7 +107,7 @@ public class ControllerStudentsAPITest {
     public void postCreateStudentException() throws URISyntaxException, IOException {
         reset(mockStudentManager);
         setupStudentFormPost(FAKE_ID, FAKE_NAME);
-        when(mockStudentManager.createStudent(any(Student.class), null))
+        when(mockStudentManager.createStudent(any(Student.class), nullable(InputStream.class)))
                                     .thenThrow(new DaoException("Fake Exception!"));
         underTest.create(formDataInput, 0);
     }
@@ -135,7 +135,7 @@ public class ControllerStudentsAPITest {
     public void postUpdateStudentException() throws URISyntaxException {
         reset(mockStudentManager);
         Student student = Student.randomStudent();
-        student.setKey(FAKE_KEY);
+        student.setSkey(FAKE_KEY);
         Mockito.doThrow(new DaoException("Fake Exception!")).when(mockStudentManager).updateStudent(student);
         mockStudentManager.updateStudent(student);
     }
@@ -144,14 +144,14 @@ public class ControllerStudentsAPITest {
     public void getStudent() throws URISyntaxException {
         reset(mockStudentManager);
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
-        fakeStudent.setKey(FAKE_KEY);
+        fakeStudent.setSkey(FAKE_KEY);
         doReturn(fakeStudent).when(mockStudentManager).getStudent(anyString());
 
         Response response = underTest.get(0, FAKE_KEY);
         assertEquals(response.getStatus(), SC_OK);
 
         Student responseStudent = (Student)response.getEntity();
-        assertEquals(responseStudent.getKey(), FAKE_KEY);
+        assertEquals(responseStudent.getSkey(), FAKE_KEY);
         assertEquals(responseStudent.getId(), FAKE_ID);
         assertEquals(responseStudent.getName(), FAKE_NAME);
     }

@@ -66,7 +66,7 @@ public class DaoStudentHbn implements DaoStudent {
         logger.info("createStudent {}", student);
         return hbnTxManager.processTx((studentTx, session) -> {
             session.save(studentTx);
-            return studentTx.getKey();
+            return studentTx.getSkey();
         }, student);
     }
 
@@ -76,13 +76,13 @@ public class DaoStudentHbn implements DaoStudent {
      * @return A Student object, or null if Student is not found.
      */
     @Override
-    public Student getStudent(String key) {
-        logger.info("getStudent {}", key);
+    public Student getStudent(String skey) {
+        logger.info("getStudent {}", skey);
         return hbnTxManager.processTx((keyTx, session) -> {
             Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_KEY");
-            query.setString("key", key);
+            query.setString("skey", skey);
             return (Student) query.uniqueResult();
-        }, key);
+        }, skey);
     }
 
     /**
