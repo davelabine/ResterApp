@@ -28,7 +28,8 @@
         <!-- Don't bother with this for now, I want to populate a few records in test. -->
         <property name="hbm2ddl.auto">create</property>
 
-        <!-- Object mappings file -->
-        <mapping resource="resterapp.hbm.xml"></mapping>
+        <!-- Object mappings file
+        <mapping resource="resterapp.hbm.xml"></mapping> -->
+        <mapping class="com.davelabine.resterapp.platform.api.model.Student"/>
 </session-factory>
 </hibernate-configuration>

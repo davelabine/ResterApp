@@ -17,8 +17,6 @@ task runIntegrationTests(type: Test, dependsOn: ":service:war") {
     systemProperty('WAR_FILE', project(":service").getBuildDir().getAbsolutePath() + "/libs/service-1.0.1-SNAPSHOT.war")
 }
 
-test.dependsOn runIntegrationTests
-
 task testDebug(type: Test) {
     jvmArgs '-Xdebug',
             '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005'

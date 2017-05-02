@@ -3,26 +3,42 @@ package com.davelabine.resterapp.platform.api.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 
 import java.util.Random;
 
 /**
  * Created by davidl on 9/29/16.
  */
+@Entity(name = "student")
+@Table(name = "T_STUDENT")
+@NamedQueries({
+        @NamedQuery(name = "HQL_GET_STUDENT_BY_KEY", query = "![CDATA[from Student where key = :key]]"),
+        @NamedQuery(name = "HQL_GET_STUDENT_BY_NAME_PARTIAL", query = "![CDATA[from Student where name like :name order by name asc ]]")
+})
 public class Student {
 
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy="uuid")
+    @Column(columnDefinition = "CHAR(32)")
+    @Id
     @Getter
     @Setter
     protected String key;
 
+    @Column(name="STUDENT_ID")
     @Getter
     @Setter
     protected String id;
 
+    @Column(name="STUDENT_NAME")
     @Getter
     @Setter
     protected String name;
 
+    @Transient
     @Getter
     @Setter
     protected BlobLocation photo;
