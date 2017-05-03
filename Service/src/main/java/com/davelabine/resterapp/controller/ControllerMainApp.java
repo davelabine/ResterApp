@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -27,6 +29,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.davelabine.resterapp.module.FreemarkerModule;
 
+import static com.davelabine.resterapp.util.JaxContextUtils.getContentLength;
 
 
 /**
@@ -104,17 +107,18 @@ public class ControllerMainApp {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
-    public Response createStudent(
+    public Response createStudent(@Context HttpServletRequest request,
             MultipartFormDataInput multipart)
             throws IOException, TemplateException, URISyntaxException {
         logger.info("createStudent()");
 
-        Response response = parseStudentSubmission(null, multipart, (student, inputStream) -> {
-            studentManager.createStudent(student, inputStream);
-            String url = rootUrl + "id/" + student.getSkey();
-            logger.info("Redirecting to {}", url);
-            return Response.seeOther(new URI(url)).build();
-        });
+        Response response = parseStudentSubmission(null, multipart, getContentLength(request),
+                (student, inputStream) -> {
+                    studentManager.createStudent(student, inputStream);
+                    String url = rootUrl + "id/" + student.getSkey();
+                    logger.info("Redirecting to {}", url);
+                    return Response.seeOther(new URI(url)).build();
+                });
 
         return response;
     }
@@ -123,18 +127,19 @@ public class ControllerMainApp {
     @Path("id/{key}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
-    public Response updateStudent(
+    public Response updateStudent(@Context HttpServletRequest request,
             @NotNull @PathParam("key") String key,
             MultipartFormDataInput multipart)
             throws IOException, TemplateException, URISyntaxException {
         logger.info("updateStudent() - key: {}", key);
 
-        Response response = parseStudentSubmission(key, multipart, (student, inputStream) -> {
-            studentManager.updateStudent(student);
-            String url = rootUrl + "id/" + key;
-            logger.info("Redirecting to {}", url);
-            return Response.seeOther(new URI(url)).build();
-        });
+        Response response = parseStudentSubmission(key, multipart, getContentLength(request),
+                (student, inputStream) -> {
+                    studentManager.updateStudent(student);
+                    String url = rootUrl + "id/" + key;
+                    logger.info("Redirecting to {}", url);
+                    return Response.seeOther(new URI(url)).build();
+                });
 
         return response;
     }
@@ -146,8 +151,16 @@ public class ControllerMainApp {
 
     private Response parseStudentSubmission(String key,
                                             MultipartFormDataInput multipart,
+                                            long lContentLength,
                                             StudentPostFunction func)
             throws IOException, URISyntaxException {
+
+        long lMaxSize = appConfig.getLong("Api.max-photo-size");
+        if (lContentLength > lMaxSize) {
+            logger.warn("too large of a file uploaded: " + lContentLength + "/" + lMaxSize);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         Student student = new Student(key,
                 multipart.getFormDataPart("id", String.class, null),
                 multipart.getFormDataPart("name", String.class, null));
@@ -155,7 +168,6 @@ public class ControllerMainApp {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        // TODO: check size of submitted photo
         try {
             InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
             return func.apply(student, in);

@@ -5,7 +5,9 @@ import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
 import static com.davelabine.resterapp.controller.ControllerStudentsAPI.*;
 import static org.apache.http.HttpStatus.*;
+import static javax.ws.rs.core.HttpHeaders.*;
 
+import com.typesafe.config.Config;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.junit.Before;
@@ -17,6 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +45,10 @@ public class ControllerStudentsAPITest {
     public static final String FAKE_ID = "FAKE_ID";
     public static final String FAKE_NAME = "FAKE_NAME";
 
+    public static final String FAKE_SIZE = "1000";
+    public static final String FAKE_SIZE_TOO_BIG = "3000";
+    public static final long FAKE_SIZE_LIMIT = 2000; //bytes
+
     @InjectMocks
     private ControllerStudentsAPI underTest;
 
@@ -49,15 +56,22 @@ public class ControllerStudentsAPITest {
     private StudentManager mockStudentManager;
 
     @Mock
+    private Config appConfig;
+
+    @Mock
     private MultipartFormDataInput formDataInput;
+
+    @Mock
+    private HttpServletRequest request;
 
     @Before
     public void before() throws Exception {
-
     }
 
     private void setupStudentFormPost(String id, String name) throws IOException {
         reset(formDataInput);
+        doReturn(FAKE_SIZE).when(request).getHeader(CONTENT_LENGTH);
+        doReturn(FAKE_SIZE_LIMIT).when(appConfig).getLong("Api.max-photo-size");
         doReturn(id).when(formDataInput).getFormDataPart(FORM_STUDENT_ID, String.class, null);
         doReturn(name).when(formDataInput).getFormDataPart(FORM_STUDENT_NAME, String.class, null);
     }
@@ -69,7 +83,7 @@ public class ControllerStudentsAPITest {
         doReturn(FAKE_KEY).when(mockStudentManager).createStudent(any(Student.class), nullable(InputStream.class));
 
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
-        Response response = underTest.create(formDataInput, 0);
+        Response response = underTest.create(request, formDataInput, 0);
         assertEquals(response.getStatus(), SC_CREATED);
         assertTrue(response.getLocation().toString().contains(FAKE_KEY));
     }
@@ -83,11 +97,11 @@ public class ControllerStudentsAPITest {
         // Null params is done for us by the framework, just test other object business logic
 
         setupStudentFormPost(null, FAKE_NAME);
-        Response response = underTest.create(formDataInput, 0);
+        Response response = underTest.create(request, formDataInput, 0);
         assertEquals(response.getStatus(), SC_BAD_REQUEST);
 
         setupStudentFormPost(FAKE_NAME, null);
-        response = underTest.create(formDataInput, 0);
+        response = underTest.create(request, formDataInput, 0);
         assertEquals(response.getStatus(), SC_BAD_REQUEST);
     }
 
@@ -98,8 +112,18 @@ public class ControllerStudentsAPITest {
         doReturn(null).when(mockStudentManager).createStudent(any(Student.class), nullable(InputStream.class));
 
         setupStudentFormPost(FAKE_ID, FAKE_NAME);
-        Response response = underTest.create(formDataInput, 0);
+        Response response = underTest.create(request, formDataInput, 0);
         assertEquals(response.getStatus(), SC_SERVICE_UNAVAILABLE);
+    }
+
+    @Test
+    public void postCreateStudentPhotoTooBig() throws URISyntaxException, IOException {
+        reset(mockStudentManager);
+
+        setupStudentFormPost(FAKE_ID, FAKE_NAME);
+        doReturn(FAKE_SIZE_TOO_BIG).when(request).getHeader(CONTENT_LENGTH);
+        Response response = underTest.create(request, formDataInput, 0);
+        assertEquals(response.getStatus(), SC_BAD_REQUEST);
     }
 
     /* Make sure we bubble up exceptions on this method */
@@ -109,7 +133,7 @@ public class ControllerStudentsAPITest {
         setupStudentFormPost(FAKE_ID, FAKE_NAME);
         when(mockStudentManager.createStudent(any(Student.class), nullable(InputStream.class)))
                                     .thenThrow(new DaoException("Fake Exception!"));
-        underTest.create(formDataInput, 0);
+        underTest.create(request, formDataInput, 0);
     }
 
     /* No useful way to unit test this since code assumes success unless an exception is thrown.

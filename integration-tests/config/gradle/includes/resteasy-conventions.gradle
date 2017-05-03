@@ -26,7 +26,6 @@ dependencies {
 
     compile "ch.qos.logback:logback-core:$LOGBACK_VERSION"
     compile "ch.qos.logback:logback-classic:$LOGBACK_VERSION"
-
 }
 
 

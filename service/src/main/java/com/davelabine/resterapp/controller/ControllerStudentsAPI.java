@@ -6,16 +6,22 @@ package com.davelabine.resterapp.controller;
 import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.util.Busywork;
+import com.davelabine.resterapp.util.JaxContextUtils;
 import com.google.inject.Singleton;
 
+import com.typesafe.config.Config;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import static com.davelabine.resterapp.util.JaxContextUtils.*;
 import static javax.ws.rs.core.Response.Status.*;
 import javax.validation.constraints.NotNull;
 
@@ -36,10 +42,6 @@ import java.util.List;
 // We only want one instance shared across all servlet threads to make more efficient use of memory.
 @Path("/api/students")
 public class ControllerStudentsAPI {
-    // TODO: get config working so I don't have to hardcode stuff like this
-    public static final String STUDENTS_ENDPOINT_BASE_PATH = "http://localhost:8080/resterapp/students/";
-    public static final String STUDENT_KEY_HEADER = "student-key";
-
     public static final String QUERY_PARAM_BUSYTIME = "busyTime";
     public static final String QUERY_PARAM_NAME = "name";
 
@@ -49,8 +51,15 @@ public class ControllerStudentsAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(ControllerStudentsAPI.class);
 
+    private final Config appConfig;
+    private final StudentManager studentManager;
+
     @Inject
-    private StudentManager studentManager;
+    public ControllerStudentsAPI(@Named("application.conf") final Config appConfig,
+                             final StudentManager studentManager) {
+        this.appConfig = appConfig;
+        this.studentManager = studentManager;
+    }
 
     /**
      * Method for creating students.
@@ -62,30 +71,25 @@ public class ControllerStudentsAPI {
     @Path("/create")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
-    public Response create(
+    public Response create(@Context HttpServletRequest request,
             @NotNull MultipartFormDataInput formDataInput,
             @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime)
             throws IOException, URISyntaxException {
         logger.info("Students/post busyTime:{} ", busyTime);
 
-        /*
-        long fileSize = 0;
-        HttpServletRequest request = JaxContextUtils.getHttpServletRequest();
-        if (request != null && request.getHeader(CONTENT_LENGTH) != null) {
-            fileSize = Long.valueOf(request.getHeader(CONTENT_LENGTH));
-
-            if (fileSize > ApiConstants.FILE_SIZE_LIMIT) {
-                logger.warn("too large of a file uploaded: " + fileSize + "/" + ApiConstants.FILE_SIZE_LIMIT);
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
-        } */
+        long lMaxSize = appConfig.getLong("Api.max-photo-size");
+        long lContentLength = getContentLength(request);
+        if (lContentLength > lMaxSize) {
+            logger.warn("too large of a file uploaded: " + lContentLength+ "/" + lMaxSize);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         Student student = new Student(
                 formDataInput.getFormDataPart(FORM_STUDENT_ID, String.class, null),
                 formDataInput.getFormDataPart(FORM_STUDENT_NAME, String.class, null));
         if ( (student.getName() == null) || (student.getId() == null) ) {
             logger.info("Student name or ID is null");
-            return Response.status(BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(BAD_REQUEST).build();
         }
         logger.info("Student:{} ", student);
 
@@ -99,10 +103,10 @@ public class ControllerStudentsAPI {
 
         Busywork.doBusyWork(busyTime);
 
-        URI retURI = new URI(STUDENTS_ENDPOINT_BASE_PATH + studentKey);
+        URI retURI = new URI(appConfig.getString("Api.rootUrl") + studentKey);
         logger.info("Student created successfully:{}", retURI.toString());
         return Response.created(retURI)
-                .header(STUDENT_KEY_HEADER, studentKey).build();
+                .header(appConfig.getString("App.student-key-header"), studentKey).build();
     }
 
     /**

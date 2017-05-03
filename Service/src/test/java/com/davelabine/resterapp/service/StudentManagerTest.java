@@ -6,6 +6,7 @@ import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.model.Student;
 
 import com.davelabine.resterapp.platform.api.service.BlobStoreService;
+import com.typesafe.config.Config;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +47,6 @@ public class StudentManagerTest {
 
     @Mock
     private BlobStoreService mockBlobStore;
-
 
     @Before
     public void before() {
