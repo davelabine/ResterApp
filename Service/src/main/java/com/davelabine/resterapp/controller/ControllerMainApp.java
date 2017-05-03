@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.controller;
 
+import com.davelabine.resterapp.controller.exceptions.ErrorCodeMainAppException;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
 import com.google.inject.Singleton;
@@ -23,7 +24,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
@@ -61,6 +61,13 @@ public class ControllerMainApp {
 
         rootUrl = appConfig.getString("MainApp.rootUrl") + "/students/";
         createUrl = rootUrl + "create/";
+    }
+
+    @GET
+    @Path("exception/")
+    @Produces(MediaType.TEXT_HTML)
+    public String throwException() {
+        throw new RuntimeException("Good times!");
     }
 
     /**
@@ -158,14 +165,14 @@ public class ControllerMainApp {
         long lMaxSize = appConfig.getLong("Api.max-photo-size");
         if (lContentLength > lMaxSize) {
             logger.warn("too large of a file uploaded: " + lContentLength + "/" + lMaxSize);
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            throw new ErrorCodeMainAppException(fmConfig, Response.Status.BAD_REQUEST, "Submitted file too large!");
         }
 
         Student student = new Student(key,
                 multipart.getFormDataPart("id", String.class, null),
                 multipart.getFormDataPart("name", String.class, null));
         if ( student.getId().isEmpty() || student.getName().isEmpty() ) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            throw new ErrorCodeMainAppException(fmConfig, Response.Status.BAD_REQUEST, "Student Id or name empty!");
         }
 
         try {
@@ -173,8 +180,7 @@ public class ControllerMainApp {
             return func.apply(student, in);
         } catch (IOException e) {
             logger.error("Error processing photo input stream: ", e.getMessage());
-            // Have the exception handlers deal with this.
-            throw e;
+            throw new ErrorCodeMainAppException(fmConfig, Response.Status.INTERNAL_SERVER_ERROR, "Error processing photo!");
         }
     }
 

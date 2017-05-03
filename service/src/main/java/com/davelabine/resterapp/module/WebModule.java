@@ -1,9 +1,9 @@
 package com.davelabine.resterapp.module;
 
-//import com.sun.java.swing.plaf.windows.TMSchema;
 import com.davelabine.resterapp.controller.ControllerMainApp;
+import com.davelabine.resterapp.controller.ErrorCodeExceptionMapper;
+import com.davelabine.resterapp.controller.exceptions.GenericExceptionMapper;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
-//import com.github.patrickianwilson.template.java.web.controllers.ErrorCodeExceptionMapper;
 import com.davelabine.resterapp.controller.ControllerRosterAPI;
 import com.davelabine.resterapp.controller.ControllerStudentsAPI;
 import com.google.inject.servlet.ServletModule;
@@ -17,12 +17,10 @@ public class WebModule extends ServletModule {
     protected void configureServlets() {
         super.configureServlets();
 
-        //message handlers
-        //bind(JsonMessageBodyHandler.class);
-
         //exception mappers
-        //bind(ErrorCodeExceptionMapper.class);
-        //bind(GenericServerErrorExceptionMapper.class);
+        // TODO: add the custom generic mapper back in when I get farther along with the app
+        // bind(GenericExceptionMapper.class);
+        bind(ErrorCodeExceptionMapper.class);
 
         //controllers.
         bind(ControllerMainApp.class);

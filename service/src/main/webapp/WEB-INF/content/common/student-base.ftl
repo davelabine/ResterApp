@@ -24,7 +24,9 @@
 
 <#macro page_footer>
 <p>
+    <#if body?has_content>
     <a href="${rootUrl}">Students Webapp</a><br>
+    </#if>
     <a href="api/roster/">Rosters Web API</a><br>
     <a href="api/students/post">Students POST API</a><br>
     <a href="api/students/123456">Students GET API</a>
