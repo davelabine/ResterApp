@@ -31,10 +31,10 @@ public class StudentManager {
     }
 
     // Returns the Key of the student, or null on failure
-    public String createStudent(Student student, InputStream inputStream)
+    public String createStudent(Student student, BlobData data)
     {
-        BlobLocation location = putPhoto(inputStream);
-        if (inputStream != null) {
+        BlobLocation location = putPhoto(data);
+        if (location != null) {
             student.setPhoto(location);
         }
         return daoStudent.createStudent(student);
@@ -49,6 +49,9 @@ public class StudentManager {
 
     // Deletes a student
     public void deleteStudent(Student student) {
+        if (student.getPhoto() != null) {
+            blobStore.deleteObject(student.getPhoto());
+        }
         daoStudent.deleteStudent(student);
     }
 
@@ -57,16 +60,15 @@ public class StudentManager {
         return daoStudent.getStudentByName(prefix);
     }
 
-    public void updateStudent(Student newStudent, InputStream inputStream) {
+    public void updateStudent(Student newStudent, BlobData data) {
         // Find the old student so we can delete the old photo object, if it exsits.
         Student oldStudent = daoStudent.getStudent(newStudent.getSkey());
         if (oldStudent.getPhoto() != null) {
             blobStore.deleteObject(oldStudent.getPhoto());
         }
 
-        // Now upload the new photo to blob storage
-        BlobLocation location = putPhoto(inputStream);
-        if (inputStream != null) {
+        BlobLocation location = putPhoto(data);
+        if (location != null) {
             newStudent.setPhoto(location);
         }
 
@@ -82,12 +84,10 @@ public class StudentManager {
         }
     }
 
-    private BlobLocation putPhoto(InputStream inputStream) {
-        if (inputStream == null) {
+    private BlobLocation putPhoto(BlobData data) {
+        if ( (data == null) || (data.getContentLength() == 0) ) {
             return null;
         }
-
-        BlobData data = new BlobData(inputStream);
         return blobStore.putObject(data);
     }
 

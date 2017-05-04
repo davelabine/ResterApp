@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.controller;
 
 import com.davelabine.resterapp.controller.exceptions.ErrorCodeMainAppException;
+import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
 import com.google.inject.Singleton;
@@ -8,6 +9,7 @@ import com.google.inject.name.Named;
 import com.typesafe.config.Config;
 
 import freemarker.template.*;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +32,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import com.davelabine.resterapp.module.FreemarkerModule;
 
 import static com.davelabine.resterapp.util.JaxContextUtils.getContentLength;
+import static com.davelabine.resterapp.controller.ControllerStudentsAPI.*;
 
 
 /**
@@ -120,8 +123,8 @@ public class ControllerMainApp {
         logger.info("createStudent()");
 
         Response response = parseStudentSubmission(null, multipart, getContentLength(request),
-                (student, inputStream) -> {
-                    studentManager.createStudent(student, inputStream);
+                (student, data) -> {
+                    studentManager.createStudent(student, data);
                     String url = rootUrl + "id/" + student.getSkey();
                     logger.info("Redirecting to {}", url);
                     return Response.seeOther(new URI(url)).build();
@@ -141,8 +144,8 @@ public class ControllerMainApp {
         logger.info("updateStudent() - key: {}", key);
 
         Response response = parseStudentSubmission(key, multipart, getContentLength(request),
-                (student, inputStream) -> {
-                    studentManager.updateStudent(student, inputStream);
+                (student, data) -> {
+                    studentManager.updateStudent(student, data);
                     String url = rootUrl + "id/" + key;
                     logger.info("Redirecting to {}", url);
                     return Response.seeOther(new URI(url)).build();
@@ -153,7 +156,7 @@ public class ControllerMainApp {
 
     @FunctionalInterface
     interface StudentPostFunction {
-        public Response apply(Student student, InputStream in) throws URISyntaxException;
+        public Response apply(Student student, BlobData data) throws URISyntaxException;
     }
 
     private Response parseStudentSubmission(String key,
@@ -169,15 +172,16 @@ public class ControllerMainApp {
         }
 
         Student student = new Student(key,
-                multipart.getFormDataPart("id", String.class, null),
-                multipart.getFormDataPart("name", String.class, null));
+                multipart.getFormDataPart(FORM_STUDENT_NAME, String.class, null),
+                multipart.getFormDataPart(FORM_STUDENT_ID, String.class, null));
         if ( student.getId().isEmpty() || student.getName().isEmpty() ) {
             throw new ErrorCodeMainAppException(fmConfig, Response.Status.BAD_REQUEST, "Student Id or name empty!");
         }
 
         try {
-            InputStream in = multipart.getFormDataPart("photo", InputStream.class, null);
-            return func.apply(student, in);
+            InputStream in = multipart.getFormDataPart(FORM_STUDENT_PHOTO, InputStream.class, null);
+            BlobData data = new BlobData(in, lContentLength);
+            return func.apply(student, data);
         } catch (IOException e) {
             logger.error("Error processing photo input stream: ", e.getMessage());
             throw new ErrorCodeMainAppException(fmConfig, Response.Status.INTERNAL_SERVER_ERROR, "Error processing photo!");

@@ -3,6 +3,8 @@ package com.davelabine.resterapp.controller;
 /**
  * Created by davidl on 9/29/16.
  */
+import com.davelabine.resterapp.controller.exceptions.ErrorCodeMainAppException;
+import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.service.StudentManager;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.util.Busywork;
@@ -77,25 +79,21 @@ public class ControllerStudentsAPI {
             throws IOException, URISyntaxException {
         logger.info("Students/post busyTime:{} ", busyTime);
 
-        long lMaxSize = appConfig.getLong("Api.max-photo-size");
-        long lContentLength = getContentLength(request);
-        if (lContentLength > lMaxSize) {
-            logger.warn("too large of a file uploaded: " + lContentLength+ "/" + lMaxSize);
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
-        Student student = new Student(
-                formDataInput.getFormDataPart(FORM_STUDENT_ID, String.class, null),
-                formDataInput.getFormDataPart(FORM_STUDENT_NAME, String.class, null));
-        if ( (student.getName() == null) || (student.getId() == null) ) {
+        Student student = getFormDataStudent(formDataInput);
+        if ( (student == null) || (student.getName() == null) || (student.getId() == null) ) {
             logger.info("Student name or ID is null");
             return Response.status(BAD_REQUEST).build();
         }
         logger.info("Student:{} ", student);
 
-        InputStream in = formDataInput.getFormDataPart(FORM_STUDENT_PHOTO, InputStream.class, null);
+        BlobData data = getFormDataPhoto(request, formDataInput);
+        long lMaxSize = appConfig.getLong("Api.max-photo-size");
+        if (data.getContentLength() > lMaxSize) {
+            logger.warn("too large of a file uploaded: " + data.getContentLength() + "/" + lMaxSize);
+            return Response.status(BAD_REQUEST).build();
+        }
 
-        String studentKey = studentManager.createStudent(student, in);
+        String studentKey = studentManager.createStudent(student, data);
         if (studentKey == null) {
             logger.error("Student create failed");
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
@@ -124,23 +122,43 @@ public class ControllerStudentsAPI {
             throws IOException, URISyntaxException {
         logger.info("Students/post busyTime:{} Student:{}", busyTime);
 
-        Student student = new Student(
-                formDataInput.getFormDataPart(FORM_STUDENT_ID, String.class, null),
-                formDataInput.getFormDataPart(FORM_STUDENT_NAME, String.class, null));
+        Student student = getFormDataStudent(formDataInput);
         student.setSkey(key);
-        if ( (student.getName() == null) || (student.getId() == null) ) {
+        if ( (student == null) || (student.getName() == null) || (student.getId() == null) ) {
             logger.info("Student name or ID is null");
             return Response.status(BAD_REQUEST).build();
         }
         logger.info("Student:{} ", student);
 
-        InputStream in = formDataInput.getFormDataPart(FORM_STUDENT_PHOTO, InputStream.class, null);
+        BlobData data = getFormDataPhoto(request, formDataInput);
+        long lMaxSize = appConfig.getLong("Api.max-photo-size");
+        if (data.getContentLength() > lMaxSize) {
+            logger.warn("too large of a file uploaded: " + data.getContentLength() + "/" + lMaxSize);
+            return Response.status(BAD_REQUEST).build();
+        }
 
         Busywork.doBusyWork(busyTime);
 
-        studentManager.updateStudent(student, in);
+        studentManager.updateStudent(student, data);
 
         return Response.ok().build();
+    }
+
+    private Student getFormDataStudent(MultipartFormDataInput formDataInput) throws IOException {
+        Student student = new Student(
+                formDataInput.getFormDataPart(FORM_STUDENT_ID, String.class, null),
+                formDataInput.getFormDataPart(FORM_STUDENT_NAME, String.class, null));
+        return student;
+    }
+
+    private BlobData getFormDataPhoto(HttpServletRequest request, MultipartFormDataInput formDataInput) throws IOException {
+        long lContentLength = getContentLength(request);
+        InputStream in = formDataInput.getFormDataPart(FORM_STUDENT_PHOTO, InputStream.class, null);
+        if (in == null) {
+            // No photo data in the form.
+            return null;
+        }
+        return new BlobData(in, lContentLength);
     }
 
 

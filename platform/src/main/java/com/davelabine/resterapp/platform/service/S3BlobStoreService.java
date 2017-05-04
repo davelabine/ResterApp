@@ -42,11 +42,13 @@ public class S3BlobStoreService implements BlobStoreService {
                                         awsConfig.getString("s3.bucket"),
                                         generateUniqueKey(data));
         try {
-            //ObjectMetadata metadata = new ObjectMetadata()
+            ObjectMetadata metadata = new ObjectMetadata();
+            // TODO: Set content length properly.
+            //if (data.getContentLength() > 0) { metadata.setContentLength(data.getContentLength()); }
             PutObjectRequest putReq = new PutObjectRequest(awsConfig.getString("s3.bucket"),
                                                         blobLocation.getKey(),
                                                         data.getInputStream(),
-                                                        null);
+                                                        metadata);
             s3.putObject(putReq.withCannedAcl(CannedAccessControlList.PublicRead));
 
         // TODO: Put this boilerplate behind a functional interface

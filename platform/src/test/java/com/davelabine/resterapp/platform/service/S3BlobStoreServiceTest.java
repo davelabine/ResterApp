@@ -35,6 +35,7 @@ public class S3BlobStoreServiceTest {
     public static final String FAKE_URL = "http://fakety.fake";
     public static final String FAKE_BUCKET = "FAKE_BUCKET";
     public static final String FAKE_KEY = "FAKE_KEY";
+    public static final long   FAKE_LENGTH = 1000L;
 
     @InjectMocks
     private S3BlobStoreService underTest;
@@ -56,7 +57,7 @@ public class S3BlobStoreServiceTest {
     // Test that a blob location is returned when an object is put
     @Test
     public void testPutObject() {
-        BlobData data = new BlobData(inputStream);
+        BlobData data = new BlobData(inputStream, FAKE_LENGTH);
         BlobLocation returned = underTest.putObject(data);
         assertNotNull(returned);
         assertNotNull(returned.getBucketName());
@@ -67,7 +68,7 @@ public class S3BlobStoreServiceTest {
     @Test(expected=BlobStoreException.class)
     public void testPutObjectAseExceptionsCaught() {
         reset(mockS3);
-        BlobData data = new BlobData(inputStream);
+        BlobData data = new BlobData(inputStream, FAKE_LENGTH);
         when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
         underTest.putObject(data); // Should throw an exception
     }
@@ -76,7 +77,7 @@ public class S3BlobStoreServiceTest {
     @Test(expected=BlobStoreException.class)
     public void testPutObjectACExceptionsCaught() {
         reset(mockS3);
-        BlobData data = new BlobData(inputStream);
+        BlobData data = new BlobData(inputStream, FAKE_LENGTH);
         when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonClientException("Fake Exception!"));
         assertNull(underTest.putObject(data));
     }

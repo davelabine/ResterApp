@@ -21,8 +21,10 @@
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 
         <!-- Echo all executed SQL to stdout and use pretty formatting -->
+        <!--
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
+        -->
 
         <!-- Drop the existing tables and create new one -->
         <!-- This would only be for dev...

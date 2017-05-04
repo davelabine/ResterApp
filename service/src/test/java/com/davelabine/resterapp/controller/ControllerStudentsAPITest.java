@@ -1,6 +1,7 @@
 package com.davelabine.resterapp.controller;
 
 import com.davelabine.resterapp.platform.api.exceptions.DaoException;
+import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.service.StudentManager;
 import static com.davelabine.resterapp.controller.ControllerStudentsAPI.*;
@@ -64,6 +65,9 @@ public class ControllerStudentsAPITest {
     @Mock
     private HttpServletRequest request;
 
+    @Mock
+    private InputStream inputStream;
+
     @Before
     public void before() throws Exception {
     }
@@ -74,13 +78,14 @@ public class ControllerStudentsAPITest {
         doReturn(FAKE_SIZE_LIMIT).when(appConfig).getLong("Api.max-photo-size");
         doReturn(id).when(formDataInput).getFormDataPart(FORM_STUDENT_ID, String.class, null);
         doReturn(name).when(formDataInput).getFormDataPart(FORM_STUDENT_NAME, String.class, null);
+        doReturn(inputStream).when(formDataInput).getFormDataPart(FORM_STUDENT_PHOTO, InputStream.class, null);
     }
 
     @Test
     public void postCreateStudentSuccess() throws URISyntaxException, IOException {
         setupStudentFormPost(FAKE_ID, FAKE_NAME);
         reset(mockStudentManager);
-        doReturn(FAKE_KEY).when(mockStudentManager).createStudent(any(Student.class), nullable(InputStream.class));
+        doReturn(FAKE_KEY).when(mockStudentManager).createStudent(any(Student.class), any(BlobData.class));
 
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
         Response response = underTest.create(request, formDataInput, 0);
@@ -103,13 +108,15 @@ public class ControllerStudentsAPITest {
         setupStudentFormPost(FAKE_NAME, null);
         response = underTest.create(request, formDataInput, 0);
         assertEquals(response.getStatus(), SC_BAD_REQUEST);
+
+        // Note: Null photo posted is OK... that means no photo was uploaded.
     }
 
 
     @Test
     public void postCreateStudentFailed() throws URISyntaxException, IOException {
         reset(mockStudentManager);
-        doReturn(null).when(mockStudentManager).createStudent(any(Student.class), nullable(InputStream.class));
+        doReturn(null).when(mockStudentManager).createStudent(any(Student.class), nullable(BlobData.class));
 
         setupStudentFormPost(FAKE_ID, FAKE_NAME);
         Response response = underTest.create(request, formDataInput, 0);
@@ -131,7 +138,8 @@ public class ControllerStudentsAPITest {
     public void postCreateStudentException() throws URISyntaxException, IOException {
         reset(mockStudentManager);
         setupStudentFormPost(FAKE_ID, FAKE_NAME);
-        when(mockStudentManager.createStudent(any(Student.class), nullable(InputStream.class)))
+
+        when(mockStudentManager.createStudent(any(Student.class), nullable(BlobData.class)))
                                     .thenThrow(new DaoException("Fake Exception!"));
         underTest.create(request, formDataInput, 0);
     }
@@ -144,24 +152,28 @@ public class ControllerStudentsAPITest {
     */
 
     @Test
-    public void postUpdateStudentBadParams() throws URISyntaxException {
+    public void postUpdateStudentBadParams() throws URISyntaxException, IOException {
         reset(mockStudentManager);
         // Null params is done for us by resteasy (integration test), just test other object business logic
         //Response response = underTest.create(0, null);
-        Response response = underTest.updateStudent(0, FAKE_KEY, new Student(null, FAKE_NAME));
+
+        setupStudentFormPost(null, FAKE_NAME);
+        Response response = underTest.updateStudent(request, formDataInput, 0, FAKE_KEY);
         assertEquals(response.getStatus(), SC_BAD_REQUEST);
-        response = underTest.updateStudent(0, FAKE_KEY, new Student(FAKE_ID, null));
+
+        setupStudentFormPost(FAKE_ID, null);
+        response = underTest.updateStudent(request, formDataInput, 0, FAKE_KEY);
         assertEquals(response.getStatus(), SC_BAD_REQUEST);
     }
 
     /* Make sure we bubble up exceptions on this method */
     @Test(expected = DaoException.class)
-    public void postUpdateStudentException() throws URISyntaxException {
+    public void postUpdateStudentException() throws URISyntaxException, IOException {
         reset(mockStudentManager);
         Student student = Student.randomStudent();
         student.setSkey(FAKE_KEY);
-        Mockito.doThrow(new DaoException("Fake Exception!")).when(mockStudentManager).updateStudent(student);
-        mockStudentManager.updateStudent(student);
+        Mockito.doThrow(new DaoException("Fake Exception!")).when(mockStudentManager).updateStudent(student, null);
+        mockStudentManager.updateStudent(student, null);
     }
 
     @Test

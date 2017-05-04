@@ -26,10 +26,8 @@ public class ErrorCodeExceptionMapper implements ExceptionMapper<ErrorCodeMainAp
     // Yes, this is ugly.
     // There is an issue injecting eager singletons for FM config into multiple objects.  Didn't have time to get to
     // the bottom of what is happening and it seems pretty ugly...
-
     @Inject
-    public ErrorCodeExceptionMapper(final Configuration fmConfig,
-                                    @Named("application.conf") final Config appConfig)
+    public ErrorCodeExceptionMapper(@Named("application.conf") final Config appConfig)
     {
         this.appConfig = appConfig;
     }

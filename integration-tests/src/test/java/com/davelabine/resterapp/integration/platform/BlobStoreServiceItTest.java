@@ -41,7 +41,8 @@ public class BlobStoreServiceItTest {
     public void testBlobHappyPath() throws FileNotFoundException {
         String fileName = Thread.currentThread().getContextClassLoader().getResource(UPLOAD_FILE_NAME).getPath();
         FileInputStream inputStream = new FileInputStream(fileName);
-        BlobData data = new BlobData(inputStream);
+        long length = new File(fileName).length();
+        BlobData data = new BlobData(inputStream, length);
 
         BlobLocation location = blobStore.putObject(data);
         Assert.assertNotNull(location);

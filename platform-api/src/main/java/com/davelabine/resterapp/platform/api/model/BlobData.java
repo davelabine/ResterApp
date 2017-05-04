@@ -11,9 +11,11 @@ import java.io.InputStream;
  */
 public class BlobData {
     private InputStream inputStream;
+    private long        contentLength;
 
-    public BlobData(InputStream inputStream) {
+    public BlobData(InputStream inputStream, long contentLength) {
         this.inputStream = inputStream;
+        this.contentLength = contentLength;
     }
 
 }

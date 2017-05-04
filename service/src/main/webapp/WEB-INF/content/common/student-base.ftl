@@ -24,7 +24,7 @@
 
 <#macro page_footer>
 <p>
-    <#if body?has_content>
+    <#if rootUrl?has_content>
     <a href="${rootUrl}">Students Webapp</a><br>
     </#if>
     <a href="api/roster/">Rosters Web API</a><br>
