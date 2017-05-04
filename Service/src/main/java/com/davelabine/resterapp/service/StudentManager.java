@@ -57,8 +57,21 @@ public class StudentManager {
         return daoStudent.getStudentByName(prefix);
     }
 
-    public void updateStudent(Student student) {
-        daoStudent.updateStudent(student);
+    public void updateStudent(Student newStudent, InputStream inputStream) {
+        // Find the old student so we can delete the old photo object, if it exsits.
+        Student oldStudent = daoStudent.getStudent(newStudent.getSkey());
+        if (oldStudent.getPhoto() != null) {
+            blobStore.deleteObject(oldStudent.getPhoto());
+        }
+
+        // Now upload the new photo to blob storage
+        BlobLocation location = putPhoto(inputStream);
+        if (inputStream != null) {
+            newStudent.setPhoto(location);
+        }
+
+        // Finally update the db
+        daoStudent.updateStudent(newStudent);
     }
 
     public String getPhotoUrl(BlobLocation location) {

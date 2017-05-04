@@ -109,6 +109,41 @@ public class ControllerStudentsAPI {
                 .header(appConfig.getString("App.student-key-header"), studentKey).build();
     }
 
+
+    /**
+     * Update an existing resource.
+     */
+    @POST
+    @Path("{key}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateStudent(@Context HttpServletRequest request,
+                                  @NotNull MultipartFormDataInput formDataInput,
+                                  @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
+                                  @NotNull @PathParam("key") String key)
+            throws IOException, URISyntaxException {
+        logger.info("Students/post busyTime:{} Student:{}", busyTime);
+
+        Student student = new Student(
+                formDataInput.getFormDataPart(FORM_STUDENT_ID, String.class, null),
+                formDataInput.getFormDataPart(FORM_STUDENT_NAME, String.class, null));
+        student.setSkey(key);
+        if ( (student.getName() == null) || (student.getId() == null) ) {
+            logger.info("Student name or ID is null");
+            return Response.status(BAD_REQUEST).build();
+        }
+        logger.info("Student:{} ", student);
+
+        InputStream in = formDataInput.getFormDataPart(FORM_STUDENT_PHOTO, InputStream.class, null);
+
+        Busywork.doBusyWork(busyTime);
+
+        studentManager.updateStudent(student, in);
+
+        return Response.ok().build();
+    }
+
+
     /**
      * Get a list of students
      */
@@ -148,34 +183,6 @@ public class ControllerStudentsAPI {
 
         logger.info("Student found: {}", studentGet);
         return Response.ok().entity(studentGet).build();
-    }
-
-    /**
-     * Update an existing resource.
-     */
-    @POST
-    @Path("{key}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateStudent(
-            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
-            @NotNull @PathParam("key") String key,
-            @NotNull Student student)
-            throws URISyntaxException {
-        logger.info("Students/post busyTime:{} Student:{}", busyTime, student);
-
-        if ( (student.getName() == null) || (student.getId() == null) ) {
-            logger.info("Student name or ID is null");
-            return Response.status(BAD_REQUEST).type(MediaType.APPLICATION_JSON).build();
-        }
-
-        Busywork.doBusyWork(busyTime);
-
-        // TODO: Add profile photo
-        student.setSkey(key);
-        studentManager.updateStudent(student);
-
-        return Response.ok().build();
     }
 
     @POST

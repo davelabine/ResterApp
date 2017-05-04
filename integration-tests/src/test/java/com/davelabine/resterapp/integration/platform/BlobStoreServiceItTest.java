@@ -1,5 +1,6 @@
 package com.davelabine.resterapp.integration.platform;
 
+import com.davelabine.resterapp.platform.api.exceptions.BlobStoreException;
 import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.service.BlobStoreService;
@@ -51,4 +52,15 @@ public class BlobStoreServiceItTest {
         // should not throw an exception when this happens.
         blobStore.deleteObject(location);
     }
+
+    @Test(expected = BlobStoreException.class)
+    public void testCreateNullObject() {
+        blobStore.putObject(null);
+    }
+
+    @Test(expected = BlobStoreException.class)
+    public void testDeleteNullObject() {
+        blobStore.deleteObject(null);
+    }
+
 }

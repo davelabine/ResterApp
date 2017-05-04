@@ -142,7 +142,7 @@ public class ControllerMainApp {
 
         Response response = parseStudentSubmission(key, multipart, getContentLength(request),
                 (student, inputStream) -> {
-                    studentManager.updateStudent(student);
+                    studentManager.updateStudent(student, inputStream);
                     String url = rootUrl + "id/" + key;
                     logger.info("Redirecting to {}", url);
                     return Response.seeOther(new URI(url)).build();

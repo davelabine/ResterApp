@@ -48,12 +48,16 @@ public class S3BlobStoreService implements BlobStoreService {
                                                         data.getInputStream(),
                                                         null);
             s3.putObject(putReq.withCannedAcl(CannedAccessControlList.PublicRead));
+
+        // TODO: Put this boilerplate behind a functional interface
         } catch (AmazonServiceException ase) {
             throw new BlobStoreException("Request made it to Amazon S3, but was rejected with an error response. Error: " +
                     ase.getMessage() + ", HTTP Status Code: " + ase.getStatusCode() + ", AWS Error Code: " + ase.getErrorCode()
                     + "Error Type: " + ase.getErrorType() + ", Request ID: {}" + ase.getRequestId(), ase);
         } catch (AmazonClientException ace) {
             throw new BlobStoreException("AmazonClient internal error: " + ace.getLocalizedMessage(), ace);
+        } catch (RuntimeException e) {
+            throw new BlobStoreException("Runtime Exception: " + e.getMessage(), e);
         }
         logger.info("object saved! {}", blobLocation);
         return blobLocation;
@@ -97,12 +101,16 @@ public class S3BlobStoreService implements BlobStoreService {
         logger.info("BlobStoreService.deleteObject {}", blobLocation);
         try {
             s3.deleteObject(blobLocation.getBucketName(), blobLocation.getKey());
+
+            // TODO: Put this boilerplate behind a functional interface
         } catch (AmazonServiceException ase) {
             throw new BlobStoreException("Request made it to Amazon S3, but was rejected with an error response. Error: " +
                     ase.getMessage() + ", HTTP Status Code: " + ase.getStatusCode() + ", AWS Error Code: " + ase.getErrorCode()
                     + "Error Type: " + ase.getErrorType() + ", Request ID: {}" + ase.getRequestId(), ase);
         } catch (AmazonClientException ace) {
             throw new BlobStoreException("AmazonClient internal error: " + ace.getLocalizedMessage(), ace);
+        } catch (RuntimeException e) {
+            throw new BlobStoreException("Runtime Exception: " + e.getMessage(), e);
         }
         logger.info("object deleted!");
 
