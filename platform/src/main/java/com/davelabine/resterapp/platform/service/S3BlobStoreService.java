@@ -93,8 +93,19 @@ public class S3BlobStoreService implements BlobStoreService {
     }
 
     @Override
-    public boolean deleteObject(BlobLocation key) {
-        return false;
+    public void deleteObject(BlobLocation blobLocation) {
+        logger.info("BlobStoreService.deleteObject {}", blobLocation);
+        try {
+            s3.deleteObject(blobLocation.getBucketName(), blobLocation.getKey());
+        } catch (AmazonServiceException ase) {
+            throw new BlobStoreException("Request made it to Amazon S3, but was rejected with an error response. Error: " +
+                    ase.getMessage() + ", HTTP Status Code: " + ase.getStatusCode() + ", AWS Error Code: " + ase.getErrorCode()
+                    + "Error Type: " + ase.getErrorType() + ", Request ID: {}" + ase.getRequestId(), ase);
+        } catch (AmazonClientException ace) {
+            throw new BlobStoreException("AmazonClient internal error: " + ace.getLocalizedMessage(), ace);
+        }
+        logger.info("object deleted!");
+
     }
 
     private String generateUniqueKey(BlobData data) {

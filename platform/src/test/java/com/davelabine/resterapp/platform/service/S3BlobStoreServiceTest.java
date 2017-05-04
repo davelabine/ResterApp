@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -56,7 +57,6 @@ public class S3BlobStoreServiceTest {
     @Test
     public void testPutObject() {
         BlobData data = new BlobData(inputStream);
-        //when(mockS3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonServiceException("Fake Exception!"));
         BlobLocation returned = underTest.putObject(data);
         assertNotNull(returned);
         assertNotNull(returned.getBucketName());
@@ -86,4 +86,20 @@ public class S3BlobStoreServiceTest {
         BlobLocation location = new BlobLocation(FAKE_BUCKET, FAKE_KEY);
         assertNotNull(underTest.getObjectUrl(location));
     }
+
+    // Test deleting objects throws exceptions
+    @Test(expected=BlobStoreException.class)
+    public void testDeleteObjectAseExceptionsCaught() {
+        BlobLocation location = new BlobLocation(FAKE_BUCKET, FAKE_KEY);
+        Mockito.doThrow(new AmazonServiceException("Fake Exception!")).when(mockS3).deleteObject(anyString(), anyString());
+        underTest.deleteObject(location);
+    }
+
+    @Test(expected=BlobStoreException.class)
+    public void testDeleteObjectACEExceptionsCaught() {
+        BlobLocation location = new BlobLocation(FAKE_BUCKET, FAKE_KEY);
+        Mockito.doThrow(new AmazonClientException("Fake Exception!")).when(mockS3).deleteObject(anyString(), anyString());
+        underTest.deleteObject(location);
+    }
+
 }

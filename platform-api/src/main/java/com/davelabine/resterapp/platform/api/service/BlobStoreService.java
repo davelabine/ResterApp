@@ -37,5 +37,5 @@ public interface BlobStoreService {
      * @param key the location (including bucket and object ids).
      *
      */
-    boolean deleteObject(BlobLocation key) throws BlobStoreException;
+    void deleteObject(BlobLocation key) throws BlobStoreException;
 }

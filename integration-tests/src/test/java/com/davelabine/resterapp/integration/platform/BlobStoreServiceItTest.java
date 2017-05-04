@@ -37,19 +37,18 @@ public class BlobStoreServiceItTest {
     }
 
     @Test
-    public void testPutObjectAndGetUrl() {
+    public void testBlobHappyPath() throws FileNotFoundException {
         String fileName = Thread.currentThread().getContextClassLoader().getResource(UPLOAD_FILE_NAME).getPath();
-        BlobData data = null;
-        try {
-            FileInputStream inputStream = new FileInputStream(fileName);
-            data = new BlobData(inputStream);
-        } catch (FileNotFoundException e) {
+        FileInputStream inputStream = new FileInputStream(fileName);
+        BlobData data = new BlobData(inputStream);
 
-        }
         BlobLocation location = blobStore.putObject(data);
         Assert.assertNotNull(location);
 
         String url = blobStore.getObjectUrl(location);
         Assert.assertNotNull(url);
+
+        // should not throw an exception when this happens.
+        blobStore.deleteObject(location);
     }
 }
