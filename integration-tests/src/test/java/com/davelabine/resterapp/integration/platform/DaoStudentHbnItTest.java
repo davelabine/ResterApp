@@ -20,6 +20,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.RuntimeErrorException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -52,15 +53,17 @@ public class DaoStudentHbnItTest {
         hbnConfig.configure("hibernate.cfg.xml");
         SessionFactory sessionFactory = null;
         Session session = null;
-        String uname = System.getenv(DB_ENV_UNAME).replace("\r","");
-        String pw = System.getenv(DB_ENV_PW).replace("\r","");
 
-        if (!uname.isEmpty() && !pw.isEmpty()) {
-            hbnConfig.setProperty("hibernate.connection.username", uname);
-            hbnConfig.setProperty("hibernate.connection.password", pw);
+        String uname = System.getenv(DB_ENV_UNAME);
+        String pw = System.getenv(DB_ENV_PW);
+
+        if ( (uname != null) && (pw != null) ) {
+            hbnConfig.setProperty("hibernate.connection.username", uname.replace("\r",""));
+            hbnConfig.setProperty("hibernate.connection.password", pw.replace("\r",""));
         } else {
             logger.error("Hibernate DB username ({}) or password ({}) are not set!  Set these environment variables.",
                     DB_ENV_UNAME, DB_ENV_PW);
+            throw new RuntimeException("#### Need to set DB cedentials!");
         }
 
         try {

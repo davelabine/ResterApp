@@ -1,3 +1,0 @@
-task hydrateCreds(type: Exec) {
-    commandLine 'source ./secret/cred-config.bat'
-}

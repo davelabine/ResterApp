@@ -5,15 +5,21 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.apache.http.HttpStatus.*;
+import static com.davelabine.resterapp.controller.ControllerStudentsAPI.*;
 
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -70,10 +76,29 @@ public class JaxRsIntegrationRunner {
     }
 
     public CloseableHttpResponse postStudent(String uri, Student postStudent) throws IOException {
+
         HttpPost post = new HttpPost(uri);
-        StringEntity stringEntity = new StringEntity(gson.toJson(postStudent));
-        post.setEntity(stringEntity);
-        post.setHeader("Content-type", "application/json");
+
+        StringBody id = new StringBody(postStudent.getId(), ContentType.TEXT_PLAIN);
+        StringBody name = new StringBody(postStudent.getId(), ContentType.TEXT_PLAIN);
+
+        HttpEntity entity = MultipartEntityBuilder.create()
+                .setContentType(ContentType.MULTIPART_FORM_DATA)
+                .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+                .addPart(FORM_STUDENT_ID, id)
+                .addPart(FORM_STUDENT_NAME, name)
+                .build();
+
+        // If you need to post a file
+        //.addBinaryBody("file", payload)
+        //
+        // If you are posting JSON
+        // StringEntity stringEntity = new StringEntity(gson.toJson(postStudent));
+
+        post.setEntity(entity);
+        post.setHeader("Content-type", "multipart/form-data");
+        String fun = post.toString();
+        logger.info(post.toString());
         return client.execute(post);
     }
 
@@ -87,6 +112,7 @@ public class JaxRsIntegrationRunner {
         CloseableHttpResponse rosterResp = client.execute(rosterGet);
         assertThat("Non 200 status response received", rosterResp.getStatusLine().getStatusCode(), is(SC_OK));
     }
+
 
     @Test
     public void verifyStudentCRUD() throws IOException {
@@ -125,7 +151,7 @@ public class JaxRsIntegrationRunner {
         return gson.fromJson(EntityUtils.toString(getResp.getEntity()), Student.class);
     }
 
-
+    /*
     @Test
     public void verifyStudentCreateBadParams() throws IOException {
         logger.info("verifyStudentCreateBadParams()");
@@ -161,5 +187,5 @@ public class JaxRsIntegrationRunner {
         post.setHeader("Content-type", "application/json");
         return client.execute(post);
     }
-
+*/
 }

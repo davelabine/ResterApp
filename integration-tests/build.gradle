@@ -4,12 +4,32 @@ dependencies {
     testCompile group: 'org.eclipse.jetty', name: 'jetty-server', version: '8.2.0.v20160908'
     testCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: '8.2.0.v20160908'
     testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+    testCompile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.2'
     testCompile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'
     testCompile "org.projectlombok:lombok:1.16.10"
     testCompile 'ch.qos.logback:logback-classic:1.1.2'
     testCompile project(":platform")
     testCompile project(":platform-api")
     testCompile project(":service")
+}
+
+/*
+task hydrateCreds(type: Exec) {
+    workingDir getRootDir()
+    commandLine "./secret/cred-config.bat"
+    onlyIf {
+        System.env['DB_ENV_UNAME'] == null ||
+                System.env['DB_ENV_PW'] == null
+    }
+    doLast {
+        println('#### Hydrated application credentials!!')
+    }
+}
+*/
+
+tasks.withType(org.gradle.api.tasks.testing.Test) {
+    environment "DB_ENV_UNAME", System.getProperty("DB_ENV_UNAME")
+    environment "DB_ENV_PW", System.getProperty("DB_ENV_PW")
 }
 
 task runIntegrationTests(type: Test, dependsOn: ":service:war") {
