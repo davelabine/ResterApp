@@ -1,2 +1,13 @@
 apply plugin: "war"
-apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.org.akhikhl.gretty:gretty:1.4.2"
+    }
+}
+
+apply plugin: "org.akhikhl.gretty"

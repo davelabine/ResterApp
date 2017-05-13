@@ -1,3 +1,6 @@
+plugins {
+    id "org.akhikhl.gretty" version "1.4.2"
+}
 apply from: "$rootProject.projectDir/config/gradle/includes/java-conventions.gradle"
 apply from: "$rootProject.projectDir/config/gradle/includes/java-web-conventions.gradle"
 apply from: "$rootProject.projectDir/config/gradle/includes/guice-conventions.gradle"
@@ -19,6 +22,11 @@ dependencies {
     compile project(":platform-api")
 
     testCompile "org.mockito:mockito-core:+"
+}
+
+gretty {
+    jvmArgs '-DDB_ENV_UNAME=' + System.getProperty("DB_ENV_UNAME"),
+            '-DDB_ENV_PW=' + System.getProperty("DB_ENV_PW")
 }
 
 task testDebug(type: Test) {

@@ -63,7 +63,7 @@ public class DaoStudentHbnItTest {
         } else {
             logger.error("Hibernate DB username ({}) or password ({}) are not set!  Set these environment variables.",
                     DB_ENV_UNAME, DB_ENV_PW);
-            throw new RuntimeException("#### Need to set DB cedentials!");
+            throw new RuntimeException("#### Need to set DB credentials!");
         }
 
         try {
