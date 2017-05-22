@@ -97,8 +97,8 @@ public class JaxRsIntegrationRunner {
 
         post.setEntity(entity);
         post.setHeader("Content-type", "multipart/form-data");
-        String fun = post.toString();
-        logger.info(post.toString());
+        //String fun = EntityUtils.toString(post.getEntity());
+        //logger.info(fun);
         return client.execute(post);
     }
 
@@ -120,6 +120,7 @@ public class JaxRsIntegrationRunner {
         refreshHTTPClient();
 
         // Create a random student and post it to the create URI
+        /*
         Student studentCreate = Student.randomStudent();
         CloseableHttpResponse postResp = postStudent(URI_STUDENTS_CREATE, studentCreate);
         assertThat("Unexpected create response", postResp.getStatusLine().getStatusCode(), is(SC_CREATED));
@@ -140,6 +141,7 @@ public class JaxRsIntegrationRunner {
         assertThat("Names for updated student are not equal", studentGet.getName(), is(studentCreate.getName()));
 
         // Delete the student
+        */
 
     }
 

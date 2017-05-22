@@ -32,9 +32,14 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
     environment "DB_ENV_PW", System.getProperty("DB_ENV_PW")
 }
 
-task runIntegrationTests(type: Test, dependsOn: ":service:war") {
+task runIntTests(type: Test, dependsOn: ":service:war") {
     include "**/*IntegrationRunner.class"
-    systemProperty('WAR_FILE', project(":service").getBuildDir().getAbsolutePath() + "/libs/service-1.0.1-SNAPSHOT.war")
+}
+
+task runIntTestsDebug(type: Test) {
+    jvmArgs '-Xdebug',
+            '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005'
+    runIntTests
 }
 
 task testDebug(type: Test) {
