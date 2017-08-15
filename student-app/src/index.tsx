@@ -8,7 +8,7 @@ import { enthusiasm } from './reducers/index';
 import { StoreState } from './types/index';
 import { Provider } from 'react-redux';
 
-import Hello from './containers/Hello.c';
+import FilterableStudentList from './components/filterableStudentList/FilterableStudentList';
 
 const store = createStore<StoreState>(enthusiasm, {
   enthusiasmLevel: 1,
@@ -17,7 +17,7 @@ const store = createStore<StoreState>(enthusiasm, {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Hello />
+    <FilterableStudentList name="Dave"/>
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
