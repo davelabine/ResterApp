@@ -1,10 +1,4 @@
 import * as React from 'react';
-import Input from 'react-toolbox/lib/input/Input';
-/*
-import AppBar from 'react-toolbox/lib/app_bar';
-import Navigation from 'react-toolbox/lib/navigation';
-*/
-
 import './FilterableStudentList.css';
 
 export interface Props {
@@ -16,14 +10,31 @@ class FilterableStudentList extends React.Component<Props, object> {
     const { name } = this.props;
 
     return (
-      <div className="search">
-        <Input 
-            type="text"
-            label="Name"
-            name="name"
-            maxLength={70}
-        />
-        <div>{name}</div>
+      <div className="filterableStudentList">
+        <div className="well">
+          <form className="form-inline">
+              <label>Search Last Name: </label>
+              <input type="text" name="name"/>
+              <button type="button" className="btn btn-primary">Search</button>
+          </form>
+        </div>
+        <table className="table table-striped table-sm table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>ID</th>
+              <th>URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{name}</td>
+              <td>12345</td>
+              <td><a href="http://google.com">view</a> | 
+              <a href="http://google.com"> edit</a></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -31,31 +42,26 @@ class FilterableStudentList extends React.Component<Props, object> {
 export default FilterableStudentList;
 
 /*
-
-      <div className="filterableStudentList">
-        <div className="well">
-          <form className="form-inline">
-              <label>Search Last Name:
-                <input type="text" value={name} />
-              </label>
-              <button type="submit" className="btn btn-default">Search</button>
-          </form>
-          <div> No Students yet!</div>
-        </div>
-      </div>
-
-    return (
-      <div className="filterableStudentList">
-        <div class="well">
-        <form class="form-inline">
-          <div class="form-group">
-            <label for="lname">Search Last Name: </label>
-            <input type="text" name="name">
-            <button type="submit" class="btn btn-default">Search</button>
-          </div>
-          <div> No Students yet! </div>
-          <a id="addStudentButton" type="button" class="btn btn-default pull-right" href="">Add Student</a>
-        </form>
-      </div>
-    );
-    */
+<table class="table table-striped table-sm table-hover">
+    <thead>
+      <tr>
+          <th>Name</th>
+          <th>ID</th>
+          <th>URL</th>
+      </tr>
+    </thead>
+    <#list studentList as student>
+    <tbody>
+      <tr>
+          <td>${student.name}</td>
+          <td>${student.id}</td>
+          <td><a id="viewStudent" href="${rootUrl}id/${student.skey}">view</a></td>
+          <td><a id="editStudent" href="${rootUrl}id/${student.skey}/edit">edit</a></td>
+      </tr>
+      </#list>
+    </tbody>
+<#else>
+  <div> No Students yet! </div>
+</#if>
+</table>
+*/
