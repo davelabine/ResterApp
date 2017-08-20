@@ -1,12 +1,111 @@
 import * as React from 'react';
 import './FilterableStudentList.css';
 
-export interface Props {
-  name: string;
+type StudentPhoto = {
+    bucketName: string;
+    key: string;
+};
+
+type StudentData = {
+    skey: string;
+    id: string;
+    name: string;
+    photo: StudentPhoto;
+};
+
+let funTimes: StudentData[] =  [
+    {
+        'skey': '8a80810d5dd89a3f015dd89ac8280000',
+        'id': 'Billy Bob',
+        'name': '1234',
+        'photo': {
+            'bucketName': 'resterapp-dev',
+            'key': 'e93ecbf0-ba96-4290-a906-5ea67e4c4a9f'
+        }
+    },
+    {
+        'skey': '8a80810d5dd89a3f015dd8a252800001',
+        'id': '503074',
+        'name': 'Albert Russell',
+        'photo': {
+            'bucketName': 'resterapp-dev',
+            'key': 'e93ecbf0-ba96-4290-a906-5ea67e4c4a9f'
+        }
+    },
+];
+
+export interface TableItemProps {
+    student: StudentData;
 }
 
+function TableItem(props: TableItemProps) {
+    let student = props.student;
+    return (
+        <tr key={student.skey}>
+            <td>{student.name}</td>
+            <td>{student.id}</td>
+            <td><a href="http://google.com">view</a> | 
+            <a href="http://google.com"> edit</a></td>
+        </tr>
+    );
+}
+
+export interface FilterableStudentListProps {
+    name: String;
+}
+
+class FilterableStudentList extends React.Component<FilterableStudentListProps, object> {
+  render() {
+    const { name } = this.props;
+
+    return (
+      <div className="filterableStudentList">
+        <div className="well">
+          <form className="form-inline">
+              <label>Search Last Name: </label>
+              <input type="text" name="name"/>
+              <button type="button" className="btn btn-primary">Search</button>
+              <button type="button" className="btn btn-default pull-right">Add Student</button>
+          </form>
+          <table className="table table-striped table-sm table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody>
+                {funTimes.map((s) =>
+                    <TableItem key={s.skey} student={s}/>
+                )}
+            </tbody>
+          </table>
+        </div>
+        {name}
+      </div>
+    );
+  }
+}
+export default FilterableStudentList;
+
 /*
-[
+[   
+    {
+        'skey': '8a80810d5dd89a3f015dd89ac8280000',
+        'id': 'BIlly Bob',
+        'name': '1234',
+        'photo': {
+            'bucketName': 'resterapp-dev',
+            'key': 'e93ecbf0-ba96-4290-a906-5ea67e4c4a9f'
+        }
+    },
+    {
+        'skey': '8a80810d5dd89a3f015dd8a252800001',
+        'id': '503074',
+        'name': 'Albert Russell',
+        'photo': null
+    },
     {
         "skey": "8a80810d5dd89a3f015dd89ac8280000",
         "id": "BIlly Bob",
@@ -71,66 +170,4 @@ export interface Props {
         "photo": null
     }
 ]
-*/
-
-class FilterableStudentList extends React.Component<Props, object> {
-  render() {
-    const { name } = this.props;
-
-    return (
-      <div className="filterableStudentList">
-        <div className="well">
-          <form className="form-inline">
-              <label>Search Last Name: </label>
-              <input type="text" name="name"/>
-              <button type="button" className="btn btn-primary">Search</button>
-              <button type="button" className="btn btn-default pull-right">Add Student</button>
-          </form>
-          <table className="table table-striped table-sm table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>ID</th>
-                <th>URL</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{name}</td>
-                <td>12345</td>
-                <td><a href="http://google.com">view</a> | 
-                <a href="http://google.com"> edit</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
-}
-export default FilterableStudentList;
-
-/*
-<table class="table table-striped table-sm table-hover">
-    <thead>
-      <tr>
-          <th>Name</th>
-          <th>ID</th>
-          <th>URL</th>
-      </tr>
-    </thead>
-    <#list studentList as student>
-    <tbody>
-      <tr>
-          <td>${student.name}</td>
-          <td>${student.id}</td>
-          <td><a id="viewStudent" href="${rootUrl}id/${student.skey}">view</a></td>
-          <td><a id="editStudent" href="${rootUrl}id/${student.skey}/edit">edit</a></td>
-      </tr>
-      </#list>
-    </tbody>
-<#else>
-  <div> No Students yet! </div>
-</#if>
-</table>
 */
