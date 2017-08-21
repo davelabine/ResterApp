@@ -1,17 +1,12 @@
 import * as React from 'react';
 import './FilterableStudentList.css';
+import { StudentData } from './StudentListInterfaces.d';
+import { StudentListFilterForm } from './StudentListFilterForm';
+import { StudentListItems } from './StudentListItems';
 
-type StudentPhoto = {
-    bucketName: string;
-    key: string;
-};
-
-type StudentData = {
-    skey: string;
-    id: string;
-    name: string;
-    photo: StudentPhoto;
-};
+export interface FilterableStudentListProps {
+    name: String;
+}
 
 let funTimes: StudentData[] =  [
     {
@@ -34,59 +29,37 @@ let funTimes: StudentData[] =  [
     },
 ];
 
-export interface TableItemProps {
-    student: StudentData;
-}
-
-function TableItem(props: TableItemProps) {
-    let student = props.student;
-    return (
-        <tr key={student.skey}>
-            <td>{student.name}</td>
-            <td>{student.id}</td>
-            <td><a href="http://google.com">view</a> | 
-            <a href="http://google.com"> edit</a></td>
-        </tr>
-    );
-}
-
-export interface FilterableStudentListProps {
-    name: String;
-}
-
 class FilterableStudentList extends React.Component<FilterableStudentListProps, object> {
-  render() {
-    const { name } = this.props;
-
-    return (
-      <div className="filterableStudentList">
-        <div className="well">
-          <form className="form-inline">
-              <label>Search Last Name: </label>
-              <input type="text" name="name"/>
-              <button type="button" className="btn btn-primary">Search</button>
-              <button type="button" className="btn btn-default pull-right">Add Student</button>
-          </form>
-          <table className="table table-striped table-sm table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>ID</th>
-                <th>URL</th>
-              </tr>
-            </thead>
-            <tbody>
-                {funTimes.map((s) =>
-                    <TableItem key={s.skey} student={s}/>
-                )}
-            </tbody>
-          </table>
+    constructor(props: FilterableStudentListProps) {
+        super(props);
+        this.onFilterChange = this.onFilterChange.bind(this);
+        this.state = { 
+            filterName: '***'
+        };
+    }
+    public render() {
+        return (
+        <div className="filterableStudentList">
+            <div className="well">
+            <StudentListFilterForm
+                defaultFilterName="good"
+                onFilterChange={this.onFilterChange}
+            />
+            <StudentListItems 
+                students={funTimes} 
+            />
+            </div>
+            {name}
         </div>
-        {name}
-      </div>
-    );
-  }
+        );
+    }
+
+    public onFilterChange(label: string, value: string) {
+        console.log('FilterableStudentList::onFilterChange() - label:' + label, ',value:' + value);
+        this.setState({[label]: value});
+    }
 }
+
 export default FilterableStudentList;
 
 /*
