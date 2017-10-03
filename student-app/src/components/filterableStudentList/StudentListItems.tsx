@@ -11,15 +11,15 @@ export function StudentListItems(props: StudentListItemsProps) {
     
     let students = props.students;
     return (
-        <table className="table table-striped table-sm table-hover">
-            <thead>
+        <table className="studentListItems table table-striped table-sm table-hover">
+            <thead className="studentListItemsHead">
               <tr>
                 <th>Name</th>
                 <th>ID</th>
                 <th>URL</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="studentListItemsBody">
                 {students.map((s) =>
                     <StudentListItem key={s.skey} student={s}/>
                 )}
@@ -27,3 +27,4 @@ export function StudentListItems(props: StudentListItemsProps) {
         </table>
     );
 }
+export default StudentListItems;
