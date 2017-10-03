@@ -7,9 +7,21 @@ export interface StudentListItemsProps {
     students: Array<StudentData>;
 }
 
-export function StudentListItems(props: StudentListItemsProps) {
-    
+function StudentListItemsBody(props: StudentListItemsProps) {
     let students = props.students;
+    if (!students.length) {
+        return <tr> No students!</tr>;
+    } 
+
+    let studentList = students.map((s) =>
+        <StudentListItem key={s.skey} student={s}/>
+    );
+
+    /* Ugh.  How to cast this expression to return JSX? */
+    return (<div>{studentList}</div>);
+}
+
+export function StudentListItems(props: StudentListItemsProps) {
     return (
         <table className="studentListItems table table-striped table-sm table-hover">
             <thead className="studentListItemsHead">
@@ -20,9 +32,7 @@ export function StudentListItems(props: StudentListItemsProps) {
               </tr>
             </thead>
             <tbody className="studentListItemsBody">
-                {students.map((s) =>
-                    <StudentListItem key={s.skey} student={s}/>
-                )}
+                <StudentListItemsBody students={props.students}/>
             </tbody>
         </table>
     );
