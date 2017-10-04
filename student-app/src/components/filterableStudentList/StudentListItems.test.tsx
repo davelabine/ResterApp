@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { StudentData } from './StudentListInterfaces.d';
-import StudentListItems from './StudentListItems';
+import { StudentListItems, STUDENT_LIST_ITEMS_EMPTY } from './StudentListItems';
 
-let testStudents: StudentData[] =  [
+let studentListEmpty: StudentData[] = [];
+let studentList: StudentData[] =  [
     {
         'skey': '8a80810d5dd89a3f015dd89ac8280000',
         'id': 'Billy Bob',
@@ -25,14 +26,26 @@ let testStudents: StudentData[] =  [
 ];
 
 describe('StudentListItems', () => {
+
   it('wraps the studentListItems in a table with a header and a body', () => {
-    let list = shallow(<StudentListItems students={testStudents}/>);
+    let list = shallow(<StudentListItems students={studentList}/>);
     let table = list.find('.studentListItems');
     expect(table.length).toEqual(1);
     expect(table.find('.studentListItemsHead').length).toEqual(1); 
     expect(table.find('.studentListItemsBody').length).toEqual(1); 
   });
 
-  it('renders the right number of studentListItems');
-  it('renders a message when it gets an empty student list');
+  it('renders the right number of studentListItems', () => {
+    let list = shallow(<StudentListItems students={studentList}/>);
+    let listRows = list.find('.studentListItemsBody').children();
+    expect(listRows.length).toEqual(2);
+  });
+
+  it('renders a message when it gets an empty student list', () => {
+    let list = shallow(<StudentListItems students={studentListEmpty}/>);
+    let listRows = list.find('.studentListItemsBody').children();
+    expect(listRows.length).toEqual(1);
+    expect(listRows.first().text()).toEqual(STUDENT_LIST_ITEMS_EMPTY);
+  });
+
 });
