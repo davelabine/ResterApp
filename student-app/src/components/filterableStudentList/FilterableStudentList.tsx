@@ -29,12 +29,12 @@ let funTimes: StudentData[] =  [
     },
 ];
 
-class FilterableStudentList extends React.Component<FilterableStudentListProps, object> {
+class FilterableStudentList extends React.Component<FilterableStudentListProps, any> {
     constructor(props: FilterableStudentListProps) {
         super(props);
-        this.onFilterChange = this.onFilterChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = { 
-            filterName: '***'
+            filter: '***'
         };
     }
     public render() {
@@ -42,8 +42,8 @@ class FilterableStudentList extends React.Component<FilterableStudentListProps, 
         <div className="filterableStudentList">
             <div className="well">
             <StudentListFilterForm
-                defaultFilterName="good"
-                onFilterChange={this.onFilterChange}
+                filter={this.state.filter}
+                onFilterChange={this.handleChange}
             />
             <StudentListItems 
                 students={funTimes} 
@@ -54,9 +54,9 @@ class FilterableStudentList extends React.Component<FilterableStudentListProps, 
         );
     }
 
-    public onFilterChange(label: string, value: string) {
-        console.log('FilterableStudentList::onFilterChange() - label:' + label, ',value:' + value);
-        this.setState({[label]: value});
+    public handleChange(e: React.FormEvent<HTMLInputElement>): void {
+        console.log('handleChange() - label:' + e.currentTarget.name + ', value:' + e.currentTarget.value);
+        this.setState({[e.currentTarget.name]: e.currentTarget.value});
     }
 }
 
