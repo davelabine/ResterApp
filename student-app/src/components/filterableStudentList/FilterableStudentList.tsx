@@ -29,7 +29,7 @@ let funTimes: StudentData[] =  [
     },
 ];
 
-class FilterableStudentList extends React.Component<FilterableStudentListProps, any> {
+export class FilterableStudentList extends React.Component<FilterableStudentListProps, any> {
     constructor(props: FilterableStudentListProps) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -59,7 +59,6 @@ class FilterableStudentList extends React.Component<FilterableStudentListProps, 
         this.setState({[e.currentTarget.name]: e.currentTarget.value});
     }
 }
-
 export default FilterableStudentList;
 
 /*
