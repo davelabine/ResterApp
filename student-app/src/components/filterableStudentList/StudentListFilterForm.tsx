@@ -26,3 +26,5 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
         );
     }
 }
+
+export default StudentListFilterForm;

@@ -5,7 +5,7 @@ import { StudentListFilterForm } from './StudentListFilterForm';
 import { StudentListItems } from './StudentListItems';
 
 export interface FilterableStudentListProps {
-    name: String;
+    name: string;
 }
 
 let funTimes: StudentData[] =  [

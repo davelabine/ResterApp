@@ -1,6 +1,3 @@
-export interface StudentListItemsProps {
-    students: Array<StudentData>;
-}
 
 export interface StudentPhoto {
     bucketName: string;

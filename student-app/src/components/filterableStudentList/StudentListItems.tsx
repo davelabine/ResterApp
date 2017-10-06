@@ -22,7 +22,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
         let studentList;
 
         if (!students.length) {
-            studentList = <tr>{STUDENT_LIST_ITEMS_EMPTY}</tr>;
+            studentList = <tr><td>{STUDENT_LIST_ITEMS_EMPTY}</td></tr>;
         } else {
             studentList = students.map((s) =>
                 <StudentListItem key={s.skey} student={s}/>

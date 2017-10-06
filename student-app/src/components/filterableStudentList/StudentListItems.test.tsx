@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { StudentData } from './StudentListInterfaces.d';
 import { StudentListItems, STUDENT_LIST_ITEMS_EMPTY } from './StudentListItems';
 
@@ -26,6 +26,10 @@ let studentList: StudentData[] =  [
 ];
 
 describe('StudentListItems', () => {
+
+  it('renders without crashing', () => {
+    mount(<StudentListItems students={studentListEmpty}/>);
+  });
 
   it('wraps the studentListItems in a table with a header and a body', () => {
     let list = shallow(<StudentListItems students={studentList}/>);
