@@ -54,6 +54,9 @@ public class JaxRsIntegrationRunner {
 
     @BeforeClass
     public static void startServer() throws Exception {
+
+        //ToDo: should try to import static io.restassured.RestAssured.given to do these integration tests.
+
         String war_file = config.getString("JaxRSItRunner.war_file");
         Preconditions.checkNotNull(war_file, "This test requires the web path for the service project!  Run with JaxRSItRunner.war_file set in resources/application.conf");
 
