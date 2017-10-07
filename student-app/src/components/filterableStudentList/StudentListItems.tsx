@@ -4,6 +4,7 @@ import { StudentListItem } from './StudentListItem';
 import { StudentData } from './StudentListInterfaces.d';
 
 export interface StudentListItemsProps {
+    filter: string;
     students: Array<StudentData>;
 }
 
@@ -12,22 +13,13 @@ export interface StudentListItemsProps {
 export const STUDENT_LIST_ITEMS_EMPTY = 'No Students!';
 
 export class StudentListItems extends React.Component<StudentListItemsProps, object> {
-
+    
     constructor(props: StudentListItemsProps) {
         super(props);
     }
 
     public render() {
-        let students = this.props.students;
-        let studentList;
-
-        if (!students.length) {
-            studentList = <tr><td>{STUDENT_LIST_ITEMS_EMPTY}</td></tr>;
-        } else {
-            studentList = students.map((s) =>
-                <StudentListItem key={s.skey} student={s}/>
-            );
-        }
+        let studentList = this.filterRows();
 
         return (
             <table className="studentListItems table table-striped table-sm table-hover">
@@ -44,5 +36,37 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
             </table>
         );
     }
+
+    private filterRows(): Array<JSX.Element> {
+        let filter = this.props.filter;
+        let students = this.props.students;
+        let rows: Array<JSX.Element> = [];
+
+        students.map((s) => {
+            if (s.name.indexOf(filter) === -1) {
+                return;
+            }
+
+            rows.push(
+                <StudentListItem key={s.skey} student={s}/>
+            );
+        });
+
+        if (!rows.length) {
+            rows.push(<tr><td>{STUDENT_LIST_ITEMS_EMPTY}</td></tr>);
+        }
+
+        return rows;
+    }
+
+    /* Another way to map the list of students...
+        if (!students.length) {
+            studentList = <tr><td>{STUDENT_LIST_ITEMS_EMPTY}</td></tr>;
+        } else {
+            studentList = students.map((s) =>
+                <StudentListItem key={s.skey} student={s}/>
+            );
+        }
+    */
 }
 export default StudentListItems;

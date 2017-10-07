@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { FilterableStudentList } from './FilterableStudentList';
 
 describe('FilterableStudentList', () => {
     it('renders without crashing', () => {
-      mount(<FilterableStudentList defaultFilter='testorama'/>);
+      mount(<FilterableStudentList defaultFilter="testorama"/>);
     });
     it('handles ', () => {
-      const list = shallow(<FilterableStudentList defaultFilter='testorama'/>);
+        /*
+      const list = shallow(<FilterableStudentList defaultFilter="testorama"/>);
+      */
     });
 });

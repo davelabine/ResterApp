@@ -8,6 +8,7 @@ import { createStore } from 'redux';
 import { enthusiasm } from './reducers/index';
 import { StoreState } from './types/index';
 import { Provider } from 'react-redux';
+import { STUDENT_DATA_BIG_LIST } from './testData/testStudents';
 
 import FilterableStudentList from './components/filterableStudentList/FilterableStudentList';
 
@@ -18,7 +19,7 @@ const store = createStore<StoreState>(enthusiasm, {
 
 ReactDOM.render(
   <Provider store={store}>
-    <FilterableStudentList name="Dave"/>
+    <FilterableStudentList students={STUDENT_DATA_BIG_LIST}/>
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
