@@ -10,7 +10,7 @@ export interface StudentListItemsProps {
 
 /* TODO: There is probably a better way to do this without polluting the global namespace.
    Initial attempt at adding this as a class constant didn't work - could not access from another class */
-export const STUDENT_LIST_ITEMS_EMPTY = 'No Students!';
+export const STUDENT_LIST_ITEMS_EMPTY: string = 'No Students!';
 
 export class StudentListItems extends React.Component<StudentListItemsProps, object> {
     
@@ -43,7 +43,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
         let rows: Array<JSX.Element> = [];
 
         students.map((s) => {
-            if (s.name.indexOf(filter) === -1) {
+            if (s.name.toLowerCase().indexOf(filter.toLowerCase()) === -1) {
                 return;
             }
 
@@ -52,21 +52,13 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
             );
         });
 
+        /* Note: Empty rows could be because of no students in the list
+           or we filtered all of the existing students out */ 
         if (!rows.length) {
-            rows.push(<tr><td>{STUDENT_LIST_ITEMS_EMPTY}</td></tr>);
+            rows.push(<tr key="empty"><td>{STUDENT_LIST_ITEMS_EMPTY}</td></tr>);
         }
 
         return rows;
     }
-
-    /* Another way to map the list of students...
-        if (!students.length) {
-            studentList = <tr><td>{STUDENT_LIST_ITEMS_EMPTY}</td></tr>;
-        } else {
-            studentList = students.map((s) =>
-                <StudentListItem key={s.skey} student={s}/>
-            );
-        }
-    */
 }
 export default StudentListItems;

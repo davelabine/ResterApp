@@ -37,7 +37,6 @@ export class FilterableStudentList extends React.Component<FilterableStudentList
     }
 
     public handleChange(e: React.FormEvent<HTMLInputElement>): void {
-        console.log('handleChange() - label:' + e.currentTarget.name + ', value:' + e.currentTarget.value);
         this.setState({[e.currentTarget.name]: e.currentTarget.value});
     }
 
