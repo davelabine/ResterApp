@@ -31,7 +31,6 @@ export class FilterableStudentList extends React.Component<FilterableStudentList
                 students={this.props.students} 
             />
             </div>
-            {name}
         </div>
         );
     }

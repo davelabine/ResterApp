@@ -41,9 +41,6 @@ export let STUDENT_DATA_BIG_LIST: StudentData[] =  [
             'key': 'e93ecbf0-ba96-4290-a906-5ea67e4c4a9f'
         }
     },
-];
-
-    /*
     {
         'skey': '8a80810d5dd89a3f015dd8a259b2000e',
         'id': '942226',
@@ -92,5 +89,4 @@ export let STUDENT_DATA_BIG_LIST: StudentData[] =  [
         'name': 'Beatrice Russell',
         'photo': {}
     },
-  ];
-  */
+];

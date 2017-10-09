@@ -37,7 +37,7 @@ describe('StudentListItems', () => {
   });
 
   it('ignores case when filtering students from a two student list', () => {
-    let list = shallow(<StudentListItems filter="a" students={studentTestData.STUDENT_DATA_TWO}/>);
+    let list = shallow(<StudentListItems filter="A" students={studentTestData.STUDENT_DATA_TWO}/>);
     let listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(1);
   });

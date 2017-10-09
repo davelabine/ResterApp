@@ -8,5 +8,5 @@ export interface StudentData {
     skey: string;
     id: string;
     name: string;
-    photo: StudentPhoto;
+    photo: {};
 }
