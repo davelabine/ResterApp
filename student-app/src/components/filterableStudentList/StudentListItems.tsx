@@ -19,7 +19,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
     }
 
     public render() {
-        let studentList = this.filterRows();
+        const studentList = this.filterRows();
 
         return (
             <table className="studentListItems table table-striped table-sm table-hover">
@@ -38,9 +38,9 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
     }
 
     private filterRows(): Array<JSX.Element> {
-        let filter = this.props.filter;
-        let students = this.props.students;
-        let rows: Array<JSX.Element> = [];
+        const filter = this.props.filter;
+        const students = this.props.students;
+        const rows: Array<JSX.Element> = [];
 
         students.map((s) => {
             if (s.name.toLowerCase().indexOf(filter.toLowerCase()) === -1) {

@@ -17,7 +17,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                 <label>Search Last Name: </label>
                 <input 
                     type="text" 
-                    name="filter" 
+                    className="studentListNameFilter" 
                     onChange={this.props.onFilterChange}
                     value={this.props.filter}
                 />

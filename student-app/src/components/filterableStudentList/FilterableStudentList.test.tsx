@@ -9,16 +9,16 @@ describe('FilterableStudentList', () => {
     });
 
     it('has a StudentListFilterForm and StudentListItems ', () => {
-      let list = shallow(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO}/>);
+      const list = shallow(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO}/>);
       expect(list.find('StudentListFilterForm').length).toEqual(1);
       expect(list.find('StudentListItems').length).toEqual(1); 
     });
 
     it('changes state when filter is changed ', () => {
-      let list = mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO}/>);
-      let form = list.find('StudentListFilterForm');
-      let input = form.find('input');
-      let newTextFilter = 'abc';
+      const list = mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO}/>);
+      const form = list.find('StudentListFilterForm');
+      const input = form.find('input');
+      const newTextFilter = 'abc';
       input.simulate('change', {target: {value: newTextFilter}});
       
       /* TODO: how do we check the state of this component? 

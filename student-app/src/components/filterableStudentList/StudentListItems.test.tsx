@@ -10,41 +10,41 @@ describe('StudentListItems', () => {
   }); 
 
   it('wraps the studentListItems in a table with a header and a body', () => {
-    let list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
-    let table = list.find('.studentListItems');
+    const list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
+    const table = list.find('.studentListItems');
     expect(table.length).toEqual(1);
     expect(table.find('.studentListItemsHead').length).toEqual(1); 
     expect(table.find('.studentListItemsBody').length).toEqual(1); 
   });
 
   it('renders the right number of studentListItems', () => {
-    let list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
-    let listRows = list.find('.studentListItemsBody').children();
+    const list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
+    const listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(2);
   });
 
   it('renders a message when it gets an empty student list', () => {
-    let list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_EMPTY}/>);
-    let listRows = list.find('.studentListItemsBody').children();
+    const list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_EMPTY}/>);
+    const listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(1);
     expect(listRows.first().text()).toEqual(STUDENT_LIST_ITEMS_EMPTY);
   });
 
   it('filters out all but the A students from a two student list', () => {
-    let list = shallow(<StudentListItems filter="A" students={studentTestData.STUDENT_DATA_TWO}/>);
-    let listRows = list.find('.studentListItemsBody').children();
+    const list = shallow(<StudentListItems filter="A" students={studentTestData.STUDENT_DATA_TWO}/>);
+    const listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(1);
   });
 
   it('ignores case when filtering students from a two student list', () => {
-    let list = shallow(<StudentListItems filter="A" students={studentTestData.STUDENT_DATA_TWO}/>);
-    let listRows = list.find('.studentListItemsBody').children();
+    const list = shallow(<StudentListItems filter="A" students={studentTestData.STUDENT_DATA_TWO}/>);
+    const listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(1);
   });
 
   it('properly filters out all students from a two student list and displays the empty student message', () => {
-    let list = shallow(<StudentListItems filter="Z" students={studentTestData.STUDENT_DATA_TWO}/>);
-    let listRows = list.find('.studentListItemsBody').children();
+    const list = shallow(<StudentListItems filter="Z" students={studentTestData.STUDENT_DATA_TWO}/>);
+    const listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(1);
     expect(listRows.first().text()).toEqual(STUDENT_LIST_ITEMS_EMPTY);
   });

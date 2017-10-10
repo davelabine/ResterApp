@@ -8,9 +8,9 @@ describe('FilterableStudentList', () => {
     });
     
     it('triggers callback when input is changed', () => {
-      let mockOnFilterChange = jest.fn();
-      let form = shallow(<StudentListFilterForm filter="" onFilterChange={mockOnFilterChange}/>);
-      let input = form.find('input');
+      const mockOnFilterChange = jest.fn();
+      const form = shallow(<StudentListFilterForm filter="" onFilterChange={mockOnFilterChange}/>);
+      const input = form.find('input');
       expect(input.length).toEqual(1);
       input.simulate('change', {target: {value: 'abc'}});
       expect(mockOnFilterChange).toHaveBeenCalled();

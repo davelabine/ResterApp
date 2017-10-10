@@ -1,7 +1,10 @@
 import { StudentData } from '../components/filterableStudentList/StudentListInterfaces.d';
 
-export let STUDENT_DATA_EMPTY: StudentData[] = [];
-export let STUDENT_DATA_TWO: StudentData[] =  [
+export class TestStudents {
+    
+}
+export const STUDENT_DATA_EMPTY: StudentData[] = [];
+export const STUDENT_DATA_TWO: StudentData[] =  [
     {
         'skey': '8a80810d5dd89a3f015dd89ac8280000',
         'id': 'Billy Bob',
@@ -22,7 +25,7 @@ export let STUDENT_DATA_TWO: StudentData[] =  [
     },
 ];
 
-export let STUDENT_DATA_BIG_LIST: StudentData[] =  [
+export const STUDENT_DATA_BIG_LIST: StudentData[] =  [
     {
         'skey': '8a80810d5dd89a3f015dd89ac8280000',
         'id': '1234',
