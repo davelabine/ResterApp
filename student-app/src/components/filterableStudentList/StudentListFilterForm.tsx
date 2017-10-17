@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './FilterableStudentList.css';
+import { ResterAppManager } from '../../clients/ResterAppManager';
 
 export interface StudentListFilterFormProps {
     filter: string;
@@ -21,9 +22,20 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                     onChange={this.props.onFilterChange}
                     value={this.props.filter}
                 />
-                <button type="button" className="btn btn-default pull-right">Add Student</button>
+                <button 
+                    type="button" 
+                    className="btn btn-default pull-right"
+                    onClick={this.onAddStudentClick}
+                >Add Student
+                </button>
             </form>
         );
+    }
+
+    public onAddStudentClick() {
+        let resterApp = new ResterAppManager();
+        let fun = resterApp.load();
+        console.log(fun);
     }
 }
 
