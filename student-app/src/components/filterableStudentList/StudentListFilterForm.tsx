@@ -34,7 +34,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
 
     public onAddStudentClick() {
         let resterApp = new ResterAppManager();
-        let fun = resterApp.load();
+        let fun = resterApp.fetchStudents();
         console.log(fun);
     }
 }

@@ -1,4 +1,15 @@
+export interface StudentPhoto {
+    bucketName: string;
+    key: string;
+}
+
+export interface StudentData {
+    skey: string;
+    id: string;
+    name: string;
+    photo: {};
+}
+
 export interface StoreState {
-    languageName: string;
-    enthusiasmLevel: number;
+    studentList: Array<StudentData>;
 }

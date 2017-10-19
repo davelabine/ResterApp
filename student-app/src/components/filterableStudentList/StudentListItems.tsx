@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StudentListItem } from './StudentListItem';
-import { StudentData } from './StudentListInterfaces.d';
+import { StudentData } from '../../types';
 
 export interface StudentListItemsProps {
     filter: string;

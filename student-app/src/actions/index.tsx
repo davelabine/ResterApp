@@ -1,23 +1,23 @@
 import * as constants from '../constants';
 
-export interface IncrementEnthusiasm {
-    type: constants.INCREMENT_ENTHUSIASM;
+export interface FetchStudents {
+    type: constants.FETCH_STUDENTS;
 }
 
-export interface DecrementEnthusiasm {
-    type: constants.DECREMENT_ENTHUSIASM;
+export interface AddStudent {
+    type: constants.ADD_STUDENT;
 }
 
-export type EnthusiasmAction = IncrementEnthusiasm | DecrementEnthusiasm;
+export type StudentAction = FetchStudents | AddStudent;
 
-export function incrementEnthusiasm(): IncrementEnthusiasm {
+export function fetchStudents(): FetchStudents {
     return {
-        type: constants.INCREMENT_ENTHUSIASM
+        type: constants.FETCH_STUDENTS
     };
 }
 
-export function decrementEnthusiasm(): DecrementEnthusiasm {
+export function AddStudent(): AddStudent {
     return {
-        type: constants.DECREMENT_ENTHUSIASM
+        type: constants.ADD_STUDENT
     };
 }

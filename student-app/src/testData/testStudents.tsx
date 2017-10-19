@@ -1,4 +1,4 @@
-import { StudentData } from '../components/filterableStudentList/StudentListInterfaces.d';
+import { StudentData } from '../types';
 
 export class TestStudents {
     

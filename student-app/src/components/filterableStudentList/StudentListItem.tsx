@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StudentData } from './StudentListInterfaces.d';
+import { StudentData } from '../../types';
 
 /* let styles = require('./StudentListItem.css'); */
 

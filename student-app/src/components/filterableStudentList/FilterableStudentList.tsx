@@ -1,21 +1,24 @@
 import * as React from 'react';
 import './FilterableStudentList.css';
-import { StudentData } from './StudentListInterfaces.d';
+import { StudentData } from '../../types';
 import { StudentListFilterForm } from './StudentListFilterForm';
 import { StudentListItems } from './StudentListItems';
 
-export interface FilterableStudentListProps {
+export interface Props {
     students: Array<StudentData>;
+    onFetchStudents?: () => void;
 }
 
-export class FilterableStudentList extends React.Component<FilterableStudentListProps, any> {
+export class FilterableStudentList extends React.Component<Props, object> {
     
-    constructor(props: FilterableStudentListProps) {
+    constructor(props: Props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        /*
         this.state = { 
             filter: ''
-        };
+        }
+        */
     }
 
     public render() {
@@ -23,11 +26,13 @@ export class FilterableStudentList extends React.Component<FilterableStudentList
         <div className="filterableStudentList">
             <div className="well">
             <StudentListFilterForm
-                filter={this.state.filter}
+                /*filter={this.state.filter}*/
+                filter="a"
                 onFilterChange={this.handleChange}
             />
             <StudentListItems 
-                filter={this.state.filter}
+                /*filter={this.state.filter}*/
+                filter="a"
                 students={this.props.students} 
             />
             </div>
@@ -36,7 +41,10 @@ export class FilterableStudentList extends React.Component<FilterableStudentList
     }
 
     public handleChange(e: React.FormEvent<HTMLInputElement>): void {
+        /*
         this.setState({[e.currentTarget.name]: e.currentTarget.value});
+        */
+        console.log('handleChange');
     }
 
 }
