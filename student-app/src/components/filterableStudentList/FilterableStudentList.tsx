@@ -27,12 +27,12 @@ export class FilterableStudentList extends React.Component<Props, object> {
             <div className="well">
             <StudentListFilterForm
                 /*filter={this.state.filter}*/
-                filter="a"
+                filter="b"
                 onFilterChange={this.handleChange}
             />
             <StudentListItems 
                 /*filter={this.state.filter}*/
-                filter="a"
+                filter="b"
                 students={this.props.students} 
             />
             </div>
@@ -45,6 +45,10 @@ export class FilterableStudentList extends React.Component<Props, object> {
         this.setState({[e.currentTarget.name]: e.currentTarget.value});
         */
         console.log('handleChange');
+        if (this.props.onFetchStudents) {
+            this.props.onFetchStudents();
+        }
+
     }
 
 }

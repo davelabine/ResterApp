@@ -15,4 +15,4 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.StudentAction>) {
   };
 }
 
-export default connect(mapStateToProps)(FilterableStudentList);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterableStudentList as any);
