@@ -1,8 +1,5 @@
 import { StudentData } from '../types';
 
-export class TestStudents {
-    
-}
 export const STUDENT_DATA_EMPTY: StudentData[] = [];
 export const STUDENT_DATA_TWO: StudentData[] =  [
     {
