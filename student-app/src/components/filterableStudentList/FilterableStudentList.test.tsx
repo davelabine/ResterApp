@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { FilterableStudentList } from './FilterableStudentList';
-import * as studentTestData from '../../testData/testStudents';
+import * as studentTestData from '../../testData/';
 
 describe('FilterableStudentList', () => {
     it('renders without crashing', () => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { StudentListItems, STUDENT_LIST_ITEMS_EMPTY } from './StudentListItems';
-import * as studentTestData from '../../testData/testStudents';
+import * as studentTestData from '../../testData';
 
 describe('StudentListItems', () => {
 

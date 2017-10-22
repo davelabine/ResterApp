@@ -8,17 +8,17 @@ import { createStore } from 'redux';
 import { studentReducer } from './reducers/index';
 import { StoreState } from './types/index';
 import { Provider } from 'react-redux';
-import { STUDENT_DATA_BIG_LIST } from './testData/testStudents';
+import * as testData from './testData';
 
-import FilterableStudentList from './components/filterableStudentList/FilterableStudentList';
+import FilterableStudentList from './containers/FilterableStudentList.c';
 
 const store = createStore<StoreState>(studentReducer, {
-  studentList: STUDENT_DATA_BIG_LIST,
+  studentList: testData.STUDENT_DATA_TWO,
 });
 
 ReactDOM.render(
   <Provider store={store}>
-    <FilterableStudentList students={STUDENT_DATA_BIG_LIST}/>
+    <FilterableStudentList/>
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
