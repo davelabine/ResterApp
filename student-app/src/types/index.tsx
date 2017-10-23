@@ -12,4 +12,5 @@ export interface StudentData {
 
 export interface StoreState {
     studentList: Array<StudentData>;
+    filter: string;
 }

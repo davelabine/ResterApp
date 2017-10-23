@@ -6,19 +6,16 @@ import { StudentListItems } from './StudentListItems';
 
 export interface Props {
     students: Array<StudentData>;
+    filter: string;
     onFetchStudents?: () => void;
+    onFilterStudents?: (filter: String) => void;
 }
 
 export class FilterableStudentList extends React.Component<Props, object> {
     
     constructor(props: Props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
-        /*
-        this.state = { 
-            filter: ''
-        }
-        */
+        this.handleFormFilterChange = this.handleFormFilterChange.bind(this);
     }
 
     public render() {
@@ -26,13 +23,11 @@ export class FilterableStudentList extends React.Component<Props, object> {
         <div className="filterableStudentList">
             <div className="well">
             <StudentListFilterForm
-                /*filter={this.state.filter}*/
-                filter="b"
-                onFilterChange={this.handleChange}
+                filter={this.props.filter}
+                onFilterChange={this.handleFormFilterChange}
             />
             <StudentListItems 
-                /*filter={this.state.filter}*/
-                filter="b"
+                filter={this.props.filter}
                 students={this.props.students} 
             />
             </div>
@@ -40,13 +35,12 @@ export class FilterableStudentList extends React.Component<Props, object> {
         );
     }
 
-    public handleChange(e: React.FormEvent<HTMLInputElement>): void {
-        /*
-        this.setState({[e.currentTarget.name]: e.currentTarget.value});
-        */
-        console.log('handleChange');
-        if (this.props.onFetchStudents) {
-            this.props.onFetchStudents();
+    public handleFormFilterChange(e: React.FormEvent<HTMLInputElement>): void {
+        console.log('need to check handleChange() name! ' + e.currentTarget.name + ':' + e.currentTarget.value);
+        let f = e.currentTarget.value;
+        if (this.props.onFilterStudents) {
+            console.log('calling onFilterStudents');
+            this.props.onFilterStudents(f);
         }
 
     }

@@ -14,6 +14,7 @@ import FilterableStudentList from './containers/FilterableStudentList.c';
 
 const store = createStore<StoreState>(studentReducer, {
   studentList: testData.STUDENT_DATA_TWO,
+  filter: '',
 });
 
 ReactDOM.render(
