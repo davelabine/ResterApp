@@ -11,6 +11,10 @@ export function studentReducer(state: StoreState, action: StudentAction): StoreS
     case constants.FILTER_STUDENTS:
       console.log('FILTER_STUDENTS');
       return { ...state, filter: action.filter };
+    case constants.ADD_STUDENT:
+      console.log('ADD_STUDENTS');
+      state.studentList.push(action.student);
+      return state;
     default:
       return state;
   }

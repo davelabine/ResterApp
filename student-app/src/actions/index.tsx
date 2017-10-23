@@ -1,4 +1,5 @@
 import * as constants from '../constants';
+import { StudentData } from '../types/';
 
 export interface FetchStudents {
     type: constants.FETCH_STUDENTS;
@@ -11,6 +12,7 @@ export interface FilterStudents {
 
 export interface AddStudent {
     type: constants.ADD_STUDENT;
+    student: StudentData;
 }
 
 export type StudentAction = FetchStudents | FilterStudents | AddStudent;
@@ -28,8 +30,9 @@ export function filterStudents(filter: string): FilterStudents {
     };
 }
 
-export function AddStudent(): AddStudent {
+export function addStudent(student: StudentData): AddStudent {
     return {
-        type: constants.ADD_STUDENT
+        type: constants.ADD_STUDENT,
+        student
     };
 }

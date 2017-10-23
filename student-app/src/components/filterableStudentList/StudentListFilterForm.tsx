@@ -1,10 +1,10 @@
 import * as React from 'react';
 import './FilterableStudentList.css';
-import { ResterAppManager } from '../../clients/ResterAppManager';
 
 export interface StudentListFilterFormProps {
     filter: string;
     onFilterChange(e: React.FormEvent<HTMLInputElement>): void;
+    onAddStudentClick(): void;
 }
 
 export class StudentListFilterForm extends React.Component<StudentListFilterFormProps> {
@@ -25,17 +25,11 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                 <button 
                     type="button" 
                     className="btn btn-default pull-right"
-                    onClick={this.onAddStudentClick}
+                    onClick={this.props.onAddStudentClick}
                 >Add Student
                 </button>
             </form>
         );
-    }
-
-    public onAddStudentClick() {
-        let resterApp = new ResterAppManager();
-        let fun = resterApp.fetchStudents();
-        console.log(fun);
     }
 }
 

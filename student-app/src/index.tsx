@@ -13,7 +13,7 @@ import * as testData from './testData';
 import FilterableStudentList from './containers/FilterableStudentList.c';
 
 const store = createStore<StoreState>(studentReducer, {
-  studentList: testData.STUDENT_DATA_TWO,
+  studentList: testData.STUDENT_DATA_BIG_LIST,
   filter: '',
 });
 
