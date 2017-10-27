@@ -7,7 +7,7 @@ ssh -i "./secret/resterapp.pem" ec2-user@35.161.46.45
 ssh -i "./secret/Loadtest-resterapp.pem" ec2-user@ec2-35-160-171-66.us-west-2.compute.amazonaws.com
 
 # Copy a war file to remote host
-scp -i "./secret/resterapp.pem" -r ./build/libs/resterapp-1.0.1-SNAPSHOT.war ec2-user@ec2-35-161-174-66.us-west-2.compute.amazonaws.com:~
+scp -i "./secret/resterapp.pem" -r ./Service/build/libs/service-1.0.1-SNAPSHOT.war ec2-user@52.10.68.241:~
 # Copy the JMeter test file...
 scp -i "./secret/Loadtest-resterapp.pem -r ./jmeter/ ec2-user@ec2-35-161-174-66.us-west-2.compute.amazonaws.com:~
 

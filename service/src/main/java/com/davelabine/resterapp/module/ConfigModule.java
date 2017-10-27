@@ -41,14 +41,19 @@ public class ConfigModule extends AbstractModule {
         Configuration hbnConfig = new Configuration();
         hbnConfig.configure("hibernate.cfg.xml");
 
+        // This is set in ~/.gradle/gradle.properties
+        /*
         String uname = System.getProperty(DB_ENV_UNAME);
         String pw = System.getProperty(DB_ENV_PW);
+        */
+        String uname = System.getenv(DB_ENV_UNAME).replace("\r","");
+        String pw = System.getenv(DB_ENV_PW).replace("\r","");
 
         if ( (uname != null) && (pw != null) ) {
             hbnConfig.setProperty("hibernate.connection.username", uname.replace("\r",""));
             hbnConfig.setProperty("hibernate.connection.password", pw.replace("\r",""));
         } else {
-            logger.error("Hibernate DB username ({}) or password ({}) are not set!  Set these environment variables.",
+            logger.error("Hibernate DB username ({}) or password ({}) are not set!  Set these system properties: ",
                             DB_ENV_UNAME, DB_ENV_PW);
             throw new RuntimeException("#### Need to set DB credentials!");
         }
