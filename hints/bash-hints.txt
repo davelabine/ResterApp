@@ -1,6 +1,6 @@
 # LOCAL 
 
-# Connect to an EC2 instance via SSH
+# Connect to an EC2 instance via SSH manually
 # Tomcat instance
 ssh -i "./secret/resterapp.pem" ec2-user@35.161.46.45
 # Loadtest instance
@@ -11,8 +11,18 @@ scp -i "./secret/resterapp.pem" -r ./Service/build/libs/service-1.0.1-SNAPSHOT.w
 # Copy the JMeter test file...
 scp -i "./secret/Loadtest-resterapp.pem -r ./jmeter/ ec2-user@ec2-35-161-174-66.us-west-2.compute.amazonaws.com:~
 
+# Making this easier with ssh config
+# http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/
+# Setup DNS with Route53 or copy the instance IP to ~/.ssh/config
+# Then connecting to the instance is just..
+ssh resterapp
+
+# SCP is
+scp -r ./Service/build/libs/service-1.0.1-SNAPSHOT.war resterapp:~
 
 # REMOTE
+
+# Tomcat
 
 # Tomcat is in /usr/share/tomcat7
 
@@ -26,4 +36,26 @@ sudo service tomcat7 start
 sudo service tomcat7 stop
 
 # To start a JMeter test
-JMeter -n -t ResterApp.jmx -l log.jtl 
+JMeter -n -t ResterApp.jmx -l log.jtl
+
+# Jetty - here is how I installed it
+# http://www.itzgeek.com/how-tos/linux/centos-how-tos/install-jetty-web-server-on-centos-7-rhel-7.html
+
+# Service start or stop
+sudo service jetty start
+
+# deploying a webapp
+# This is how to configure the default contexts
+# https://www.eclipse.org/jetty/documentation/9.3.x/configuring-contexts.html
+
+# set of commands (to put into a shell script
+scp -r ./Service/build/libs/service-1.0.1-SNAPSHOT.war resterapp:~
+ssh resterapp
+# verify which services are running
+sudo service --list
+# Stop jetty first, then copy the new war
+# Since these instances are tiny they will get bogged down consuming a new war
+sudo service jetty stop
+sudo cp service-1.0.1-SNAPSHOT.war /opt/jetty/webapps/root.war
+# now bring jetty back up
+sudo service jetty start

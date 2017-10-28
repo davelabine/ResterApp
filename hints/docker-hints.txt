@@ -1,0 +1,13 @@
+# build the docker image with the following
+docker build -t davelabine/resterapp .
+
+# Run the docker image with the appropriate environment variables
+# only so this once
+docker run --name resterapp -d -p 80:8080 davelabine/resterapp
+
+# You have to stop the image and rm it before you can modify it...
+docker stop resterapp
+docker rm resterapp
+
+# If you just want to start it you can do
+docker start resterapp -d -p 80:80

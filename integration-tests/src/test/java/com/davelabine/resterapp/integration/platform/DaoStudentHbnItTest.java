@@ -5,6 +5,8 @@ import com.davelabine.resterapp.platform.api.exceptions.DaoException;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
 import com.davelabine.resterapp.platform.api.model.Student;
 import com.davelabine.resterapp.platform.dao.HbnTxManager;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +42,7 @@ public class DaoStudentHbnItTest {
     private static final String FAKE_KEY = "FAKE-KEY";
 
     private static final Logger logger = LoggerFactory.getLogger(DaoStudentHbnItTest.class);
-
+    private static final Config config = ConfigFactory.load("secret.conf");
 
     private ServiceRegistry hbnServiceRegistry;
     private HbnTxManager hbnTxManager;
@@ -54,17 +56,16 @@ public class DaoStudentHbnItTest {
         SessionFactory sessionFactory = null;
         Session session = null;
 
-        String uname = System.getenv(DB_ENV_UNAME);
-        String pw = System.getenv(DB_ENV_PW);
-
-        if ( (uname != null) && (pw != null) ) {
-            hbnConfig.setProperty("hibernate.connection.username", uname.replace("\r",""));
-            hbnConfig.setProperty("hibernate.connection.password", pw.replace("\r",""));
-        } else {
-            logger.error("Hibernate DB username ({}) or password ({}) are not set!  Set these environment variables.",
+        String uname = config.getString("Secret.DB_UNAME");
+        String pw = config.getString("Secret.DB_PW");
+        if ( (uname == null) || (pw == null) ) {
+            logger.error("Hibernate DB username ({}) or password ({}) are not set!  Check Secret.conf",
                     DB_ENV_UNAME, DB_ENV_PW);
             throw new RuntimeException("#### Need to set DB credentials!");
         }
+
+        hbnConfig.setProperty("hibernate.connection.username", uname);
+        hbnConfig.setProperty("hibernate.connection.password", pw);
 
         try {
             hbnServiceRegistry = new StandardServiceRegistryBuilder().applySettings(hbnConfig.getProperties()).build();

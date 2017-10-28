@@ -1,5 +1,7 @@
 package com.davelabine.resterapp.integration.platform;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.davelabine.resterapp.platform.api.exceptions.BlobStoreException;
 import com.davelabine.resterapp.platform.api.model.BlobData;
 import com.davelabine.resterapp.platform.api.model.BlobLocation;
@@ -25,13 +27,19 @@ public class BlobStoreServiceItTest {
     private static String UPLOAD_FILE_NAME = "images/DSC_0133.jpg";
 
     private static final Config awsConfig = ConfigFactory.load("aws.conf");
+    private static final Config secretConfig = ConfigFactory.load("secret.conf");
 
     BlobStoreService blobStore;
 
     @Before
     public void before() {
+        BasicAWSCredentials creds = new BasicAWSCredentials(
+                secretConfig.getString("Secret.AWS_ACCESS_KEY_ID"),
+                secretConfig.getString("Secret.AWS_SECRET_ACCESS_KEY"));
+        AWSStaticCredentialsProvider credProvider = new AWSStaticCredentialsProvider(creds);
+
         AmazonS3 s3 = AmazonS3Client.builder()
-                                    .withCredentials(new ProfileCredentialsProvider())
+                                    .withCredentials(credProvider)
                                     .withRegion(awsConfig.getString("s3.region"))
                                     .build();
         blobStore = new S3BlobStoreService(s3, awsConfig);
