@@ -38,11 +38,12 @@ sudo service tomcat7 stop
 # To start a JMeter test
 JMeter -n -t ResterApp.jmx -l log.jtl
 
-# Jetty - here is how I installed it
+# Java - here is how I installed it
 # Java install https://tecadmin.net/install-java-8-on-centos-rhel-and-fedora/
-# Jetty
-# https://www.rosehosting.com/blog/install-jetty-on-a-centos-7-vps/
+# Jetty - to get it going for testing
 # http://www.itzgeek.com/how-tos/linux/centos-how-tos/install-jetty-web-server-on-centos-7-rhel-7.html
+# And then when you need to do it for real, check out
+# https://www.eclipse.org/jetty/documentation/9.4.x/startup-unix-service.html
 
 # Service start or stop
 sudo service jetty start
@@ -60,6 +61,6 @@ service jetty status
 # Stop jetty first, then copy the new war
 # Since these instances are tiny they will get bogged down consuming a new war
 sudo service jetty stop
-sudo cp service-1.0.1-SNAPSHOT.war /opt/jetty/webapps/root.war
+sudo cp ~/service-1.0.1-SNAPSHOT.war /opt/web/mybase/webapps/root.war
 # now bring jetty back up
 sudo service jetty start
