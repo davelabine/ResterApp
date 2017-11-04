@@ -1,8 +1,9 @@
 import * as constants from '../constants';
 import { StudentData } from '../types/';
 
-export interface FetchStudents {
-    type: constants.FETCH_STUDENTS;
+export interface SetStudents {
+    type: constants.SET_STUDENTS;
+    students: Array<StudentData>;
 }
 
 export interface FilterStudents {
@@ -15,11 +16,21 @@ export interface AddStudent {
     student: StudentData;
 }
 
-export type StudentAction = FetchStudents | FilterStudents | AddStudent;
+export interface DeleteStudent {
+    type: constants.DELETE_STUDENT;
+}
 
-export function fetchStudents(): FetchStudents {
+export interface ServerError {
+    type: constants.SERVER_ERROR;
+    error: string;
+}
+
+export type StudentAction = SetStudents | FilterStudents | AddStudent | DeleteStudent | ServerError;
+
+export function setStudents(students: Array<StudentData>): SetStudents {
     return {
-        type: constants.FETCH_STUDENTS
+        type: constants.SET_STUDENTS,
+        students
     };
 }
 

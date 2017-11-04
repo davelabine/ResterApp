@@ -20,6 +20,12 @@ export class FilterableStudentList extends React.Component<Props, object> {
         this.handleAddStudentClick = this.handleAddStudentClick.bind(this);
     }
 
+    public componentDidMount() {
+        if (this.props.onFetchStudents) {
+            this.props.onFetchStudents();
+        }
+    }
+
     public render() {
         return (
         <div className="filterableStudentList">
