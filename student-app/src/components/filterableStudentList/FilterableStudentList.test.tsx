@@ -8,23 +8,33 @@ describe('FilterableStudentList', () => {
       mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_EMPTY} filter=""/>);
     });
 
-    it('has a StudentListFilterForm and StudentListItems ', () => {
-      const list = shallow(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO} filter=""/>);
-      expect(list.find('StudentListFilterForm').length).toEqual(1);
-      expect(list.find('StudentListItems').length).toEqual(1); 
+    it('renders according to its snapshot ', () => {
+      const list = mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO} filter=""/>);
+      /*expect(list).toMatchSnapshot();*/
     });
 
-    /*
-    it('changes state when filter is changed ', () => {
-      const list = mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO} filter=""/>);
-      const form = list.find('StudentListFilterForm');
-      const input = form.find('input');
-      const newTextFilter = 'abc';
-      input.simulate('change', {target: {value: newTextFilter}});
-      
-      /* TODO: how do we check the state of this component? 
-      expect(list.state.filter).toBe(newTextFilter);
-      
+    it('calls onFetchStudents after being mounted', () => {
+      const mockFetchStudents = jest.fn();
+      mount(
+          <FilterableStudentList 
+            students={studentTestData.STUDENT_DATA_TWO} 
+            filter=""
+            onFetchStudents={mockFetchStudents}
+          />);
+      expect(mockFetchStudents).toHaveBeenCalled();
     });
-    */
+
+    it('calls onAddStudent when a new student is created', () => {
+      const mockAddStudent = jest.fn();
+      const list = mount(
+                    <FilterableStudentList 
+                      students={studentTestData.STUDENT_DATA_TWO} 
+                      filter=""
+                      onAddStudent={mockAddStudent}
+                    />);
+      const input = list.find('button');
+      expect(input.length).toEqual(1);
+      input.simulate('click', 1);
+      expect(mockAddStudent).toHaveBeenCalled();
+    });
 });

@@ -16,7 +16,6 @@ export class FilterableStudentList extends React.Component<Props, object> {
     
     constructor(props: Props) {
         super(props);
-        this.handleFormFilterChange = this.handleFormFilterChange.bind(this);
         this.handleAddStudentClick = this.handleAddStudentClick.bind(this);
     }
 
@@ -32,7 +31,7 @@ export class FilterableStudentList extends React.Component<Props, object> {
             <div className="well">
             <StudentListFilterForm
                 filter={this.props.filter}
-                onFilterChange={this.handleFormFilterChange}
+                onFilterStudents={this.props.onFilterStudents}
                 onAddStudentClick={this.handleAddStudentClick}
             />
             <StudentListItems 
@@ -42,16 +41,6 @@ export class FilterableStudentList extends React.Component<Props, object> {
             </div>
         </div>
         );
-    }
-
-    public handleFormFilterChange(e: React.FormEvent<HTMLInputElement>): void {
-        console.log('need to check handleChange() name! ' + e.currentTarget.name + ':' + e.currentTarget.value);
-        if (!this.props.onFilterStudents) {
-            return;
-        }
-        let f = e.currentTarget.value;
-        console.log('calling onFilterStudents');
-        this.props.onFilterStudents(f);
     }
 
     public handleAddStudentClick() {

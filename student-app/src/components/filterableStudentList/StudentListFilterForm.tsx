@@ -3,13 +3,19 @@ import './FilterableStudentList.css';
 
 export interface StudentListFilterFormProps {
     filter: string;
-    onFilterChange(e: React.FormEvent<HTMLInputElement>): void;
+    onFilterStudents: (filter: String) => void;
     onAddStudentClick(): void;
 }
 
 export class StudentListFilterForm extends React.Component<StudentListFilterFormProps> {
     constructor(props: StudentListFilterFormProps) {
         super(props);
+        this.handleFormFilterChange = this.handleFormFilterChange.bind(this);
+    }
+
+    public handleFormFilterChange(e: React.FormEvent<HTMLInputElement>): void {
+        let f = e.currentTarget.value;
+        this.props.onFilterStudents(f);
     }
 
     public render() {
@@ -19,7 +25,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                 <input 
                     type="text" 
                     className="studentListNameFilter" 
-                    onChange={this.props.onFilterChange}
+                    onChange={this.handleFormFilterChange}
                     value={this.props.filter}
                 />
                 <button 
