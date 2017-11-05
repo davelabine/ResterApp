@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { StudentListFilterForm } from './StudentListFilterForm';
+import toJson from 'enzyme-to-json';
 
 describe('FilterableStudentList', () => {
     it('renders without crashing and matches the last snapshot', () => {
       const form = mount(<StudentListFilterForm filter="" onFilterStudents={jest.fn()} onAddStudentClick={jest.fn()}/>);
-      expect(form).toMatchSnapshot();
+      expect(toJson(form)).toMatchSnapshot();
     });
     
     it('triggers filter callbacks when input is changed', () => {

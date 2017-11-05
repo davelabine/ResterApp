@@ -3,12 +3,13 @@ import { shallow, mount } from 'enzyme';
 import { StudentListItems } from './StudentListItems';
 import * as constants from '../../constants/index';
 import * as studentTestData from '../../testData';
+import toJson from 'enzyme-to-json';
 
 describe('StudentListItems', () => {
 
   it('renders without crashing and matches the last snapshot', () => {
     const list = mount(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
-    expect(list).toMatchSnapshot();
+    expect(toJson(list)).toMatchSnapshot();
   }); 
 
   it('renders the right number of studentListItems', () => {

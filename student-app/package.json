@@ -5,13 +5,14 @@
   "dependencies": {
     "@types/jest": "^20.0.6",
     "@types/node": "^8.0.20",
-    "@types/react": "^16.0.0",
-    "@types/react-dom": "^16.0.0",
+    "@types/react": "^15.6.5",
+    "@types/react-bootstrap": "^0.31.6",
+    "@types/react-dom": "^15.5.6",
     "@types/react-redux": "^5.0.1",
     "bootstrap": "^3.3.7",
-    "react": "^16.0.0",
-    "react-bootstrap": "^0.31.2",
-    "react-dom": "^16.0.0",
+    "react": "^15.6.2",
+    "react-bootstrap": "^0.31.5",
+    "react-dom": "^15.6.2",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.15",
     "react-scripts-ts": "2.6.0",
@@ -24,8 +25,9 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
-    "@types/enzyme": "^2.8.5",
-    "enzyme": "^3.0.0",
-    "enzyme-adapter-react-16": "^1.0.3"
+    "enzyme": "^3.1.1",
+    "enzyme-adapter-react-15": "^1.0.5",
+    "enzyme-to-json": "^3.2.1",
+    "react-test-renderer": "^15.6.2"
   }
 }
