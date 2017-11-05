@@ -1,21 +1,15 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { StudentListItems, STUDENT_LIST_ITEMS_EMPTY } from './StudentListItems';
+import { StudentListItems } from './StudentListItems';
+import * as constants from '../../constants/index';
 import * as studentTestData from '../../testData';
 
 describe('StudentListItems', () => {
 
-  it('renders without crashing', () => {
-    mount(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
+  it('renders without crashing and matches the last snapshot', () => {
+    const list = mount(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
+    expect(list).toMatchSnapshot();
   }); 
-
-  it('wraps the studentListItems in a table with a header and a body', () => {
-    const list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
-    const table = list.find('.studentListItems');
-    expect(table.length).toEqual(1);
-    expect(table.find('.studentListItemsHead').length).toEqual(1); 
-    expect(table.find('.studentListItemsBody').length).toEqual(1); 
-  });
 
   it('renders the right number of studentListItems', () => {
     const list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_TWO}/>);
@@ -27,7 +21,7 @@ describe('StudentListItems', () => {
     const list = shallow(<StudentListItems filter="" students={studentTestData.STUDENT_DATA_EMPTY}/>);
     const listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(1);
-    expect(listRows.first().text()).toEqual(STUDENT_LIST_ITEMS_EMPTY);
+    expect(listRows.first().text()).toEqual(constants.STUDENT_LIST_ITEMS_EMPTY);
   });
 
   it('filters out all but the A students from a two student list', () => {
@@ -46,7 +40,7 @@ describe('StudentListItems', () => {
     const list = shallow(<StudentListItems filter="Z" students={studentTestData.STUDENT_DATA_TWO}/>);
     const listRows = list.find('.studentListItemsBody').children();
     expect(listRows.length).toEqual(1);
-    expect(listRows.first().text()).toEqual(STUDENT_LIST_ITEMS_EMPTY);
+    expect(listRows.first().text()).toEqual(constants.STUDENT_LIST_ITEMS_EMPTY);
   });
 
 });

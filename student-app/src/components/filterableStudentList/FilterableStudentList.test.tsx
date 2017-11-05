@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { FilterableStudentList } from './FilterableStudentList';
 import * as studentTestData from '../../testData/';
 
 describe('FilterableStudentList', () => {
-    it('renders without crashing', () => {
-      mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_EMPTY} filter=""/>);
-    });
-
-    it('renders according to its snapshot ', () => {
+    it('renders without crashing and matches the last snapshot', () => {
       const list = mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO} filter=""/>);
-      /*expect(list).toMatchSnapshot();*/
+      expect(list).toMatchSnapshot();
     });
 
     it('calls onFetchStudents after being mounted', () => {

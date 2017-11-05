@@ -12,3 +12,5 @@ export type DELETE_STUDENT = typeof DELETE_STUDENT;
 
 export const SERVER_ERROR = 'SERVER_ERROR';
 export type SERVER_ERROR = typeof SERVER_ERROR;
+
+export const STUDENT_LIST_ITEMS_EMPTY: string = 'No Students!';

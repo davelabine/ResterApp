@@ -3,8 +3,9 @@ import { mount } from 'enzyme';
 import { StudentListFilterForm } from './StudentListFilterForm';
 
 describe('FilterableStudentList', () => {
-    it('renders without crashing', () => {
+    it('renders without crashing and matches the last snapshot', () => {
       const form = mount(<StudentListFilterForm filter="" onFilterStudents={jest.fn()} onAddStudentClick={jest.fn()}/>);
+      expect(form).toMatchSnapshot();
     });
     
     it('triggers filter callbacks when input is changed', () => {
