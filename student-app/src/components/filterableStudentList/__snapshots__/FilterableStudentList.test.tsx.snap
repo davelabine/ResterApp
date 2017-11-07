@@ -36,26 +36,71 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
         filter=""
         onAddStudentClick={[Function]}
       >
-        <form
-          className="form-inline"
+        <Form
+          bsClass="form"
+          componentClass="form"
+          horizontal={false}
+          inline={true}
         >
-          <label>
-            Search Last Name: 
-          </label>
-          <input
-            className="studentListNameFilter"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-          <button
-            className="btn btn-default pull-right"
-            onClick={[Function]}
-            type="button"
+          <form
+            className="form-inline"
           >
-            Add Student
-          </button>
-        </form>
+            <FormGroup
+              bsClass="form-group"
+              controlId="formBasicText"
+            >
+              <div
+                className="form-group"
+              >
+                <ControlLabel
+                  bsClass="control-label"
+                  srOnly={false}
+                >
+                  <label
+                    className="control-label"
+                    htmlFor="formBasicText"
+                  >
+                    Search Last Name:
+                  </label>
+                </ControlLabel>
+                <FormControl
+                  bsClass="form-control"
+                  componentClass="input"
+                  onChange={[Function]}
+                  type="text"
+                  value=""
+                >
+                  <input
+                    className="form-control"
+                    id="formBasicText"
+                    onChange={[Function]}
+                    type="text"
+                    value=""
+                  />
+                </FormControl>
+                <Button
+                  active={false}
+                  block={false}
+                  bsClass="btn"
+                  bsStyle="default"
+                  className="pull-right"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <button
+                    className="pull-right btn btn-default"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add Student
+                  </button>
+                </Button>
+              </div>
+            </FormGroup>
+          </form>
+        </Form>
       </StudentListFilterForm>
       <StudentListItems
         filter=""
@@ -82,117 +127,111 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
           ]
         }
       >
-        <table
-          className="studentListItems table table-striped table-sm table-hover"
+        <Table
+          bordered={false}
+          bsClass="table"
+          condensed={true}
+          hover={true}
+          responsive={false}
+          striped={true}
         >
-          <thead
-            className="studentListItemsHead"
+          <table
+            className="table table-striped table-condensed table-hover"
           >
-            <tr>
-              <th>
-                Name
-              </th>
-              <th>
-                ID
-              </th>
-              <th>
-                URL
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="studentListItemsBody"
-          >
-            <StudentListItem
-              key="8a80810d5dd89a3f015dd89ac8280000"
-              student={
-                Object {
-                  "id": "Billy Bob",
-                  "name": "1234",
-                  "photo": Object {
-                    "bucketName": "resterapp-dev",
-                    "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                  },
-                  "skey": "8a80810d5dd89a3f015dd89ac8280000",
-                }
-              }
+            <thead
+              className="studentListItemsHead"
             >
               <tr>
-                <td>
-                  1234
-                </td>
-                <td>
-                  Billy Bob
-                </td>
-                <td>
-                  <a
-                    href="http://google.com"
-                  >
-                    view
-                  </a>
-                   |
-                  <a
-                    href="http://google.com"
-                  >
-                     edit
-                  </a>
-                </td>
+                <th>
+                  Name
+                </th>
+                <th>
+                  ID
+                </th>
+                <th>
+                  URL
+                </th>
               </tr>
-            </StudentListItem>
-            <StudentListItem
-              key="8a80810d5dd89a3f015dd8a252800001"
-              student={
-                Object {
-                  "id": "503074",
-                  "name": "Albert Russell",
-                  "photo": Object {
-                    "bucketName": "resterapp-dev",
-                    "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                  },
-                  "skey": "8a80810d5dd89a3f015dd8a252800001",
-                }
-              }
+            </thead>
+            <tbody
+              className="studentListItemsBody"
             >
-              <tr>
-                <td>
-                  Albert Russell
-                </td>
-                <td>
-                  503074
-                </td>
-                <td>
-                  <a
-                    href="http://google.com"
-                  >
-                    view
-                  </a>
-                   |
-                  <a
-                    href="http://google.com"
-                  >
-                     edit
-                  </a>
-                </td>
-              </tr>
-            </StudentListItem>
-          </tbody>
-        </table>
+              <StudentListItem
+                key="8a80810d5dd89a3f015dd89ac8280000"
+                student={
+                  Object {
+                    "id": "Billy Bob",
+                    "name": "1234",
+                    "photo": Object {
+                      "bucketName": "resterapp-dev",
+                      "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
+                    },
+                    "skey": "8a80810d5dd89a3f015dd89ac8280000",
+                  }
+                }
+              >
+                <tr>
+                  <td>
+                    1234
+                  </td>
+                  <td>
+                    Billy Bob
+                  </td>
+                  <td>
+                    <a
+                      href="http://google.com"
+                    >
+                      view
+                    </a>
+                     |
+                    <a
+                      href="http://google.com"
+                    >
+                       edit
+                    </a>
+                  </td>
+                </tr>
+              </StudentListItem>
+              <StudentListItem
+                key="8a80810d5dd89a3f015dd8a252800001"
+                student={
+                  Object {
+                    "id": "503074",
+                    "name": "Albert Russell",
+                    "photo": Object {
+                      "bucketName": "resterapp-dev",
+                      "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
+                    },
+                    "skey": "8a80810d5dd89a3f015dd8a252800001",
+                  }
+                }
+              >
+                <tr>
+                  <td>
+                    Albert Russell
+                  </td>
+                  <td>
+                    503074
+                  </td>
+                  <td>
+                    <a
+                      href="http://google.com"
+                    >
+                      view
+                    </a>
+                     |
+                    <a
+                      href="http://google.com"
+                    >
+                       edit
+                    </a>
+                  </td>
+                </tr>
+              </StudentListItem>
+            </tbody>
+          </table>
+        </Table>
       </StudentListItems>
-      <Button
-        active={false}
-        block={false}
-        bsClass="btn"
-        bsStyle="default"
-        disabled={false}
-        label="Yay!"
-      >
-        <button
-          className="btn btn-default"
-          disabled={false}
-          label="Yay!"
-          type="button"
-        />
-      </Button>
     </div>
   </div>
 </FilterableStudentList>

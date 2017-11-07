@@ -3,7 +3,6 @@ import './FilterableStudentList.css';
 import { StudentData } from '../../types';
 import { StudentListFilterForm } from './StudentListFilterForm';
 import { StudentListItems } from './StudentListItems';
-import { Button } from 'react-bootstrap';
 
 export interface Props {
     students: Array<StudentData>;
@@ -39,7 +38,6 @@ export class FilterableStudentList extends React.Component<Props, object> {
                 filter={this.props.filter}
                 students={this.props.students} 
             />
-            <Button label="Yay!"/>
             </div>
         </div>
         );

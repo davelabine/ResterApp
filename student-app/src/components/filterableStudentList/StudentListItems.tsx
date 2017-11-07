@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { StudentListItem } from './StudentListItem';
 import { StudentData } from '../../types';
+import { Table } from 'react-bootstrap';
 import * as constants from '../../constants/index';
 
 export interface StudentListItemsProps {
@@ -19,7 +20,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
         const studentList = this.filterRows();
 
         return (
-            <table className="studentListItems table table-striped table-sm table-hover">
+            <Table striped={true} condensed={true} hover={true}>
                 <thead className="studentListItemsHead">
                 <tr>
                     <th>Name</th>
@@ -30,7 +31,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
                 <tbody className="studentListItemsBody">
                     {studentList}
                 </tbody>
-            </table>
+            </Table>
         );
     }
 
@@ -52,7 +53,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
         /* Note: Empty rows could be because of no students in the list
            or we filtered all of the existing students out */ 
         if (!rows.length) {
-            rows.push(<tr key="empty"><td>{constants.STUDENT_LIST_ITEMS_EMPTY}</td></tr>);
+            rows.push(<tr key="empty"><td colSpan={3}>{constants.STUDENT_LIST_ITEMS_EMPTY}</td></tr>);
         }
 
         return rows;
