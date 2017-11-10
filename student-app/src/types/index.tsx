@@ -3,7 +3,7 @@ export interface StudentPhoto {
     key: string;
 }
 
-export interface StudentData {
+export class StudentData {
     skey: string;
     id: string;
     name: string;

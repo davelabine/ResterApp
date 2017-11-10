@@ -3,6 +3,7 @@ import './FilterableStudentList.css';
 import { StudentData } from '../../types';
 import { StudentListFilterForm } from './StudentListFilterForm';
 import { StudentListItems } from './StudentListItems';
+import { Well } from 'react-bootstrap';
 
 export interface Props {
     students: Array<StudentData>;
@@ -28,17 +29,17 @@ export class FilterableStudentList extends React.Component<Props, object> {
     public render() {
         return (
         <div className="filterableStudentList">
-            <div className="well">
-            <StudentListFilterForm
-                filter={this.props.filter}
-                onFilterStudents={this.props.onFilterStudents}
-                onAddStudentClick={this.handleAddStudentClick}
-            />
-            <StudentListItems 
-                filter={this.props.filter}
-                students={this.props.students} 
-            />
-            </div>
+            <Well>
+                <StudentListFilterForm
+                    filter={this.props.filter}
+                    onFilterStudents={this.props.onFilterStudents}
+                    onAddStudent={this.handleAddStudentClick}
+                />
+                <StudentListItems 
+                    filter={this.props.filter}
+                    students={this.props.students} 
+                />
+            </Well>
         </div>
         );
     }

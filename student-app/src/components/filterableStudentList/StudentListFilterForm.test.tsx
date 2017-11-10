@@ -5,7 +5,7 @@ import toJson from 'enzyme-to-json';
 
 describe('FilterableStudentList', () => {
     it('renders without crashing and matches the last snapshot', () => {
-      const form = mount(<StudentListFilterForm filter="" onFilterStudents={jest.fn()} onAddStudentClick={jest.fn()}/>);
+      const form = mount(<StudentListFilterForm filter="" onFilterStudents={jest.fn()} onAddStudent={jest.fn()}/>);
       expect(toJson(form)).toMatchSnapshot();
     });
     
@@ -16,7 +16,7 @@ describe('FilterableStudentList', () => {
                       <StudentListFilterForm 
                         filter="" 
                         onFilterStudents={mockFilterStudents} 
-                        onAddStudentClick={jest.fn()}
+                        onAddStudent={jest.fn()}
                       />);
       const input = form.find('input');
       expect(input.length).toEqual(1);
@@ -33,7 +33,7 @@ describe('FilterableStudentList', () => {
                       <StudentListFilterForm 
                         filter="" 
                         onFilterStudents={jest.fn()} 
-                        onAddStudentClick={mockAddStudent}
+                        onAddStudent={mockAddStudent}
                       />);
       const input = form.find('button');
       expect(input.length).toEqual(1);
