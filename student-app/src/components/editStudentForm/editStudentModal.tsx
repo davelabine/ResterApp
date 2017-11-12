@@ -38,7 +38,7 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
            So just copy the state manually and set the key on that object */
         const student: StudentData = {...this.state.submitStudent};
         student.skey = Math.random().toString();
-        console.log('Creating student: ', JSON.stringify(student));
+        console.log('Adding student: ', JSON.stringify(student));
         this.props.onSubmit(student);
         this.props.onHide();
       }

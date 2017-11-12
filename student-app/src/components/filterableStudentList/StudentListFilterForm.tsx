@@ -42,7 +42,6 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
 
     public render() {
         const student = new StudentData();
-        student.skey = Math.random().toString();
         return (
             <Form inline={true}>
                 <FormGroup controlId="formFilterStudents">

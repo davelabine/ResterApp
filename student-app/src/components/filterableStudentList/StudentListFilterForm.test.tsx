@@ -27,7 +27,7 @@ describe('FilterableStudentList', () => {
       expect(mockFilterStudents).toHaveBeenCalled();
     });
 
-    it('triggers addStudent callback when AddStudent button is clicked', () => {
+    it('triggers addStudent callback when AddStudent button is clicked.', () => {
       const mockAddStudent = jest.fn();
       const form = mount(
                       <StudentListFilterForm 
@@ -38,7 +38,6 @@ describe('FilterableStudentList', () => {
       const input = form.find('button');
       expect(input.length).toEqual(1);
       input.simulate('click', 1);
-      /* Check the external callback */
-      expect(mockAddStudent).toHaveBeenCalled();
+      expect(form.state().show).toBeTruthy();
     });
 });
