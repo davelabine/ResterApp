@@ -1,24 +1,28 @@
 import * as React from 'react';
 import './FilterableStudentList.css';
 import { Form, FormGroup, ControlLabel, FormControl, FormControlProps, Button } from 'react-bootstrap';
-import { AddStudentModal } from '../editStudentForm/addStudentModal';
+import { EditStudentModal } from '../editStudentForm/editStudentModal';
 import { StudentData } from '../../types';
 
 export interface StudentListFilterFormProps {
     filter: string;
     onFilterStudents?: (filter: String) => void;
-    onAddStudent?: () => void;
+    onAddStudent?: (student: StudentData) => void;
 }
 
-export class StudentListFilterForm extends React.Component<StudentListFilterFormProps, any> {
+export interface StudentListFilterState {
+    show: boolean;
+}
+
+export class StudentListFilterForm extends React.Component<StudentListFilterFormProps, StudentListFilterState> {
     constructor(props: StudentListFilterFormProps) {
         super(props);
 
         this.state = { show: false };
 
         this.handleFormFilterChange = this.handleFormFilterChange.bind(this);
-        this.onShowAddStudent = this.onShowAddStudent.bind(this);
-        this.onHideAddStudent = this.onHideAddStudent.bind(this);
+        this.onShowModal = this.onShowModal.bind(this);
+        this.onHideModal = this.onHideModal.bind(this);
     }
 
     public handleFormFilterChange(e: React.FormEvent<FormControlProps>): void {
@@ -28,16 +32,17 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
         }
     }
 
-    public onShowAddStudent() {
+    public onShowModal() {
         this.setState({ show: true});
     }
 
-    public onHideAddStudent() {
+    public onHideModal() {
         this.setState({ show: false});
     }
 
     public render() {
         const student = new StudentData();
+        student.skey = Math.random().toString();
         return (
             <Form inline={true}>
                 <FormGroup controlId="formFilterStudents">
@@ -51,14 +56,17 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                         className="pull-right"
                         type="button"
                         bsStyle="default"
-                        onClick={this.onShowAddStudent}
+                        onClick={this.onShowModal}
                     >Add Student
                     </Button>
                 </FormGroup>
-                <AddStudentModal 
-                    studentInput={student}
+                <EditStudentModal 
+                    title="Add Student"
+                    submitButtonText="Add Student"
+                    initialStudent={student}
                     show={this.state.show}
-                    onHide={this.onHideAddStudent}
+                    onHide={this.onHideModal}
+                    onSubmit={this.props.onAddStudent}
                 />
             </Form>
         );

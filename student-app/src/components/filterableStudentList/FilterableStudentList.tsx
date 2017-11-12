@@ -17,7 +17,6 @@ export class FilterableStudentList extends React.Component<Props, object> {
     
     constructor(props: Props) {
         super(props);
-        this.handleAddStudentClick = this.handleAddStudentClick.bind(this);
     }
 
     public componentDidMount() {
@@ -33,7 +32,7 @@ export class FilterableStudentList extends React.Component<Props, object> {
                 <StudentListFilterForm
                     filter={this.props.filter}
                     onFilterStudents={this.props.onFilterStudents}
-                    onAddStudent={this.handleAddStudentClick}
+                    onAddStudent={this.props.onAddStudent}
                 />
                 <StudentListItems 
                     filter={this.props.filter}
@@ -43,21 +42,5 @@ export class FilterableStudentList extends React.Component<Props, object> {
         </div>
         );
     }
-
-    public handleAddStudentClick() {
-        console.log('handleAddStudentClick()');
-        if (!this.props.onAddStudent) {
-            return;
-        }
-        
-        let student: StudentData = {
-            skey : 'abc',
-            id : '123',
-            name : 'Mickey Mouse',
-            photo : {},
-        };
-        this.props.onAddStudent(student);
-    }
-
 }
 export default FilterableStudentList;

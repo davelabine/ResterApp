@@ -13,6 +13,10 @@ function fetchStudents(dispatch: Dispatch<actions.StudentAction>) {
     .catch((err) => console.log('FilterableStudentList.c - ' + err));
 }
 
+function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData) {
+  dispatch(actions.addStudent(student));
+}
+
 export function mapStateToProps({ studentList, filter  }: StoreState) {
   return {
     students: studentList,
@@ -24,7 +28,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.StudentAction>) {
   return {
     onFetchStudents: () => fetchStudents(dispatch),
     onFilterStudents: (filter: string) => dispatch(actions.filterStudents(filter)),
-    onPostAddStudent: (student: StudentData) => dispatch(actions.addStudent(student)),
+    onAddStudent: (student: StudentData) => addStudent(dispatch, student)
   };
 }
 
