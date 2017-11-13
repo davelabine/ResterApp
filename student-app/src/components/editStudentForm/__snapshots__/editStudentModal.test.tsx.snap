@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditStudentModal renders without crashing and matches the last snapshot 1`] = `
+<EditStudentModal
+  initialStudent={StudentData {}}
+  show={false}
+  submitButtonText="Add Student"
+  title="Add Student"
+>
+  <div
+    className="static-modal"
+  >
+    <Modal
+      animation={true}
+      autoFocus={true}
+      backdrop={true}
+      bsClass="modal"
+      dialogClassName="custom-modal"
+      dialogComponentClass={[Function]}
+      enforceFocus={true}
+      keyboard={true}
+      manager={
+        ModalManager {
+          "add": [Function],
+          "containers": Array [],
+          "data": Array [],
+          "handleContainerOverflow": true,
+          "hideSiblingNodes": true,
+          "isTopModal": [Function],
+          "modals": Array [],
+          "remove": [Function],
+        }
+      }
+      onHide={[Function]}
+      renderBackdrop={[Function]}
+      restoreFocus={true}
+      show={false}
+    >
+      <Modal
+        autoFocus={true}
+        backdrop={true}
+        backdropClassName="modal-backdrop"
+        backdropTransitionTimeout={150}
+        containerClassName="modal-open"
+        dialogTransitionTimeout={300}
+        enforceFocus={true}
+        keyboard={true}
+        manager={
+          ModalManager {
+            "add": [Function],
+            "containers": Array [],
+            "data": Array [],
+            "handleContainerOverflow": true,
+            "hideSiblingNodes": true,
+            "isTopModal": [Function],
+            "modals": Array [],
+            "remove": [Function],
+          }
+        }
+        onEntering={[Function]}
+        onExited={[Function]}
+        onHide={[Function]}
+        renderBackdrop={[Function]}
+        restoreFocus={true}
+        show={false}
+        transition={[Function]}
+      />
+    </Modal>
+  </div>
+</EditStudentModal>
+`;
