@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { EditStudentFormBase } from './editStudentFormBase';
-import { StudentData } from '../../types';
+import * as testData from '../../testData/index';
 import toJson from 'enzyme-to-json';
 
 describe('EditStudentformBase', () => {
@@ -9,7 +9,7 @@ describe('EditStudentformBase', () => {
         let mockFormTextChange = jest.fn();
         const list = mount(
                         <EditStudentFormBase
-                            student={new StudentData()}
+                            student={testData.STUDENT_DATA_EMPTY}
                             onFormTextChange={mockFormTextChange}
                         />);
         expect(toJson(list)).toMatchSnapshot();
@@ -20,7 +20,7 @@ describe('EditStudentformBase', () => {
         let mockFormTextChange = jest.fn();
         const form = mount(
                         <EditStudentFormBase
-                          student={new StudentData()}
+                          student={testData.STUDENT_DATA_EMPTY}
                           onFormTextChange={mockFormTextChange}
                         />);
 

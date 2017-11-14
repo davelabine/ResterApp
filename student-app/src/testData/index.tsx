@@ -1,7 +1,20 @@
 import { StudentData } from '../types';
 
-export const STUDENT_DATA_EMPTY: StudentData[] = [];
-export const STUDENT_DATA_TWO: StudentData[] =  [
+export const STUDENT_DATA_EMPTY: StudentData = new StudentData();
+
+export const STUDENT_DATA_BILLY: StudentData =  {
+                                                    'skey': '8a80810d5dd89a3f015dd89ac8280000',
+                                                    'id': 'Billy Bob',
+                                                    'name': '1234',
+                                                    'photo': {
+                                                        'bucketName': 'resterapp-dev',
+                                                        'key': 'e93ecbf0-ba96-4290-a906-5ea67e4c4a9f'
+                                                    }
+                                                };
+
+export const LIST_STUDENT_DATA_EMPTY: StudentData[] = [];
+
+export const LIST_STUDENT_DATA_TWO: StudentData[] =  [
     {
         'skey': '8a80810d5dd89a3f015dd89ac8280000',
         'id': 'Billy Bob',
@@ -22,7 +35,7 @@ export const STUDENT_DATA_TWO: StudentData[] =  [
     },
 ];
 
-export const STUDENT_DATA_BIG_LIST: StudentData[] =  [
+export const LIST_STUDENT_DATA_BIG: StudentData[] =  [
     {
         'skey': '8a80810d5dd89a3f015dd89ac8280000',
         'id': '1234',

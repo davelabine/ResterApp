@@ -8,7 +8,7 @@ describe('FilterableStudentList', () => {
     it('renders without crashing and matches the last snapshot', () => {
       const list = mount(
                       <FilterableStudentList 
-                        students={studentTestData.STUDENT_DATA_TWO} 
+                        students={studentTestData.LIST_STUDENT_DATA_TWO} 
                         filter=""
                         onFetchStudents={jest.fn()}
                         onAddStudent={jest.fn()}
@@ -21,7 +21,7 @@ describe('FilterableStudentList', () => {
       const mockFetchStudents = jest.fn();
       mount(
           <FilterableStudentList 
-            students={studentTestData.STUDENT_DATA_TWO} 
+            students={studentTestData.LIST_STUDENT_DATA_TWO} 
             filter=""
             onFetchStudents={mockFetchStudents}
             onAddStudent={jest.fn()}

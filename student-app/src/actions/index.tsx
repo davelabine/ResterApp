@@ -16,8 +16,14 @@ export interface AddStudent {
     student: StudentData;
 }
 
+export interface UpdateStudent {
+    type: constants.UPDATE_STUDENT;
+    student: StudentData;
+}
+
 export interface DeleteStudent {
     type: constants.DELETE_STUDENT;
+    skey: string;
 }
 
 export interface ServerError {
@@ -45,5 +51,19 @@ export function addStudent(student: StudentData): AddStudent {
     return {
         type: constants.ADD_STUDENT,
         student
+    };
+}
+
+export function updateStudent(student: StudentData): UpdateStudent {
+    return {
+        type: constants.UPDATE_STUDENT,
+        student
+    };
+}
+
+export function deleteStudent(skey: string): DeleteStudent {
+    return {
+        type: constants.DELETE_STUDENT,
+        skey
     };
 }

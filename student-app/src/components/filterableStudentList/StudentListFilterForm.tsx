@@ -3,6 +3,7 @@ import './FilterableStudentList.css';
 import { Form, FormGroup, ControlLabel, FormControl, FormControlProps, Button } from 'react-bootstrap';
 import { EditStudentModal } from '../editStudentForm/editStudentModal';
 import { StudentData } from '../../types';
+import * as testData from '../../testData/index';
 
 export interface StudentListFilterFormProps {
     filter: string;
@@ -39,7 +40,6 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
     }
 
     public render() {
-        const student = new StudentData();
         return (
             <Form inline={true}>
                 <FormGroup controlId="formFilterStudents">
@@ -60,7 +60,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                 <EditStudentModal 
                     title="Add Student"
                     submitButtonText="Add Student"
-                    initialStudent={student}
+                    initialStudent={testData.STUDENT_DATA_EMPTY}
                     show={this.state.show}
                     onHide={this.onHideModal}
                     onSubmit={this.props.onAddStudent}

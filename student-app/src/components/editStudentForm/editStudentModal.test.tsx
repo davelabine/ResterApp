@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { EditStudentModal } from './editStudentModal';
 import { StudentData } from '../../types';
 import toJson from 'enzyme-to-json';
@@ -18,4 +17,21 @@ describe('EditStudentModal', () => {
                         />);
         expect(toJson(form)).toMatchSnapshot();
     });
+
+    /* Todo: write some unit tests for the modal dialog callbacks
+       My first attempt proved tricky since the objects are rendered 
+       into a seperate object tree 
+       it('returns callbacks for Submit and Close', () => {
+        const form = mount(
+                        <EditStudentModal 
+                            title="Add Student"
+                            submitButtonText="Add Student"
+                            initialStudent={new StudentData()}
+                            show={true}
+                            onHide={jest.fn()}
+                            onSubmit={jest.fn()}
+                        />);
+        expect(toJson(form)).toMatchSnapshot();
+    });
+    */
 });
