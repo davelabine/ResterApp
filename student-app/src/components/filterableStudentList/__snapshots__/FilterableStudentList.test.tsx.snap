@@ -3,6 +3,9 @@
 exports[`FilterableStudentList renders without crashing and matches the last snapshot 1`] = `
 <FilterableStudentList
   filter=""
+  onAddStudent={[Function]}
+  onFetchStudents={[Function]}
+  onFilterStudents={[Function]}
   students={
     Array [
       Object {
@@ -37,6 +40,8 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
       >
         <StudentListFilterForm
           filter=""
+          onAddStudent={[Function]}
+          onFilterStudents={[Function]}
         >
           <Form
             bsClass="form"
@@ -104,6 +109,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
               <EditStudentModal
                 initialStudent={StudentData {}}
                 onHide={[Function]}
+                onSubmit={[Function]}
                 show={false}
                 submitButtonText="Add Student"
                 title="Add Student"

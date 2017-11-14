@@ -8,9 +8,9 @@ import { Well } from 'react-bootstrap';
 export interface Props {
     students: Array<StudentData>;
     filter: string;
-    onFetchStudents?: () => void;
-    onFilterStudents?: (filter: String) => void;
-    onAddStudent?: (student: StudentData) => void;
+    onFetchStudents: () => void;
+    onFilterStudents: (filter: String) => void;
+    onAddStudent: (student: StudentData) => void;
 }
 
 export class FilterableStudentList extends React.Component<Props, object> {
@@ -20,9 +20,7 @@ export class FilterableStudentList extends React.Component<Props, object> {
     }
 
     public componentDidMount() {
-        if (this.props.onFetchStudents) {
-            this.props.onFetchStudents();
-        }
+        this.props.onFetchStudents();
     }
 
     public render() {

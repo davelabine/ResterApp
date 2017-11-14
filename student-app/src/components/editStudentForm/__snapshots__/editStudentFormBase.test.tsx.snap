@@ -2,6 +2,7 @@
 
 exports[`EditStudentformBase renders without crashing and matches the last snapshot 1`] = `
 <EditStudentFormBase
+  onFormTextChange={[Function]}
   student={StudentData {}}
 >
   <form>

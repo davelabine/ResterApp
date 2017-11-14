@@ -6,7 +6,14 @@ import * as studentTestData from '../../testData/';
 
 describe('FilterableStudentList', () => {
     it('renders without crashing and matches the last snapshot', () => {
-      const list = mount(<FilterableStudentList students={studentTestData.STUDENT_DATA_TWO} filter=""/>);
+      const list = mount(
+                      <FilterableStudentList 
+                        students={studentTestData.STUDENT_DATA_TWO} 
+                        filter=""
+                        onFetchStudents={jest.fn()}
+                        onAddStudent={jest.fn()}
+                        onFilterStudents={jest.fn()}
+                      />);
       expect(toJson(list)).toMatchSnapshot();
     });
 
@@ -17,6 +24,8 @@ describe('FilterableStudentList', () => {
             students={studentTestData.STUDENT_DATA_TWO} 
             filter=""
             onFetchStudents={mockFetchStudents}
+            onAddStudent={jest.fn()}
+            onFilterStudents={jest.fn()}
           />);
       expect(mockFetchStudents).toHaveBeenCalled();
     });

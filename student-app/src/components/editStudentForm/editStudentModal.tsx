@@ -8,8 +8,8 @@ export interface EditStudentModalProps {
     submitButtonText: string;
     initialStudent: StudentData;
     show: boolean;
-    onHide?: () => void;
-    onSubmit?: (student: StudentData) => void;
+    onHide: () => void;
+    onSubmit: (student: StudentData) => void;
 }
 
 export interface EditStudentModalState {
@@ -21,27 +21,18 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
     constructor(props: EditStudentModalProps) {
         super(props);
         this.state =  { submitStudent: this.props.initialStudent};
-        this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleSubmitClick = this.handleSubmitClick.bind(this);
         this.handleFormTextChange = this.handleFormTextChange.bind(this);
     }
 
-    public handleCloseClick(): void {
-        if (this.props.onHide) {
-          this.props.onHide();
-        }
-    } 
-
     public handleSubmitClick(): void {
-      if ( (this.props.onHide) && (this.props.onSubmit) ) {
-        /* We need to add a key to this submission, but setState copies asynchronously
-           So just copy the state manually and set the key on that object */
-        const student: StudentData = {...this.state.submitStudent};
-        student.skey = Math.random().toString();
-        console.log('Adding student: ', JSON.stringify(student));
-        this.props.onSubmit(student);
-        this.props.onHide();
-      }
+      /* We need to add a key to this submission, but setState copies asynchronously
+          So just copy the state manually and set the key on that object */
+      const student: StudentData = {...this.state.submitStudent};
+      student.skey = Math.random().toString();
+      console.log('Adding student: ', JSON.stringify(student));
+      this.props.onSubmit(student);
+      this.props.onHide();
     } 
 
     public handleFormTextChange(label: string, value: string): void {
@@ -56,7 +47,7 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
           <div className="static-modal">
           <Modal
             show={this.props.show}
-            onHide={this.handleCloseClick}
+            onHide={this.props.onHide}
             dialogClassName="custom-modal"
           >
             <Modal.Header>
@@ -71,8 +62,10 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
             </Modal.Body>
       
             <Modal.Footer>
-              <Button onClick={this.handleCloseClick}>Close</Button>
-              <Button onClick={this.handleSubmitClick} bsStyle="primary">{this.props.submitButtonText}</Button>
+              <Button id="close" onClick={this.props.onHide}>Close</Button>
+              <Button id="submit" onClick={this.handleSubmitClick} bsStyle="primary">
+                {this.props.submitButtonText}
+              </Button>
             </Modal.Footer>
       
           </Modal>

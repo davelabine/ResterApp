@@ -6,8 +6,8 @@ import { StudentData } from '../../types';
 
 export interface StudentListFilterFormProps {
     filter: string;
-    onFilterStudents?: (filter: String) => void;
-    onAddStudent?: (student: StudentData) => void;
+    onFilterStudents: (filter: String) => void;
+    onAddStudent: (student: StudentData) => void;
 }
 
 export interface StudentListFilterState {
@@ -27,9 +27,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
 
     public handleFormFilterChange(e: React.FormEvent<FormControlProps>): void {
         let f = e.currentTarget.value as string;
-        if (this.props.onFilterStudents) {
-            this.props.onFilterStudents(f);
-        }
+        this.props.onFilterStudents(f);
     }
 
     public onShowModal() {

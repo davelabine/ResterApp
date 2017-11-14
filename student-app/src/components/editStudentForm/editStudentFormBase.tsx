@@ -4,7 +4,7 @@ import { StudentData } from '../../types';
 
 export interface EditStudentFormBaseProps {
     student: StudentData;
-    onFormTextChange?: (label: string, filter: String) => void;
+    onFormTextChange: (label: string, filter: String) => void;
 }
 
 export class EditStudentFormBase extends React.Component<EditStudentFormBaseProps> {
@@ -17,9 +17,7 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
     public handleTextFieldChange(e: React.FormEvent<FormControlProps>): void {
         const label = e.currentTarget.id as string;
         const value = e.currentTarget.value as string;
-        if (this.props.onFormTextChange) {
-            this.props.onFormTextChange(label, value);
-        }
+        this.props.onFormTextChange(label, value);
     }
     
     public render() {

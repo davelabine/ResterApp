@@ -3,6 +3,8 @@
 exports[`EditStudentModal renders without crashing and matches the last snapshot 1`] = `
 <EditStudentModal
   initialStudent={StudentData {}}
+  onHide={[Function]}
+  onSubmit={[Function]}
   show={false}
   submitButtonText="Add Student"
   title="Add Student"
