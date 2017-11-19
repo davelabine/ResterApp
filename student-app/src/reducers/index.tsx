@@ -10,11 +10,21 @@ export function studentReducer(state: StoreState, action: StudentAction): StoreS
     case constants.FILTER_STUDENTS:
       return { ...state, filter: action.filter };
     case constants.ADD_STUDENT:
-      let list: StudentData[] = [...state.studentList];
-      list.push(action.student);
-      return { ...state, studentList: list };
+      let addList: StudentData[] = [...state.studentList];
+      addList.push(action.student);
+      return { ...state, studentList: addList };
     case constants.DELETE_STUDENT:
-      return state;
+      let delList: StudentData[] = [...state.studentList];
+      const delIndex = delList.findIndex(s => s.skey === action.skey);
+      if (delIndex === -1) { return state; } 
+      delList.splice(delIndex, 1);
+      return { ...state, studentList: delList };
+    case constants.UPDATE_STUDENT:
+      let upList: StudentData[] = [...state.studentList];
+      const upIndex = upList.findIndex(s => s.skey === action.student.skey);
+      if (upIndex === -1) { return state; } 
+      upList.splice(upIndex, 1, action.student);
+      return { ...state, studentList: upList };    
     case constants.SERVER_ERROR:
       return state;
     default:

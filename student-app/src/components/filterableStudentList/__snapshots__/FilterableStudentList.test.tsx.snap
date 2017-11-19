@@ -9,8 +9,8 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
   students={
     Array [
       Object {
-        "id": "Billy Bob",
-        "name": "1234",
+        "id": "1234",
+        "name": "Billy Bob",
         "photo": Object {
           "bucketName": "resterapp-dev",
           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -183,8 +183,8 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
           students={
             Array [
               Object {
-                "id": "Billy Bob",
-                "name": "1234",
+                "id": "1234",
+                "name": "Billy Bob",
                 "photo": Object {
                   "bucketName": "resterapp-dev",
                   "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -236,8 +236,8 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                   key="8a80810d5dd89a3f015dd89ac8280000"
                   student={
                     Object {
-                      "id": "Billy Bob",
-                      "name": "1234",
+                      "id": "1234",
+                      "name": "Billy Bob",
                       "photo": Object {
                         "bucketName": "resterapp-dev",
                         "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -248,10 +248,10 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                 >
                   <tr>
                     <td>
-                      1234
+                      Billy Bob
                     </td>
                     <td>
-                      Billy Bob
+                      1234
                     </td>
                     <td>
                       <a

@@ -31,7 +31,7 @@ export interface ServerError {
     error: string;
 }
 
-export type StudentAction = SetStudents | FilterStudents | AddStudent | DeleteStudent | ServerError;
+export type StudentAction = SetStudents | FilterStudents | AddStudent | UpdateStudent | DeleteStudent | ServerError;
 
 export function setStudents(students: Array<StudentData>): SetStudents {
     return {

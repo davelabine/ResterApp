@@ -2,14 +2,28 @@ import { StudentData } from '../types';
 
 export const STUDENT_DATA_EMPTY: StudentData = new StudentData();
 
+export const STUDENT_DATA_FAKE: StudentData =  {
+    'skey': 'FAKE_KEY',
+    'id': 'FAKE_ID',
+    'name': 'FAKE_NAME',
+    'photo': {}
+};
+
 export const STUDENT_DATA_BILLY: StudentData =  {
                                                     'skey': '8a80810d5dd89a3f015dd89ac8280000',
-                                                    'id': 'Billy Bob',
-                                                    'name': '1234',
+                                                    'id': '1234',
+                                                    'name': 'Billy Bob',
                                                     'photo': {
                                                         'bucketName': 'resterapp-dev',
                                                         'key': 'e93ecbf0-ba96-4290-a906-5ea67e4c4a9f'
                                                     }
+                                                };
+
+export const STUDENT_DATA_BILLY_UPDATE: StudentData =  {
+                                                    'skey': '8a80810d5dd89a3f015dd89ac8280000',
+                                                    'id': '007',
+                                                    'name': 'James Bond',
+                                                    'photo': {}
                                                 };
 
 export const LIST_STUDENT_DATA_EMPTY: StudentData[] = [];
@@ -17,8 +31,8 @@ export const LIST_STUDENT_DATA_EMPTY: StudentData[] = [];
 export const LIST_STUDENT_DATA_TWO: StudentData[] =  [
     {
         'skey': '8a80810d5dd89a3f015dd89ac8280000',
-        'id': 'Billy Bob',
-        'name': '1234',
+        'id': '1234',
+        'name': 'Billy Bob',
         'photo': {
             'bucketName': 'resterapp-dev',
             'key': 'e93ecbf0-ba96-4290-a906-5ea67e4c4a9f'
