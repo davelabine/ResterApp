@@ -28,7 +28,9 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.StudentAction>) {
   return {
     onFetchStudents: () => fetchStudents(dispatch),
     onFilterStudents: (filter: string) => dispatch(actions.filterStudents(filter)),
-    onAddStudent: (student: StudentData) => addStudent(dispatch, student)
+    onAddStudent: (student: StudentData) => addStudent(dispatch, student),
+    onUpdateStudent: (student: StudentData) => dispatch(actions.updateStudent(student)),
+    onDeleteStudent: (skey: string) => dispatch(actions.deleteStudent(skey))
   };
 }
 

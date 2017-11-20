@@ -8,6 +8,8 @@ import * as constants from '../../constants/index';
 export interface StudentListItemsProps {
     filter: string;
     students: Array<StudentData>;
+    onUpdateStudent: (student: StudentData) => void;
+    onDeleteStudent: (skey: string) => void;
 }
 
 export class StudentListItems extends React.Component<StudentListItemsProps, object> {
@@ -46,7 +48,11 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
             }
 
             rows.push(
-                <StudentListItem key={s.skey} student={s}/>
+                <StudentListItem 
+                    key={s.skey} 
+                    student={s}
+                    onDeleteStudent={this.props.onDeleteStudent}
+                />
             );
         });
 

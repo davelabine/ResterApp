@@ -4,8 +4,10 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
 <FilterableStudentList
   filter=""
   onAddStudent={[Function]}
+  onDeleteStudent={[Function]}
   onFetchStudents={[Function]}
   onFilterStudents={[Function]}
+  onUpdateStudent={[Function]}
   students={
     Array [
       Object {
@@ -180,6 +182,8 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
         </StudentListFilterForm>
         <StudentListItems
           filter=""
+          onDeleteStudent={[Function]}
+          onUpdateStudent={[Function]}
           students={
             Array [
               Object {
@@ -234,6 +238,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
               >
                 <StudentListItem
                   key="8a80810d5dd89a3f015dd89ac8280000"
+                  onDeleteStudent={[Function]}
                   student={
                     Object {
                       "id": "1234",
@@ -254,22 +259,73 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                       1234
                     </td>
                     <td>
-                      <a
-                        href="http://google.com"
+                      <ButtonGroup
+                        block={false}
+                        bsClass="btn-group"
+                        justified={false}
+                        vertical={false}
                       >
-                        view
-                      </a>
-                       |
-                      <a
-                        href="http://google.com"
-                      >
-                         edit
-                      </a>
+                        <div
+                          className="btn-group"
+                        >
+                          <Button
+                            active={false}
+                            block={false}
+                            bsClass="btn"
+                            bsStyle="default"
+                            disabled={false}
+                            id="edit"
+                          >
+                            <button
+                              className="btn btn-default"
+                              disabled={false}
+                              id="edit"
+                              type="button"
+                            >
+                              <Glyphicon
+                                bsClass="glyphicon"
+                                glyph="pencil"
+                              >
+                                <span
+                                  className="glyphicon glyphicon-pencil"
+                                />
+                              </Glyphicon>
+                            </button>
+                          </Button>
+                          <Button
+                            active={false}
+                            block={false}
+                            bsClass="btn"
+                            bsStyle="default"
+                            disabled={false}
+                            id="delete"
+                            onClick={[Function]}
+                          >
+                            <button
+                              className="btn btn-default"
+                              disabled={false}
+                              id="delete"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <Glyphicon
+                                bsClass="glyphicon"
+                                glyph="trash"
+                              >
+                                <span
+                                  className="glyphicon glyphicon-trash"
+                                />
+                              </Glyphicon>
+                            </button>
+                          </Button>
+                        </div>
+                      </ButtonGroup>
                     </td>
                   </tr>
                 </StudentListItem>
                 <StudentListItem
                   key="8a80810d5dd89a3f015dd8a252800001"
+                  onDeleteStudent={[Function]}
                   student={
                     Object {
                       "id": "503074",
@@ -290,17 +346,67 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                       503074
                     </td>
                     <td>
-                      <a
-                        href="http://google.com"
+                      <ButtonGroup
+                        block={false}
+                        bsClass="btn-group"
+                        justified={false}
+                        vertical={false}
                       >
-                        view
-                      </a>
-                       |
-                      <a
-                        href="http://google.com"
-                      >
-                         edit
-                      </a>
+                        <div
+                          className="btn-group"
+                        >
+                          <Button
+                            active={false}
+                            block={false}
+                            bsClass="btn"
+                            bsStyle="default"
+                            disabled={false}
+                            id="edit"
+                          >
+                            <button
+                              className="btn btn-default"
+                              disabled={false}
+                              id="edit"
+                              type="button"
+                            >
+                              <Glyphicon
+                                bsClass="glyphicon"
+                                glyph="pencil"
+                              >
+                                <span
+                                  className="glyphicon glyphicon-pencil"
+                                />
+                              </Glyphicon>
+                            </button>
+                          </Button>
+                          <Button
+                            active={false}
+                            block={false}
+                            bsClass="btn"
+                            bsStyle="default"
+                            disabled={false}
+                            id="delete"
+                            onClick={[Function]}
+                          >
+                            <button
+                              className="btn btn-default"
+                              disabled={false}
+                              id="delete"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <Glyphicon
+                                bsClass="glyphicon"
+                                glyph="trash"
+                              >
+                                <span
+                                  className="glyphicon glyphicon-trash"
+                                />
+                              </Glyphicon>
+                            </button>
+                          </Button>
+                        </div>
+                      </ButtonGroup>
                     </td>
                   </tr>
                 </StudentListItem>

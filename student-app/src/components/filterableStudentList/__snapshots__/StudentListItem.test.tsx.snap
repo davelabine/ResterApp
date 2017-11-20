@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StudentListItem renders wiuuthout crashing and matches the last snapshot 1`] = `
+<tr>
+  <td>
+    Billy Bob
+  </td>
+  <td>
+    1234
+  </td>
+  <td>
+    <ButtonGroup
+      block={false}
+      bsClass="btn-group"
+      justified={false}
+      vertical={false}
+    >
+      <Button
+        active={false}
+        block={false}
+        bsClass="btn"
+        bsStyle="default"
+        disabled={false}
+        id="edit"
+      >
+        <Glyphicon
+          bsClass="glyphicon"
+          glyph="pencil"
+        />
+      </Button>
+      <Button
+        active={false}
+        block={false}
+        bsClass="btn"
+        bsStyle="default"
+        disabled={false}
+        id="delete"
+        onClick={[Function]}
+      >
+        <Glyphicon
+          bsClass="glyphicon"
+          glyph="trash"
+        />
+      </Button>
+    </ButtonGroup>
+  </td>
+</tr>
+`;

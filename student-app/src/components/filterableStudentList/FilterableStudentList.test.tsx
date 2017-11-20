@@ -13,6 +13,8 @@ describe('FilterableStudentList', () => {
                         onFetchStudents={jest.fn()}
                         onAddStudent={jest.fn()}
                         onFilterStudents={jest.fn()}
+                        onUpdateStudent={jest.fn()} 
+                        onDeleteStudent={jest.fn()}
                       />);
       expect(toJson(list)).toMatchSnapshot();
     });
@@ -26,24 +28,9 @@ describe('FilterableStudentList', () => {
             onFetchStudents={mockFetchStudents}
             onAddStudent={jest.fn()}
             onFilterStudents={jest.fn()}
+            onUpdateStudent={jest.fn()} 
+            onDeleteStudent={jest.fn()}
           />);
       expect(mockFetchStudents).toHaveBeenCalled();
     });
-
-  /*
-    it('calls onAddStudent when a new student is created', () => {
-
-      const mockAddStudent = jest.fn();
-      const list = mount(
-                    <FilterableStudentList 
-                      students={studentTestData.STUDENT_DATA_TWO} 
-                      filter=""
-                      onAddStudent={mockAddStudent}
-                    />);
-      const input = list.find('button');
-      expect(input.length).toEqual(1);
-      input.simulate('click', 1);
-      expect(mockAddStudent).toHaveBeenCalled();
-    });
-    */
 });

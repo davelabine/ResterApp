@@ -11,6 +11,8 @@ export interface Props {
     onFetchStudents: () => void;
     onFilterStudents: (filter: String) => void;
     onAddStudent: (student: StudentData) => void;
+    onUpdateStudent: (student: StudentData) => void;
+    onDeleteStudent: (skey: string) => void;
 }
 
 export class FilterableStudentList extends React.Component<Props, object> {
@@ -35,6 +37,8 @@ export class FilterableStudentList extends React.Component<Props, object> {
                 <StudentListItems 
                     filter={this.props.filter}
                     students={this.props.students} 
+                    onUpdateStudent={this.props.onUpdateStudent}
+                    onDeleteStudent={this.props.onDeleteStudent}
                 />
             </Well>
         </div>
