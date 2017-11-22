@@ -3,7 +3,9 @@ import * as React from 'react';
 import { StudentListItem } from './StudentListItem';
 import { StudentData } from '../../types';
 import { Table } from 'react-bootstrap';
+import { EditStudentModal } from '../editStudentForm/editStudentModal';
 import * as constants from '../../constants/index';
+import * as testData from '../../testData/index';
 
 export interface StudentListItemsProps {
     filter: string;
@@ -12,10 +14,34 @@ export interface StudentListItemsProps {
     onDeleteStudent: (skey: string) => void;
 }
 
-export class StudentListItems extends React.Component<StudentListItemsProps, object> {
+export interface StudentListItemsState {
+    show: boolean;
+    updateStudent: StudentData;
+}
+
+export class StudentListItems extends React.Component<StudentListItemsProps, StudentListItemsState> {
     
     constructor(props: StudentListItemsProps) {
         super(props);
+
+        this.state = { show: false, updateStudent: testData.STUDENT_DATA_EMPTY };
+
+        this.onUpdateStudentClick = this.onUpdateStudentClick.bind(this);
+        this.onShowModal = this.onShowModal.bind(this);
+        this.onHideModal = this.onHideModal.bind(this);
+    }
+
+    public onUpdateStudentClick(s: StudentData) {
+        this.setState({ updateStudent: s});
+        this.onShowModal();
+    }
+
+    public onShowModal() {
+        this.setState({ show: true});
+    }
+
+    public onHideModal() {
+        this.setState({ show: false});
     }
 
     public render() {
@@ -33,7 +59,16 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
                 <tbody className="studentListItemsBody">
                     {studentList}
                 </tbody>
+                <EditStudentModal 
+                    title="Edit Student"
+                    submitButtonText="Save"
+                    initialStudent={this.state.updateStudent}
+                    show={this.state.show}
+                    onHide={this.onHideModal}
+                    onSubmit={this.props.onUpdateStudent}
+                />
             </Table>
+
         );
     }
 
@@ -51,6 +86,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, obj
                 <StudentListItem 
                     key={s.skey} 
                     student={s}
+                    onUpdateStudentClick={this.onUpdateStudentClick}
                     onDeleteStudent={this.props.onDeleteStudent}
                 />
             );

@@ -239,6 +239,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                 <StudentListItem
                   key="8a80810d5dd89a3f015dd89ac8280000"
                   onDeleteStudent={[Function]}
+                  onUpdateStudentClick={[Function]}
                   student={
                     Object {
                       "id": "1234",
@@ -275,11 +276,13 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                             bsStyle="default"
                             disabled={false}
                             id="edit"
+                            onClick={[Function]}
                           >
                             <button
                               className="btn btn-default"
                               disabled={false}
                               id="edit"
+                              onClick={[Function]}
                               type="button"
                             >
                               <Glyphicon
@@ -326,6 +329,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                 <StudentListItem
                   key="8a80810d5dd89a3f015dd8a252800001"
                   onDeleteStudent={[Function]}
+                  onUpdateStudentClick={[Function]}
                   student={
                     Object {
                       "id": "503074",
@@ -362,11 +366,13 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                             bsStyle="default"
                             disabled={false}
                             id="edit"
+                            onClick={[Function]}
                           >
                             <button
                               className="btn btn-default"
                               disabled={false}
                               id="edit"
+                              onClick={[Function]}
                               type="button"
                             >
                               <Glyphicon
@@ -411,6 +417,75 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                   </tr>
                 </StudentListItem>
               </tbody>
+              <EditStudentModal
+                initialStudent={StudentData {}}
+                onHide={[Function]}
+                onSubmit={[Function]}
+                show={false}
+                submitButtonText="Save"
+                title="Edit Student"
+              >
+                <div
+                  className="static-modal"
+                >
+                  <Modal
+                    animation={true}
+                    autoFocus={true}
+                    backdrop={true}
+                    bsClass="modal"
+                    dialogClassName="custom-modal"
+                    dialogComponentClass={[Function]}
+                    enforceFocus={true}
+                    keyboard={true}
+                    manager={
+                      ModalManager {
+                        "add": [Function],
+                        "containers": Array [],
+                        "data": Array [],
+                        "handleContainerOverflow": true,
+                        "hideSiblingNodes": true,
+                        "isTopModal": [Function],
+                        "modals": Array [],
+                        "remove": [Function],
+                      }
+                    }
+                    onHide={[Function]}
+                    renderBackdrop={[Function]}
+                    restoreFocus={true}
+                    show={false}
+                  >
+                    <Modal
+                      autoFocus={true}
+                      backdrop={true}
+                      backdropClassName="modal-backdrop"
+                      backdropTransitionTimeout={150}
+                      containerClassName="modal-open"
+                      dialogTransitionTimeout={300}
+                      enforceFocus={true}
+                      keyboard={true}
+                      manager={
+                        ModalManager {
+                          "add": [Function],
+                          "containers": Array [],
+                          "data": Array [],
+                          "handleContainerOverflow": true,
+                          "hideSiblingNodes": true,
+                          "isTopModal": [Function],
+                          "modals": Array [],
+                          "remove": [Function],
+                        }
+                      }
+                      onEntering={[Function]}
+                      onExited={[Function]}
+                      onHide={[Function]}
+                      renderBackdrop={[Function]}
+                      restoreFocus={true}
+                      show={false}
+                      transition={[Function]}
+                    />
+                  </Modal>
+                </div>
+              </EditStudentModal>
             </table>
           </Table>
         </StudentListItems>

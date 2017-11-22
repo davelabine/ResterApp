@@ -4,6 +4,7 @@ import { StudentData } from '../../types';
 
 export interface StudentListItemProps {
     student: StudentData;
+    onUpdateStudentClick: (student: StudentData) => void;
     onDeleteStudent: (skey: string) => void;
 }
 
@@ -11,7 +12,12 @@ export class StudentListItem extends React.Component<StudentListItemProps, objec
     
     constructor(props: StudentListItemProps) {
         super(props);
+        this.handleUpdateClick = this.handleUpdateClick.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    }
+
+    public handleUpdateClick(): void {
+        this.props.onUpdateStudentClick(this.props.student);
     }
 
     public handleDeleteClick(): void {
@@ -26,7 +32,7 @@ export class StudentListItem extends React.Component<StudentListItemProps, objec
                 <td>{student.id}</td>
                 <td>
                     <ButtonGroup>
-                        <Button id="edit"><Glyphicon glyph="pencil"/></Button>
+                        <Button id="edit" onClick={this.handleUpdateClick}><Glyphicon glyph="pencil"/></Button>
                         <Button id="delete" onClick={this.handleDeleteClick}><Glyphicon glyph="trash"/></Button>
                     </ButtonGroup>
                 </td>

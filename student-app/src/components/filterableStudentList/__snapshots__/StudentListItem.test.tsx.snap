@@ -22,6 +22,7 @@ exports[`StudentListItem renders wiuuthout crashing and matches the last snapsho
         bsStyle="default"
         disabled={false}
         id="edit"
+        onClick={[Function]}
       >
         <Glyphicon
           bsClass="glyphicon"
