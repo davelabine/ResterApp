@@ -18,21 +18,4 @@ describe('EditStudentModal', () => {
                         />);
         expect(toJson(form)).toMatchSnapshot();
     });
-
-    /* Todo: write some unit tests for the modal dialog callbacks
-       My first attempt proved tricky since the objects are rendered 
-       into a seperate object tree 
-       it('returns callbacks for Submit and Close', () => {
-        const form = mount(
-                        <EditStudentModal 
-                            title="Add Student"
-                            submitButtonText="Add Student"
-                            initialStudent={new StudentData()}
-                            show={true}
-                            onHide={jest.fn()}
-                            onSubmit={jest.fn()}
-                        />);
-        expect(toJson(form)).toMatchSnapshot();
-    });
-    */
 });

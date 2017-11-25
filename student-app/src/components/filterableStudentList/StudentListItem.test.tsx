@@ -16,6 +16,20 @@ describe('StudentListItem', () => {
     expect(toJson(item)).toMatchSnapshot();
   });
 
+  it('calls the updateStudent callback', () => {
+    const onUpdate = jest.fn();
+    const item = shallow(
+                        <StudentListItem
+                          student={studentTestData.STUDENT_DATA_BILLY}
+                          onDeleteStudent={jest.fn()}
+                          onUpdateStudentClick={onUpdate}
+                        />);
+    const input = item.find({ id: 'edit'});
+    expect(input.length).toEqual(1);
+    input.simulate('click', 1);
+    expect(onUpdate).toHaveBeenCalled();
+  });
+
   it('calls the delete callback', () => {
     const onDelete = jest.fn();
     const item = shallow(
