@@ -87,10 +87,12 @@ public class ControllerStudentsAPI {
         logger.info("Student:{} ", student);
 
         BlobData data = getFormDataPhoto(request, formDataInput);
-        long lMaxSize = appConfig.getLong("Api.max-photo-size");
-        if (data.getContentLength() > lMaxSize) {
-            logger.warn("too large of a file uploaded: " + data.getContentLength() + "/" + lMaxSize);
-            return Response.status(BAD_REQUEST).build();
+        if (data != null ) {
+            long lMaxSize = appConfig.getLong("Api.max-photo-size");
+            if (data.getContentLength() > lMaxSize) {
+                logger.warn("too large of a file uploaded: " + data.getContentLength() + "/" + lMaxSize);
+                return Response.status(BAD_REQUEST).build();
+            }
         }
 
         String studentKey = studentManager.createStudent(student, data);
@@ -104,7 +106,7 @@ public class ControllerStudentsAPI {
         URI retURI = new URI(appConfig.getString("Api.rootUrl") + studentKey);
         logger.info("Student created successfully:{}", retURI.toString());
         return Response.created(retURI)
-                .header(appConfig.getString("App.student-key-header"), studentKey).build();
+                .header(appConfig.getString("Api.student-key-header"), studentKey).build();
     }
 
 
@@ -177,6 +179,7 @@ public class ControllerStudentsAPI {
         List<Student> studentList = studentManager.getStudents(name);
         // A null result is acceptable - no students match the search
         logger.info("Students retrieved successfully:{}", studentList);
+        // .header("Access-Control-Allow-Origin", "*").build();
         return Response.ok().entity(studentList).build();
     }
 
@@ -201,6 +204,31 @@ public class ControllerStudentsAPI {
 
         logger.info("Student found: {}", studentGet);
         return Response.ok().entity(studentGet).build();
+    }
+
+    /**
+     * Delete a resource
+     */
+    @DELETE
+    @Path("{key}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteStudents(
+            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
+            @NotNull @PathParam("key") String key) {
+        logger.info("DELETE Student:{} busyTime:{}", key, busyTime);
+
+        Busywork.doBusyWork(busyTime);
+
+        Student studentGet = studentManager.getStudent(key);
+        if (studentGet == null) {
+            logger.info("Student not found");
+            return Response.status(NOT_FOUND).type(MediaType.APPLICATION_JSON).build();
+        }
+
+        logger.info("Found student to delete: {}", studentGet);
+        studentManager.deleteStudent(studentGet);
+
+        return Response.noContent().build();
     }
 
     @POST

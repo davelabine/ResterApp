@@ -239,4 +239,24 @@ public class ControllerStudentsAPITest {
         mockStudentManager.getStudents(FAKE_NAME);
     }
 
+    @Test
+    public void deleteStudent() throws URISyntaxException {
+        reset(mockStudentManager);
+        Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
+        fakeStudent.setSkey(FAKE_KEY);
+        doReturn(fakeStudent).when(mockStudentManager).getStudent(anyString());
+
+        Response response = underTest.deleteStudents(0, FAKE_KEY);
+        assertEquals(response.getStatus(), SC_NO_CONTENT);
+    }
+
+    @Test
+    public void deleteStudentMissing() throws URISyntaxException {
+        reset(mockStudentManager);
+        doReturn(null).when(mockStudentManager).getStudent(anyString());
+
+        Response response = underTest.deleteStudents(0, FAKE_KEY);
+        assertEquals(response.getStatus(), SC_NOT_FOUND);
+    }
+
 }
