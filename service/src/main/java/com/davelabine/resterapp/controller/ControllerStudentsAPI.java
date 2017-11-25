@@ -179,7 +179,6 @@ public class ControllerStudentsAPI {
         List<Student> studentList = studentManager.getStudents(name);
         // A null result is acceptable - no students match the search
         logger.info("Students retrieved successfully:{}", studentList);
-        // .header("Access-Control-Allow-Origin", "*").build();
         return Response.ok().entity(studentList).build();
     }
 

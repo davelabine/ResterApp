@@ -97,7 +97,7 @@ public class DaoStudentHbn implements DaoStudent {
         return hbnTxManager.processTx((nameTx, session) -> {
             Query query = session.getNamedQuery("HQL_GET_STUDENT_BY_NAME_PARTIAL");
             query.setString("name", nameTx + "%");
-            query.setMaxResults(10);
+            query.setMaxResults(100);
             return (List<Student>)query.list();
         }, name);
     }
