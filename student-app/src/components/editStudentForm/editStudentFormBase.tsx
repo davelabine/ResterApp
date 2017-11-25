@@ -21,7 +21,12 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
     }
     
     public render() {
+        /* Make sure we set a default value for our form controls 
+           Otherwise, React throws a warning that we are switching between uncontrolled and controlled components */
         let student = this.props.student;
+        if (!student.name) { student.name = ''; }
+        if (!student.id) { student.id = ''; }
+
         return (
             <form>
                 <FormGroup>

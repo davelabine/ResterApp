@@ -10,7 +10,7 @@ describe('FilterableStudentList', () => {
     });
     
     it('triggers filter callbacks when input is changed', () => {
-      const spy = jest.spyOn(StudentListFilterForm.prototype, 'handleFormFilterChange');
+      const spy = jest.spyOn(StudentListFilterForm.prototype, 'onFormFilterChange');
       const mockFilterStudents = jest.fn();
       const form = mount(
                       <StudentListFilterForm 

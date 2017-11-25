@@ -70,10 +70,11 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
         </div>
       </FormGroup>
       <EditStudentModal
-        initialStudent={StudentData {}}
         onHide={[Function]}
+        onStudentFormTextChange={[Function]}
         onSubmit={[Function]}
         show={false}
+        student={StudentData {}}
         submitButtonText="Add Student"
         title="Add Student"
       >

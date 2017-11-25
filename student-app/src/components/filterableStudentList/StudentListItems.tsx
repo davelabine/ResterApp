@@ -5,7 +5,6 @@ import { StudentData } from '../../types';
 import { Table } from 'react-bootstrap';
 import { EditStudentModal } from '../editStudentForm/editStudentModal';
 import * as constants from '../../constants/index';
-import * as testData from '../../testData/index';
 
 export interface StudentListItemsProps {
     filter: string;
@@ -24,16 +23,29 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
     constructor(props: StudentListItemsProps) {
         super(props);
 
-        this.state = { show: false, updateStudent: testData.STUDENT_DATA_EMPTY };
-
-        this.onUpdateStudentClick = this.onUpdateStudentClick.bind(this);
+        this.state = { show: false, updateStudent: new StudentData() };
+ 
+        this.onShowUpdateModal = this.onShowUpdateModal.bind(this);
+        this.onUpdateFormTextChange = this.onUpdateFormTextChange.bind(this);
+        this.onSubmitUpdateModal = this.onSubmitUpdateModal.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
         this.onHideModal = this.onHideModal.bind(this);
     }
 
-    public onUpdateStudentClick(s: StudentData) {
+    public onShowUpdateModal(s: StudentData) {
         this.setState({ updateStudent: s});
         this.onShowModal();
+    }
+
+    public onUpdateFormTextChange(label: string, value: string): void {
+        let student = {...this.state.updateStudent};
+        student[label] = value;
+        this.setState( {updateStudent: student});
+    }
+
+    public onSubmitUpdateModal() {
+        this.props.onUpdateStudent(this.state.updateStudent);
+        this.onHideModal();
     }
 
     public onShowModal() {
@@ -48,27 +60,29 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
         const studentList = this.filterRows();
 
         return (
-            <Table striped={true} condensed={true} hover={true}>
-                <thead className="studentListItemsHead">
-                <tr>
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>URL</th>
-                </tr>
-                </thead>
-                <tbody className="studentListItemsBody">
-                    {studentList}
-                </tbody>
+            <div>
+                <Table striped={true} condensed={true} hover={true}>
+                    <thead className="studentListItemsHead">
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>URL</th>
+                    </tr>
+                    </thead>
+                    <tbody className="studentListItemsBody">
+                        {studentList}
+                    </tbody>
+                </Table>
                 <EditStudentModal 
                     title="Edit Student"
                     submitButtonText="Save"
-                    initialStudent={this.state.updateStudent}
+                    student={this.state.updateStudent}
                     show={this.state.show}
                     onHide={this.onHideModal}
-                    onSubmit={this.props.onUpdateStudent}
+                    onSubmit={this.onSubmitUpdateModal}
+                    onStudentFormTextChange={this.onUpdateFormTextChange}
                 />
-            </Table>
-
+            </div>
         );
     }
 
@@ -86,7 +100,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
                 <StudentListItem 
                     key={s.skey} 
                     student={s}
-                    onUpdateStudentClick={this.onUpdateStudentClick}
+                    onUpdateStudentClick={this.onShowUpdateModal}
                     onDeleteStudent={this.props.onDeleteStudent}
                 />
             );

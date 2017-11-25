@@ -10,10 +10,11 @@ describe('EditStudentModal', () => {
                         <EditStudentModal 
                             title="Add Student"
                             submitButtonText="Add Student"
-                            initialStudent={new StudentData()}
+                            student={new StudentData()}
                             show={false}
                             onHide={jest.fn()}
                             onSubmit={jest.fn()}
+                            onStudentFormTextChange={jest.fn()}
                         />);
         expect(toJson(form)).toMatchSnapshot();
     });

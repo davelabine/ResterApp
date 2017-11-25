@@ -11,7 +11,11 @@ export function studentReducer(state: StoreState, action: StudentAction): StoreS
       return { ...state, filter: action.filter };
     case constants.ADD_STUDENT:
       let addList: StudentData[] = [...state.studentList];
-      addList.push(action.student);
+      /* We need to make sure there is a unique key on the student
+         Remove this when we hook up the back end service */
+      let addStudent: StudentData = {...action.student as StudentData};
+      addStudent.skey = Math.random().toString();
+      addList.push(addStudent);
       return { ...state, studentList: addList };
     case constants.DELETE_STUDENT:
       let delList: StudentData[] = [...state.studentList];

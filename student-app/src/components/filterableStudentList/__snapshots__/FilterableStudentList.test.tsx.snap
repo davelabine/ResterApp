@@ -109,10 +109,11 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                 </div>
               </FormGroup>
               <EditStudentModal
-                initialStudent={StudentData {}}
                 onHide={[Function]}
+                onStudentFormTextChange={[Function]}
                 onSubmit={[Function]}
                 show={false}
+                student={StudentData {}}
                 submitButtonText="Add Student"
                 title="Add Student"
               >
@@ -207,234 +208,264 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
             ]
           }
         >
-          <Table
-            bordered={false}
-            bsClass="table"
-            condensed={true}
-            hover={true}
-            responsive={false}
-            striped={true}
-          >
-            <table
-              className="table table-striped table-condensed table-hover"
+          <div>
+            <Table
+              bordered={false}
+              bsClass="table"
+              condensed={true}
+              hover={true}
+              responsive={false}
+              striped={true}
             >
-              <thead
-                className="studentListItemsHead"
+              <table
+                className="table table-striped table-condensed table-hover"
               >
-                <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    ID
-                  </th>
-                  <th>
-                    URL
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                className="studentListItemsBody"
-              >
-                <StudentListItem
-                  key="8a80810d5dd89a3f015dd89ac8280000"
-                  onDeleteStudent={[Function]}
-                  onUpdateStudentClick={[Function]}
-                  student={
-                    Object {
-                      "id": "1234",
-                      "name": "Billy Bob",
-                      "photo": Object {
-                        "bucketName": "resterapp-dev",
-                        "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                      },
-                      "skey": "8a80810d5dd89a3f015dd89ac8280000",
-                    }
-                  }
+                <thead
+                  className="studentListItemsHead"
                 >
                   <tr>
-                    <td>
-                      Billy Bob
-                    </td>
-                    <td>
-                      1234
-                    </td>
-                    <td>
-                      <ButtonGroup
-                        block={false}
-                        bsClass="btn-group"
-                        justified={false}
-                        vertical={false}
-                      >
-                        <div
-                          className="btn-group"
+                    <th>
+                      Name
+                    </th>
+                    <th>
+                      ID
+                    </th>
+                    <th>
+                      URL
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  className="studentListItemsBody"
+                >
+                  <StudentListItem
+                    key="8a80810d5dd89a3f015dd89ac8280000"
+                    onDeleteStudent={[Function]}
+                    onUpdateStudentClick={[Function]}
+                    student={
+                      Object {
+                        "id": "1234",
+                        "name": "Billy Bob",
+                        "photo": Object {
+                          "bucketName": "resterapp-dev",
+                          "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
+                        },
+                        "skey": "8a80810d5dd89a3f015dd89ac8280000",
+                      }
+                    }
+                  >
+                    <tr>
+                      <td>
+                        Billy Bob
+                      </td>
+                      <td>
+                        1234
+                      </td>
+                      <td>
+                        <ButtonGroup
+                          block={false}
+                          bsClass="btn-group"
+                          justified={false}
+                          vertical={false}
                         >
-                          <Button
-                            active={false}
-                            block={false}
-                            bsClass="btn"
-                            bsStyle="default"
-                            disabled={false}
-                            id="edit"
-                            onClick={[Function]}
+                          <div
+                            className="btn-group"
                           >
-                            <button
-                              className="btn btn-default"
+                            <Button
+                              active={false}
+                              block={false}
+                              bsClass="btn"
+                              bsStyle="default"
                               disabled={false}
                               id="edit"
                               onClick={[Function]}
-                              type="button"
                             >
-                              <Glyphicon
-                                bsClass="glyphicon"
-                                glyph="pencil"
+                              <button
+                                className="btn btn-default"
+                                disabled={false}
+                                id="edit"
+                                onClick={[Function]}
+                                type="button"
                               >
-                                <span
-                                  className="glyphicon glyphicon-pencil"
-                                />
-                              </Glyphicon>
-                            </button>
-                          </Button>
-                          <Button
-                            active={false}
-                            block={false}
-                            bsClass="btn"
-                            bsStyle="default"
-                            disabled={false}
-                            id="delete"
-                            onClick={[Function]}
-                          >
-                            <button
-                              className="btn btn-default"
+                                <Glyphicon
+                                  bsClass="glyphicon"
+                                  glyph="pencil"
+                                >
+                                  <span
+                                    className="glyphicon glyphicon-pencil"
+                                  />
+                                </Glyphicon>
+                              </button>
+                            </Button>
+                            <Button
+                              active={false}
+                              block={false}
+                              bsClass="btn"
+                              bsStyle="default"
                               disabled={false}
                               id="delete"
                               onClick={[Function]}
-                              type="button"
                             >
-                              <Glyphicon
-                                bsClass="glyphicon"
-                                glyph="trash"
+                              <button
+                                className="btn btn-default"
+                                disabled={false}
+                                id="delete"
+                                onClick={[Function]}
+                                type="button"
                               >
-                                <span
-                                  className="glyphicon glyphicon-trash"
-                                />
-                              </Glyphicon>
-                            </button>
-                          </Button>
-                        </div>
-                      </ButtonGroup>
-                    </td>
-                  </tr>
-                </StudentListItem>
-                <StudentListItem
-                  key="8a80810d5dd89a3f015dd8a252800001"
-                  onDeleteStudent={[Function]}
-                  onUpdateStudentClick={[Function]}
-                  student={
-                    Object {
-                      "id": "503074",
-                      "name": "Albert Russell",
-                      "photo": Object {
-                        "bucketName": "resterapp-dev",
-                        "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                      },
-                      "skey": "8a80810d5dd89a3f015dd8a252800001",
+                                <Glyphicon
+                                  bsClass="glyphicon"
+                                  glyph="trash"
+                                >
+                                  <span
+                                    className="glyphicon glyphicon-trash"
+                                  />
+                                </Glyphicon>
+                              </button>
+                            </Button>
+                          </div>
+                        </ButtonGroup>
+                      </td>
+                    </tr>
+                  </StudentListItem>
+                  <StudentListItem
+                    key="8a80810d5dd89a3f015dd8a252800001"
+                    onDeleteStudent={[Function]}
+                    onUpdateStudentClick={[Function]}
+                    student={
+                      Object {
+                        "id": "503074",
+                        "name": "Albert Russell",
+                        "photo": Object {
+                          "bucketName": "resterapp-dev",
+                          "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
+                        },
+                        "skey": "8a80810d5dd89a3f015dd8a252800001",
+                      }
                     }
-                  }
-                >
-                  <tr>
-                    <td>
-                      Albert Russell
-                    </td>
-                    <td>
-                      503074
-                    </td>
-                    <td>
-                      <ButtonGroup
-                        block={false}
-                        bsClass="btn-group"
-                        justified={false}
-                        vertical={false}
-                      >
-                        <div
-                          className="btn-group"
+                  >
+                    <tr>
+                      <td>
+                        Albert Russell
+                      </td>
+                      <td>
+                        503074
+                      </td>
+                      <td>
+                        <ButtonGroup
+                          block={false}
+                          bsClass="btn-group"
+                          justified={false}
+                          vertical={false}
                         >
-                          <Button
-                            active={false}
-                            block={false}
-                            bsClass="btn"
-                            bsStyle="default"
-                            disabled={false}
-                            id="edit"
-                            onClick={[Function]}
+                          <div
+                            className="btn-group"
                           >
-                            <button
-                              className="btn btn-default"
+                            <Button
+                              active={false}
+                              block={false}
+                              bsClass="btn"
+                              bsStyle="default"
                               disabled={false}
                               id="edit"
                               onClick={[Function]}
-                              type="button"
                             >
-                              <Glyphicon
-                                bsClass="glyphicon"
-                                glyph="pencil"
+                              <button
+                                className="btn btn-default"
+                                disabled={false}
+                                id="edit"
+                                onClick={[Function]}
+                                type="button"
                               >
-                                <span
-                                  className="glyphicon glyphicon-pencil"
-                                />
-                              </Glyphicon>
-                            </button>
-                          </Button>
-                          <Button
-                            active={false}
-                            block={false}
-                            bsClass="btn"
-                            bsStyle="default"
-                            disabled={false}
-                            id="delete"
-                            onClick={[Function]}
-                          >
-                            <button
-                              className="btn btn-default"
+                                <Glyphicon
+                                  bsClass="glyphicon"
+                                  glyph="pencil"
+                                >
+                                  <span
+                                    className="glyphicon glyphicon-pencil"
+                                  />
+                                </Glyphicon>
+                              </button>
+                            </Button>
+                            <Button
+                              active={false}
+                              block={false}
+                              bsClass="btn"
+                              bsStyle="default"
                               disabled={false}
                               id="delete"
                               onClick={[Function]}
-                              type="button"
                             >
-                              <Glyphicon
-                                bsClass="glyphicon"
-                                glyph="trash"
+                              <button
+                                className="btn btn-default"
+                                disabled={false}
+                                id="delete"
+                                onClick={[Function]}
+                                type="button"
                               >
-                                <span
-                                  className="glyphicon glyphicon-trash"
-                                />
-                              </Glyphicon>
-                            </button>
-                          </Button>
-                        </div>
-                      </ButtonGroup>
-                    </td>
-                  </tr>
-                </StudentListItem>
-              </tbody>
-              <EditStudentModal
-                initialStudent={StudentData {}}
-                onHide={[Function]}
-                onSubmit={[Function]}
-                show={false}
-                submitButtonText="Save"
-                title="Edit Student"
+                                <Glyphicon
+                                  bsClass="glyphicon"
+                                  glyph="trash"
+                                >
+                                  <span
+                                    className="glyphicon glyphicon-trash"
+                                  />
+                                </Glyphicon>
+                              </button>
+                            </Button>
+                          </div>
+                        </ButtonGroup>
+                      </td>
+                    </tr>
+                  </StudentListItem>
+                </tbody>
+              </table>
+            </Table>
+            <EditStudentModal
+              onHide={[Function]}
+              onStudentFormTextChange={[Function]}
+              onSubmit={[Function]}
+              show={false}
+              student={StudentData {}}
+              submitButtonText="Save"
+              title="Edit Student"
+            >
+              <div
+                className="static-modal"
               >
-                <div
-                  className="static-modal"
+                <Modal
+                  animation={true}
+                  autoFocus={true}
+                  backdrop={true}
+                  bsClass="modal"
+                  dialogClassName="custom-modal"
+                  dialogComponentClass={[Function]}
+                  enforceFocus={true}
+                  keyboard={true}
+                  manager={
+                    ModalManager {
+                      "add": [Function],
+                      "containers": Array [],
+                      "data": Array [],
+                      "handleContainerOverflow": true,
+                      "hideSiblingNodes": true,
+                      "isTopModal": [Function],
+                      "modals": Array [],
+                      "remove": [Function],
+                    }
+                  }
+                  onHide={[Function]}
+                  renderBackdrop={[Function]}
+                  restoreFocus={true}
+                  show={false}
                 >
                   <Modal
-                    animation={true}
                     autoFocus={true}
                     backdrop={true}
-                    bsClass="modal"
-                    dialogClassName="custom-modal"
-                    dialogComponentClass={[Function]}
+                    backdropClassName="modal-backdrop"
+                    backdropTransitionTimeout={150}
+                    containerClassName="modal-open"
+                    dialogTransitionTimeout={300}
                     enforceFocus={true}
                     keyboard={true}
                     manager={
@@ -449,45 +480,18 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                         "remove": [Function],
                       }
                     }
+                    onEntering={[Function]}
+                    onExited={[Function]}
                     onHide={[Function]}
                     renderBackdrop={[Function]}
                     restoreFocus={true}
                     show={false}
-                  >
-                    <Modal
-                      autoFocus={true}
-                      backdrop={true}
-                      backdropClassName="modal-backdrop"
-                      backdropTransitionTimeout={150}
-                      containerClassName="modal-open"
-                      dialogTransitionTimeout={300}
-                      enforceFocus={true}
-                      keyboard={true}
-                      manager={
-                        ModalManager {
-                          "add": [Function],
-                          "containers": Array [],
-                          "data": Array [],
-                          "handleContainerOverflow": true,
-                          "hideSiblingNodes": true,
-                          "isTopModal": [Function],
-                          "modals": Array [],
-                          "remove": [Function],
-                        }
-                      }
-                      onEntering={[Function]}
-                      onExited={[Function]}
-                      onHide={[Function]}
-                      renderBackdrop={[Function]}
-                      restoreFocus={true}
-                      show={false}
-                      transition={[Function]}
-                    />
-                  </Modal>
-                </div>
-              </EditStudentModal>
-            </table>
-          </Table>
+                    transition={[Function]}
+                  />
+                </Modal>
+              </div>
+            </EditStudentModal>
+          </div>
         </StudentListItems>
       </div>
     </Well>

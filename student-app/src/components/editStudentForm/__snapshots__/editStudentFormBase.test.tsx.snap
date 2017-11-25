@@ -3,7 +3,12 @@
 exports[`EditStudentformBase renders without crashing and matches the last snapshot 1`] = `
 <EditStudentFormBase
   onFormTextChange={[Function]}
-  student={StudentData {}}
+  student={
+    StudentData {
+      "id": "",
+      "name": "",
+    }
+  }
 >
   <form>
     <FormGroup
@@ -28,12 +33,14 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           id="name"
           onChange={[Function]}
           type="text"
+          value=""
         >
           <input
             className="form-control"
             id="name"
             onChange={[Function]}
             type="text"
+            value=""
           />
         </FormControl>
         <ControlLabel
@@ -52,12 +59,14 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           id="id"
           onChange={[Function]}
           type="text"
+          value=""
         >
           <input
             className="form-control"
             id="id"
             onChange={[Function]}
             type="text"
+            value=""
           />
         </FormControl>
         <ControlLabel

@@ -1,10 +1,10 @@
 import { studentReducer } from '../reducers/index';
-import { StoreState } from '../types/index';
+import { StoreState, StudentData } from '../types/index';
 import * as actions from '../actions/index';
 import * as testData from '../testData/index';
 import { StudentAction } from '../actions/index';
 
-const initialState =  {
+const initialState: StoreState =  {
     studentList: testData.LIST_STUDENT_DATA_TWO,
     filter: '',
 };
@@ -35,11 +35,21 @@ describe('studentReducer', () => {
     });
 
     it('should add students', () => {
-        const newState: StoreState = studentReducer(initialState, actions.addStudent(testData.STUDENT_DATA_BILLY));
-        expect(newState).toEqual({
-            studentList: [...testData.LIST_STUDENT_DATA_TWO, testData.STUDENT_DATA_BILLY],
-            filter: ''
-        });
+        const state: StoreState =  {
+            studentList: [],
+            filter: '',
+        };
+        const addStudent: StudentData = {
+            id: '1234',
+            name: 'Bobby',
+            skey: '',
+            photo: {}
+        };
+        const newState: StoreState = studentReducer(state, actions.addStudent(addStudent));
+        /* We expect the skey to be defined by the reducer, but everything else should be the same */
+        addStudent.skey = newState.studentList[0].skey;
+        state.studentList.push(addStudent);
+        expect(newState).toEqual(state);
     });
 
     it('should delete students', () => {

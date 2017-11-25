@@ -3,7 +3,6 @@ import './FilterableStudentList.css';
 import { Form, FormGroup, ControlLabel, FormControl, FormControlProps, Button } from 'react-bootstrap';
 import { EditStudentModal } from '../editStudentForm/editStudentModal';
 import { StudentData } from '../../types';
-import * as testData from '../../testData/index';
 
 export interface StudentListFilterFormProps {
     filter: string;
@@ -13,30 +12,44 @@ export interface StudentListFilterFormProps {
 
 export interface StudentListFilterState {
     show: boolean;
+    addStudent: StudentData;
 }
 
 export class StudentListFilterForm extends React.Component<StudentListFilterFormProps, StudentListFilterState> {
     constructor(props: StudentListFilterFormProps) {
         super(props);
 
-        this.state = { show: false };
+        this.state = { show: false, addStudent: new StudentData() };
 
-        this.handleFormFilterChange = this.handleFormFilterChange.bind(this);
+        this.onFormFilterChange = this.onFormFilterChange.bind(this);
+        this.onAddStudentTextChange = this.onAddStudentTextChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
         this.onHideModal = this.onHideModal.bind(this);
     }
 
-    public handleFormFilterChange(e: React.FormEvent<FormControlProps>): void {
+    public onFormFilterChange(e: React.FormEvent<FormControlProps>): void {
         let f = e.currentTarget.value as string;
         this.props.onFilterStudents(f);
     }
 
+    public onAddStudentTextChange(label: string, value: string): void {
+        let student = {...this.state.addStudent};
+        student[label] = value;
+        this.setState( {addStudent: student});
+    }
+
+    public onSubmit() {
+        this.props.onAddStudent(this.state.addStudent);
+        this.onHideModal();
+    }
+
     public onShowModal() {
-        this.setState({ show: true});
+        this.setState({ show: true, addStudent: new StudentData() });
     }
 
     public onHideModal() {
-        this.setState({ show: false});
+        this.setState({ show: false, });
     }
 
     public render() {
@@ -46,7 +59,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                     <ControlLabel>Search Last Name:</ControlLabel>
                     <FormControl
                         type="text"
-                        onChange={this.handleFormFilterChange}
+                        onChange={this.onFormFilterChange}
                         value={this.props.filter}
                     />
                     <Button 
@@ -60,10 +73,11 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                 <EditStudentModal 
                     title="Add Student"
                     submitButtonText="Add Student"
-                    initialStudent={testData.STUDENT_DATA_EMPTY}
+                    student={this.state.addStudent}
                     show={this.state.show}
                     onHide={this.onHideModal}
-                    onSubmit={this.props.onAddStudent}
+                    onSubmit={this.onSubmit}
+                    onStudentFormTextChange={this.onAddStudentTextChange}
                 />
             </Form>
         );
