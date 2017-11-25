@@ -1,4 +1,4 @@
-package com.davelabine.resterapp;
+package com.davelabine.resterapp.controller;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -6,7 +6,6 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
-/* Haven't got this working yet...
 @Provider
 public class CorsFilter implements ContainerResponseFilter {
 
@@ -25,4 +24,3 @@ public class CorsFilter implements ContainerResponseFilter {
                 "GET, POST, PUT, DELETE, OPTIONS, HEAD");
     }
 }
-*/

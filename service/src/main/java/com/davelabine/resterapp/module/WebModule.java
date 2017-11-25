@@ -1,8 +1,8 @@
 package com.davelabine.resterapp.module;
 
+import com.davelabine.resterapp.controller.CorsFilter;
 import com.davelabine.resterapp.controller.ControllerMainApp;
 import com.davelabine.resterapp.controller.ErrorCodeExceptionMapper;
-import com.davelabine.resterapp.controller.exceptions.GenericExceptionMapper;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
 import com.davelabine.resterapp.controller.ControllerRosterAPI;
 import com.davelabine.resterapp.controller.ControllerStudentsAPI;
@@ -21,6 +21,8 @@ public class WebModule extends ServletModule {
         // TODO: add the custom generic mapper back in when I get farther along with the app
         // bind(GenericExceptionMapper.class);
         bind(ErrorCodeExceptionMapper.class);
+
+        bind(CorsFilter.class);
 
         //controllers.
         bind(ControllerMainApp.class);
