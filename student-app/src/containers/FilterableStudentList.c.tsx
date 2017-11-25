@@ -13,6 +13,12 @@ function fetchStudents(dispatch: Dispatch<actions.StudentAction>) {
     .catch((err) => console.log('FilterableStudentList.c - ' + err));
 }
 
+function deleteStudent(dispatch: Dispatch<actions.StudentAction>, skey: string) {
+  resterApp.deleteStudent(skey)
+    .then((s) => dispatch(actions.deleteStudent(s)))
+    .catch((err) => console.log('FilterableStudentList.c - ' + err));
+}
+
 function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData) {
   dispatch(actions.addStudent(student));
 }
@@ -30,7 +36,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.StudentAction>) {
     onFilterStudents: (filter: string) => dispatch(actions.filterStudents(filter)),
     onAddStudent: (student: StudentData) => addStudent(dispatch, student),
     onUpdateStudent: (student: StudentData) => dispatch(actions.updateStudent(student)),
-    onDeleteStudent: (skey: string) => dispatch(actions.deleteStudent(skey))
+    onDeleteStudent: (skey: string) => deleteStudent(dispatch, skey)
   };
 }
 

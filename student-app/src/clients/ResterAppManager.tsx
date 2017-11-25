@@ -1,7 +1,9 @@
 import { StudentData } from '../types'; 
 
-export const RESTERAPP_BASE_URL: string = 'http://resterapp.lvictories.us:8080/api';
+/* export const RESTERAPP_BASE_URL: string = 'http://resterapp.lvictories.us:8080/api';*/
+export const RESTERAPP_BASE_URL: string = 'http://0.0.0.0:8080/service/api';
 export const RESTERAPP_STUDENTS_URL: string = RESTERAPP_BASE_URL + '/students/';
+export const RESTERAPP_STUDENTS_CREATE_URL: string = RESTERAPP_STUDENTS_URL + '/create';
 
 export class ResterAppManager {
       
@@ -26,4 +28,33 @@ export class ResterAppManager {
         return students;
     }
 
+    public async createStudent(s: StudentData): Promise<void> {
+        console.log('ResterAppManager() - create student');
+        const myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        const requestInit: RequestInit = {
+            body: 'email=test@example.com&password=pw',
+            headers: myHeaders,
+            method: 'post',
+        };
+                 
+        let response: Response = await fetch(RESTERAPP_STUDENTS_CREATE_URL, requestInit);
+        console.log(JSON.stringify(response));
+    }
+
+    public async deleteStudent(skey: string): Promise<string> {
+        console.log('deleteStudent, skey: ' + skey);
+
+        var myHeaders = new Headers();
+        const requestInit: RequestInit = {
+            headers: myHeaders,
+            method: 'DELETE',
+        };
+                 
+        const url = RESTERAPP_STUDENTS_URL + skey;
+        let response: Response = await fetch(url, requestInit);
+        console.log('deleteStudent response: ' + response.status);
+        return skey;
+    }
 }
