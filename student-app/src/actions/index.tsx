@@ -48,8 +48,6 @@ export function filterStudents(filter: string): FilterStudents {
 }
 
 export function addStudent(student: StudentData): AddStudent {
-    /* For now, need to set skey */
-    student.skey =  Math.random().toString();
     return {
         type: constants.ADD_STUDENT,
         student
