@@ -10,17 +10,24 @@ export const resterApp: ResterAppManager = new ResterAppManager();
 function fetchStudents(dispatch: Dispatch<actions.StudentAction>) {
   resterApp.fetchStudents()
     .then((students) => dispatch(actions.setStudents(students)))
-    .catch((err) => console.log('FilterableStudentList.c - ' + err));
+    .catch((err) => console.log('fetchStudents error - ' + err));
 }
 
 function deleteStudent(dispatch: Dispatch<actions.StudentAction>, skey: string) {
   resterApp.deleteStudent(skey)
-    .then((s) => dispatch(actions.deleteStudent(s)))
-    .catch((err) => console.log('FilterableStudentList.c - ' + err));
+    .then(() => dispatch(actions.deleteStudent(skey)))
+    .catch((err) => console.log('deleteStudent Fetch error- ' + err));
 }
 
 function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData) {
-  dispatch(actions.addStudent(student));
+  resterApp.createStudent(student)
+    .then((skey) => {
+      student.skey = skey;
+      console.log('createStudent - ' + JSON.stringify(student));
+      dispatch(actions.addStudent(student));
+    })
+    .catch((err) => console.log('addStudent Fetch error - ' + err));
+
 }
 
 export function mapStateToProps({ studentList, filter  }: StoreState) {

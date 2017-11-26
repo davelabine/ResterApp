@@ -70,14 +70,13 @@ public class ControllerStudentsAPI {
      * @return String that will be returned as a text/plain response.
      */
     @POST
-    @Path("/create")
+    @Path("/")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_HTML)
     public Response create(@Context HttpServletRequest request,
-            @NotNull MultipartFormDataInput formDataInput,
-            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime)
+                           @NotNull MultipartFormDataInput formDataInput,
+                           @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime)
             throws IOException, URISyntaxException {
-        logger.info("Students/post busyTime:{} ", busyTime);
+        logger.info("Students/POST busyTime:{} ", busyTime);
 
         Student student = getFormDataStudent(formDataInput);
         if ( (student == null) || (student.getName() == null) || (student.getId() == null) ) {
@@ -122,7 +121,7 @@ public class ControllerStudentsAPI {
                                   @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime,
                                   @NotNull @PathParam("key") String key)
             throws IOException, URISyntaxException {
-        logger.info("Students/post busyTime:{} Student:{}", busyTime);
+        logger.info("Students/{key}/POST busyTime:{}", busyTime);
 
         Student student = getFormDataStudent(formDataInput);
         student.setSkey(key);
