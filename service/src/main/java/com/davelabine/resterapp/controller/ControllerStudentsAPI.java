@@ -79,20 +79,10 @@ public class ControllerStudentsAPI {
         logger.info("Students/POST busyTime:{} ", busyTime);
 
         Student student = getFormDataStudent(formDataInput);
-        if ( (student == null) || (student.getName() == null) || (student.getId() == null) ) {
-            logger.info("Student name or ID is null");
-            return Response.status(BAD_REQUEST).build();
-        }
-        logger.info("Student:{} ", student);
+        if (student == null) return Response.status(BAD_REQUEST).build();
 
         BlobData data = getFormDataPhoto(request, formDataInput);
-        if (data != null ) {
-            long lMaxSize = appConfig.getLong("Api.max-photo-size");
-            if (data.getContentLength() > lMaxSize) {
-                logger.warn("too large of a file uploaded: " + data.getContentLength() + "/" + lMaxSize);
-                return Response.status(BAD_REQUEST).build();
-            }
-        }
+        if (!isPhotoDataWithinContentLength(data)) return Response.status(BAD_REQUEST).build();
 
         String studentKey = studentManager.createStudent(student, data);
         if (studentKey == null) {
@@ -124,19 +114,11 @@ public class ControllerStudentsAPI {
         logger.info("Students/{key}/POST busyTime:{}", busyTime);
 
         Student student = getFormDataStudent(formDataInput);
+        if (student == null) return Response.status(BAD_REQUEST).build();
         student.setSkey(key);
-        if ( (student == null) || (student.getName() == null) || (student.getId() == null) ) {
-            logger.info("Student name or ID is null");
-            return Response.status(BAD_REQUEST).build();
-        }
-        logger.info("Student:{} ", student);
 
         BlobData data = getFormDataPhoto(request, formDataInput);
-        long lMaxSize = appConfig.getLong("Api.max-photo-size");
-        if (data.getContentLength() > lMaxSize) {
-            logger.warn("too large of a file uploaded: " + data.getContentLength() + "/" + lMaxSize);
-            return Response.status(BAD_REQUEST).build();
-        }
+        if (!isPhotoDataWithinContentLength(data)) return Response.status(BAD_REQUEST).build();
 
         Busywork.doBusyWork(busyTime);
 
@@ -149,7 +131,23 @@ public class ControllerStudentsAPI {
         Student student = new Student(
                 formDataInput.getFormDataPart(FORM_STUDENT_ID, String.class, null),
                 formDataInput.getFormDataPart(FORM_STUDENT_NAME, String.class, null));
+        if ( (student == null) || (student.getName() == null) || (student.getId() == null) ) {
+            logger.info("Student name or ID is null");
+            return null;
+        }
+        logger.info("Student:{} ", student);
         return student;
+    }
+
+    private Boolean isPhotoDataWithinContentLength(BlobData data) throws IOException {
+        if (data != null) {
+            long lMaxSize = appConfig.getLong("Api.max-photo-size");
+            if (data.getContentLength() > lMaxSize) {
+                logger.warn("too large of a file uploaded: " + data.getContentLength() + "/" + lMaxSize);
+                return false;
+            }
+        }
+        return true;
     }
 
     private BlobData getFormDataPhoto(HttpServletRequest request, MultipartFormDataInput formDataInput) throws IOException {
