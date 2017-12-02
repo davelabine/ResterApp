@@ -3,6 +3,7 @@
 exports[`EditStudentModal renders without crashing and matches the last snapshot 1`] = `
 <EditStudentModal
   onHide={[Function]}
+  onStudentFormFileChange={[Function]}
   onStudentFormTextChange={[Function]}
   onSubmit={[Function]}
   show={false}

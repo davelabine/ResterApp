@@ -243,6 +243,7 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
     </Table>
     <EditStudentModal
       onHide={[Function]}
+      onStudentFormFileChange={[Function]}
       onStudentFormTextChange={[Function]}
       onSubmit={[Function]}
       show={false}

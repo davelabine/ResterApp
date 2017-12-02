@@ -11,6 +11,7 @@ describe('EditStudentformBase', () => {
                         <EditStudentFormBase
                             student={testData.STUDENT_DATA_EMPTY}
                             onFormTextChange={mockFormTextChange}
+                            onFormFileChange={jest.fn()}
                         />);
         expect(toJson(list)).toMatchSnapshot();
     });
@@ -22,6 +23,7 @@ describe('EditStudentformBase', () => {
                         <EditStudentFormBase
                           student={testData.STUDENT_DATA_EMPTY}
                           onFormTextChange={mockFormTextChange}
+                          onFormFileChange={jest.fn()}
                         />);
 
         const input = form.find('input'); 

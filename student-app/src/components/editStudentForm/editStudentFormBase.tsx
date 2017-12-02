@@ -8,18 +8,28 @@ export const DEFAULT_PHOTO_URL: string = 'https://static.pexels.com/photos/10482
 export interface EditStudentFormBaseProps {
     student: StudentData;
     onFormTextChange: (label: string, filter: String) => void;
+    onFormFileChange: (file: File) => void;
 }
 
 export class EditStudentFormBase extends React.Component<EditStudentFormBaseProps> {
-    
+    file: FormControl;
+
     constructor(props: EditStudentFormBaseProps) {
         super(props);
         this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
+    }
+
+    public handleFileChange(selectorFiles: FileList | null): void {
+        if ( (selectorFiles != null ) && (selectorFiles.length > 0) ) {
+            this.props.onFormFileChange(selectorFiles[0]);
+        }
     }
 
     public handleTextFieldChange(e: React.FormEvent<FormControlProps>): void {
         const label = e.currentTarget.id as string;
         const value = e.currentTarget.value as string;
+        console.log('handleTextFieldChange: ' + label + ' ' + value);
         this.props.onFormTextChange(label, value);
     }
 
@@ -48,8 +58,9 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
                         onChange={this.handleTextFieldChange}
                     />
                     <ControlLabel>Photo:</ControlLabel>
-                    <FormControl
+                    <input
                         type="file"
+                        onChange={(e) => this.handleFileChange(e.target.files)}
                     />
                     <Thumbnail 
                         href="#" 

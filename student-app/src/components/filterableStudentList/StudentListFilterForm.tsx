@@ -7,12 +7,13 @@ import { StudentData } from '../../types';
 export interface StudentListFilterFormProps {
     filter: string;
     onFilterStudents: (filter: String) => void;
-    onAddStudent: (student: StudentData) => void;
+    onAddStudent: (student: StudentData, filePhotoUpload?: File) => void;
 }
 
 export interface StudentListFilterState {
     show: boolean;
     addStudent: StudentData;
+    addStudentFilePhoto?: File;
 }
 
 export class StudentListFilterForm extends React.Component<StudentListFilterFormProps, StudentListFilterState> {
@@ -23,6 +24,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
 
         this.onFormFilterChange = this.onFormFilterChange.bind(this);
         this.onAddStudentTextChange = this.onAddStudentTextChange.bind(this);
+        this.onAddStudentFileChange = this.onAddStudentFileChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
         this.onHideModal = this.onHideModal.bind(this);
@@ -39,8 +41,13 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
         this.setState( {addStudent: student});
     }
 
+    public onAddStudentFileChange(file: File) {
+        console.log(file);
+        this.setState( {addStudentFilePhoto: file} );
+    }
+
     public onSubmit() {
-        this.props.onAddStudent(this.state.addStudent);
+        this.props.onAddStudent(this.state.addStudent, this.state.addStudentFilePhoto);
         this.onHideModal();
     }
 
@@ -78,6 +85,7 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                     onHide={this.onHideModal}
                     onSubmit={this.onSubmit}
                     onStudentFormTextChange={this.onAddStudentTextChange}
+                    onStudentFormFileChange={this.onAddStudentFileChange}
                 />
             </Form>
         );

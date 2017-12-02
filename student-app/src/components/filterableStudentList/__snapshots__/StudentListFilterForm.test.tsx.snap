@@ -71,6 +71,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
       </FormGroup>
       <EditStudentModal
         onHide={[Function]}
+        onStudentFormFileChange={[Function]}
         onStudentFormTextChange={[Function]}
         onSubmit={[Function]}
         show={false}

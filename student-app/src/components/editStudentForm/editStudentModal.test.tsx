@@ -15,6 +15,7 @@ describe('EditStudentModal', () => {
                             onHide={jest.fn()}
                             onSubmit={jest.fn()}
                             onStudentFormTextChange={jest.fn()}
+                            onStudentFormFileChange={jest.fn()}
                         />);
         expect(toJson(form)).toMatchSnapshot();
     });

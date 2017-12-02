@@ -29,7 +29,7 @@ export class ResterAppManager {
         return students;
     }
 
-    public async createStudent(s: StudentData): Promise<string> {
+    public async createStudent(s: StudentData, photo?: File): Promise<string> {
 
         const myHeaders = new Headers();
         /* DO NOT append any Content-Type headers.  The browser will do it for you.
@@ -41,7 +41,10 @@ export class ResterAppManager {
         var formData = new FormData();
         formData.append('name', s.name);
         formData.append('id', s.id);
-
+        if (photo) {
+            formData.append('photo', photo, photo.name);
+        }
+        
         const requestInit: RequestInit = {
             body: formData,
             headers: myHeaders,
@@ -57,7 +60,7 @@ export class ResterAppManager {
         return skey;
     }
 
-    public async updateStudent(s: StudentData): Promise<void> {
+    public async updateStudent(s: StudentData, photo?: File): Promise<void> {
         const myHeaders = new Headers();
         /* DO NOT append any Content-Type headers.  The browser will do it for you.
            Yes, you heard right.  
@@ -68,6 +71,9 @@ export class ResterAppManager {
         var formData = new FormData();
         formData.append('name', s.name);
         formData.append('id', s.id);
+        if (photo) {
+            formData.append('photo', photo, photo.name);
+        }
 
         const requestInit: RequestInit = {
             body: formData,

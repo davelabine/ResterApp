@@ -19,14 +19,14 @@ function deleteStudent(dispatch: Dispatch<actions.StudentAction>, skey: string) 
     .catch((err) => console.log('deleteStudent Fetch error- ' + err));
 }
 
-function updateStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData) {
-  resterApp.updateStudent(student)
+function updateStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData, photo?: File) {
+  resterApp.updateStudent(student, photo)
     .then(() => dispatch(actions.updateStudent(student)))
     .catch((err) => console.log('updateStudent Fetch error - ' + err));
 }
 
-function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData) {
-  resterApp.createStudent(student)
+function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData, photo?: File) {
+  resterApp.createStudent(student, photo)
     .then((skey) => {
       student.skey = skey;
       console.log('createStudent - ' + JSON.stringify(student));
@@ -47,8 +47,8 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.StudentAction>) {
   return {
     onFetchStudents: () => fetchStudents(dispatch),
     onFilterStudents: (filter: string) => dispatch(actions.filterStudents(filter)),
-    onAddStudent: (student: StudentData) => addStudent(dispatch, student),
-    onUpdateStudent: (student: StudentData) => updateStudent(dispatch, student),
+    onAddStudent: (student: StudentData, photo: File) => addStudent(dispatch, student, photo),
+    onUpdateStudent: (student: StudentData, photo: File) => updateStudent(dispatch, student, photo),
     onDeleteStudent: (skey: string) => deleteStudent(dispatch, skey)
   };
 }

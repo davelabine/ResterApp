@@ -9,13 +9,14 @@ import * as constants from '../../constants/index';
 export interface StudentListItemsProps {
     filter: string;
     students: Array<StudentData>;
-    onUpdateStudent: (student: StudentData) => void;
+    onUpdateStudent: (student: StudentData, photo?: File ) => void;
     onDeleteStudent: (skey: string) => void;
 }
 
 export interface StudentListItemsState {
     show: boolean;
     updateStudent: StudentData;
+    photoUpload?: File;
 }
 
 export class StudentListItems extends React.Component<StudentListItemsProps, StudentListItemsState> {
@@ -23,10 +24,11 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
     constructor(props: StudentListItemsProps) {
         super(props);
 
-        this.state = { show: false, updateStudent: new StudentData() };
+        this.state = { show: false, updateStudent: new StudentData(), photoUpload: undefined };
  
         this.onShowUpdateModal = this.onShowUpdateModal.bind(this);
         this.onUpdateFormTextChange = this.onUpdateFormTextChange.bind(this);
+        this.onUpdateFormFileChange = this.onUpdateFormFileChange.bind(this);
         this.onSubmitUpdateModal = this.onSubmitUpdateModal.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
         this.onHideModal = this.onHideModal.bind(this);
@@ -43,8 +45,13 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
         this.setState( {updateStudent: student});
     }
 
+    public onUpdateFormFileChange(file: File) {
+        console.log(file);
+        this.setState( {photoUpload: file});
+    }
+
     public onSubmitUpdateModal() {
-        this.props.onUpdateStudent(this.state.updateStudent);
+        this.props.onUpdateStudent(this.state.updateStudent, this.state.photoUpload);
         this.onHideModal();
     }
 
@@ -81,6 +88,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
                     onHide={this.onHideModal}
                     onSubmit={this.onSubmitUpdateModal}
                     onStudentFormTextChange={this.onUpdateFormTextChange}
+                    onStudentFormFileChange={this.onUpdateFormFileChange}
                 />
             </div>
         );

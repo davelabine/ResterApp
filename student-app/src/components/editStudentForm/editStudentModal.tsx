@@ -11,6 +11,7 @@ export interface EditStudentModalProps {
     onHide: () => void;
     onSubmit: () => void;
     onStudentFormTextChange: (label: string, filter: String) => void;
+    onStudentFormFileChange: (file: File) => void;
 }
 
 export class EditStudentModal extends React.Component<EditStudentModalProps> {
@@ -35,6 +36,7 @@ export class EditStudentModal extends React.Component<EditStudentModalProps> {
               <EditStudentFormBase
                   student={this.props.student}
                   onFormTextChange={this.props.onStudentFormTextChange}
+                  onFormFileChange={this.props.onStudentFormFileChange}
               />
             </Modal.Body>
       

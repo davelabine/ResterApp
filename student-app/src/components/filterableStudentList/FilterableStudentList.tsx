@@ -10,8 +10,8 @@ export interface Props {
     filter: string;
     onFetchStudents: () => void;
     onFilterStudents: (filter: String) => void;
-    onAddStudent: (student: StudentData) => void;
-    onUpdateStudent: (student: StudentData) => void;
+    onAddStudent: (student: StudentData, filePhotoUpload: File) => void;
+    onUpdateStudent: (student: StudentData, photo: File) => void;
     onDeleteStudent: (skey: string) => void;
 }
 
