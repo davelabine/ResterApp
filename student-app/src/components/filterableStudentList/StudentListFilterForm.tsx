@@ -12,19 +12,15 @@ export interface StudentListFilterFormProps {
 
 export interface StudentListFilterState {
     show: boolean;
-    addStudent: StudentData;
-    addStudentFilePhoto?: File;
 }
 
 export class StudentListFilterForm extends React.Component<StudentListFilterFormProps, StudentListFilterState> {
     constructor(props: StudentListFilterFormProps) {
         super(props);
 
-        this.state = { show: false, addStudent: new StudentData() };
+        this.state = { show: false };
 
         this.onFormFilterChange = this.onFormFilterChange.bind(this);
-        this.onAddStudentTextChange = this.onAddStudentTextChange.bind(this);
-        this.onAddStudentFileChange = this.onAddStudentFileChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
         this.onHideModal = this.onHideModal.bind(this);
@@ -35,24 +31,13 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
         this.props.onFilterStudents(f);
     }
 
-    public onAddStudentTextChange(label: string, value: string): void {
-        let student = {...this.state.addStudent};
-        student[label] = value;
-        this.setState( {addStudent: student});
-    }
-
-    public onAddStudentFileChange(file: File) {
-        console.log(file);
-        this.setState( {addStudentFilePhoto: file} );
-    }
-
-    public onSubmit() {
-        this.props.onAddStudent(this.state.addStudent, this.state.addStudentFilePhoto);
+    public onSubmit(student: StudentData, photo?: File) {
+        this.props.onAddStudent(student, photo);
         this.onHideModal();
     }
 
     public onShowModal() {
-        this.setState({ show: true, addStudent: new StudentData() });
+        this.setState({ show: true });
     }
 
     public onHideModal() {
@@ -80,12 +65,10 @@ export class StudentListFilterForm extends React.Component<StudentListFilterForm
                 <EditStudentModal 
                     title="Add Student"
                     submitButtonText="Add Student"
-                    student={this.state.addStudent}
+                    initialStudent={new StudentData()}
                     show={this.state.show}
                     onHide={this.onHideModal}
                     onSubmit={this.onSubmit}
-                    onStudentFormTextChange={this.onAddStudentTextChange}
-                    onStudentFormFileChange={this.onAddStudentFileChange}
                 />
             </Form>
         );

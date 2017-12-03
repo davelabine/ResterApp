@@ -79,47 +79,5 @@ describe('StudentListItems', () => {
     expect(listRows.length).toEqual(1);
     expect(listRows.first().text()).toEqual(constants.STUDENT_LIST_ITEMS_EMPTY);
   });
-
-  it('handles onShowModal and onHide', () => {
-    const list = mount(
-      <StudentListItems 
-        filter="" 
-        students={studentTestData.LIST_STUDENT_DATA_TWO}
-        onUpdateStudent={jest.fn()} 
-        onDeleteStudent={jest.fn()}
-      />);
-    const inst = list.instance() as StudentListItems;
-
-    inst.onShowModal();
-    expect(inst.state.show).toBeTruthy();
-
-    inst.onHideModal();
-    expect(inst.state.show).toBeFalsy();
-
-    inst.onShowUpdateModal(studentTestData.STUDENT_DATA_BILLY);
-    expect(inst.state.updateStudent).toEqual(studentTestData.STUDENT_DATA_BILLY);
-    expect(inst.state.show).toBeTruthy();
-  });
-
-  it('handles form events and submit', () => {
-    const onUpdateStudent = jest.fn();
-    const list = mount(
-      <StudentListItems 
-        filter="" 
-        students={studentTestData.LIST_STUDENT_DATA_TWO}
-        onUpdateStudent={onUpdateStudent} 
-        onDeleteStudent={jest.fn()}
-      />);
-    const inst = list.instance() as StudentListItems;
-
-    inst.onShowModal();
-    inst.onUpdateFormTextChange('id', '123');
-    inst.onUpdateFormTextChange('name', 'abc');
-    expect(inst.state.updateStudent).toEqual({id: '123', name: 'abc'});
-
-    inst.onSubmitUpdateModal();
-    expect(inst.state.show).toBeFalsy();
-    expect(onUpdateStudent).toHaveBeenCalled();
-  });
-
+  
 });

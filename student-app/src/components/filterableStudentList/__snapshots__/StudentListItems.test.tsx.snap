@@ -61,7 +61,7 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
           <StudentListItem
             key="8a80810d5dd89a3f015dd89ac8280000"
             onDeleteStudent={[Function]}
-            onUpdateStudentClick={[Function]}
+            onUpdateStudent={[Function]}
             student={
               Object {
                 "id": "1234",
@@ -145,13 +145,92 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
                     </Button>
                   </div>
                 </ButtonGroup>
+                <EditStudentModal
+                  initialStudent={
+                    Object {
+                      "id": "1234",
+                      "name": "Billy Bob",
+                      "photo": Object {
+                        "bucketName": "resterapp-dev",
+                        "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
+                      },
+                      "skey": "8a80810d5dd89a3f015dd89ac8280000",
+                    }
+                  }
+                  onHide={[Function]}
+                  onSubmit={[Function]}
+                  show={false}
+                  submitButtonText="Save"
+                  title="Edit Billy Bob"
+                >
+                  <div
+                    className="static-modal"
+                  >
+                    <Modal
+                      animation={true}
+                      autoFocus={true}
+                      backdrop={true}
+                      bsClass="modal"
+                      dialogClassName="custom-modal"
+                      dialogComponentClass={[Function]}
+                      enforceFocus={true}
+                      keyboard={true}
+                      manager={
+                        ModalManager {
+                          "add": [Function],
+                          "containers": Array [],
+                          "data": Array [],
+                          "handleContainerOverflow": true,
+                          "hideSiblingNodes": true,
+                          "isTopModal": [Function],
+                          "modals": Array [],
+                          "remove": [Function],
+                        }
+                      }
+                      onHide={[Function]}
+                      renderBackdrop={[Function]}
+                      restoreFocus={true}
+                      show={false}
+                    >
+                      <Modal
+                        autoFocus={true}
+                        backdrop={true}
+                        backdropClassName="modal-backdrop"
+                        backdropTransitionTimeout={150}
+                        containerClassName="modal-open"
+                        dialogTransitionTimeout={300}
+                        enforceFocus={true}
+                        keyboard={true}
+                        manager={
+                          ModalManager {
+                            "add": [Function],
+                            "containers": Array [],
+                            "data": Array [],
+                            "handleContainerOverflow": true,
+                            "hideSiblingNodes": true,
+                            "isTopModal": [Function],
+                            "modals": Array [],
+                            "remove": [Function],
+                          }
+                        }
+                        onEntering={[Function]}
+                        onExited={[Function]}
+                        onHide={[Function]}
+                        renderBackdrop={[Function]}
+                        restoreFocus={true}
+                        show={false}
+                        transition={[Function]}
+                      />
+                    </Modal>
+                  </div>
+                </EditStudentModal>
               </td>
             </tr>
           </StudentListItem>
           <StudentListItem
             key="8a80810d5dd89a3f015dd8a252800001"
             onDeleteStudent={[Function]}
-            onUpdateStudentClick={[Function]}
+            onUpdateStudent={[Function]}
             student={
               Object {
                 "id": "503074",
@@ -235,83 +314,91 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
                     </Button>
                   </div>
                 </ButtonGroup>
+                <EditStudentModal
+                  initialStudent={
+                    Object {
+                      "id": "503074",
+                      "name": "Albert Russell",
+                      "photo": Object {
+                        "bucketName": "resterapp-dev",
+                        "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
+                      },
+                      "skey": "8a80810d5dd89a3f015dd8a252800001",
+                    }
+                  }
+                  onHide={[Function]}
+                  onSubmit={[Function]}
+                  show={false}
+                  submitButtonText="Save"
+                  title="Edit Albert Russell"
+                >
+                  <div
+                    className="static-modal"
+                  >
+                    <Modal
+                      animation={true}
+                      autoFocus={true}
+                      backdrop={true}
+                      bsClass="modal"
+                      dialogClassName="custom-modal"
+                      dialogComponentClass={[Function]}
+                      enforceFocus={true}
+                      keyboard={true}
+                      manager={
+                        ModalManager {
+                          "add": [Function],
+                          "containers": Array [],
+                          "data": Array [],
+                          "handleContainerOverflow": true,
+                          "hideSiblingNodes": true,
+                          "isTopModal": [Function],
+                          "modals": Array [],
+                          "remove": [Function],
+                        }
+                      }
+                      onHide={[Function]}
+                      renderBackdrop={[Function]}
+                      restoreFocus={true}
+                      show={false}
+                    >
+                      <Modal
+                        autoFocus={true}
+                        backdrop={true}
+                        backdropClassName="modal-backdrop"
+                        backdropTransitionTimeout={150}
+                        containerClassName="modal-open"
+                        dialogTransitionTimeout={300}
+                        enforceFocus={true}
+                        keyboard={true}
+                        manager={
+                          ModalManager {
+                            "add": [Function],
+                            "containers": Array [],
+                            "data": Array [],
+                            "handleContainerOverflow": true,
+                            "hideSiblingNodes": true,
+                            "isTopModal": [Function],
+                            "modals": Array [],
+                            "remove": [Function],
+                          }
+                        }
+                        onEntering={[Function]}
+                        onExited={[Function]}
+                        onHide={[Function]}
+                        renderBackdrop={[Function]}
+                        restoreFocus={true}
+                        show={false}
+                        transition={[Function]}
+                      />
+                    </Modal>
+                  </div>
+                </EditStudentModal>
               </td>
             </tr>
           </StudentListItem>
         </tbody>
       </table>
     </Table>
-    <EditStudentModal
-      onHide={[Function]}
-      onStudentFormFileChange={[Function]}
-      onStudentFormTextChange={[Function]}
-      onSubmit={[Function]}
-      show={false}
-      student={StudentData {}}
-      submitButtonText="Save"
-      title="Edit Student"
-    >
-      <div
-        className="static-modal"
-      >
-        <Modal
-          animation={true}
-          autoFocus={true}
-          backdrop={true}
-          bsClass="modal"
-          dialogClassName="custom-modal"
-          dialogComponentClass={[Function]}
-          enforceFocus={true}
-          keyboard={true}
-          manager={
-            ModalManager {
-              "add": [Function],
-              "containers": Array [],
-              "data": Array [],
-              "handleContainerOverflow": true,
-              "hideSiblingNodes": true,
-              "isTopModal": [Function],
-              "modals": Array [],
-              "remove": [Function],
-            }
-          }
-          onHide={[Function]}
-          renderBackdrop={[Function]}
-          restoreFocus={true}
-          show={false}
-        >
-          <Modal
-            autoFocus={true}
-            backdrop={true}
-            backdropClassName="modal-backdrop"
-            backdropTransitionTimeout={150}
-            containerClassName="modal-open"
-            dialogTransitionTimeout={300}
-            enforceFocus={true}
-            keyboard={true}
-            manager={
-              ModalManager {
-                "add": [Function],
-                "containers": Array [],
-                "data": Array [],
-                "handleContainerOverflow": true,
-                "hideSiblingNodes": true,
-                "isTopModal": [Function],
-                "modals": Array [],
-                "remove": [Function],
-              }
-            }
-            onEntering={[Function]}
-            onExited={[Function]}
-            onHide={[Function]}
-            renderBackdrop={[Function]}
-            restoreFocus={true}
-            show={false}
-            transition={[Function]}
-          />
-        </Modal>
-      </div>
-    </EditStudentModal>
   </div>
 </StudentListItems>
 `;

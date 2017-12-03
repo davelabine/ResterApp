@@ -52,4 +52,26 @@ describe('EditStudentformBase', () => {
         expect(mockFormTextChange.mock.calls[1][1]).toBe('123');
         */
     });
+
+    /*
+    it('triggers internal and external form file callbacks', () => {
+        const spy = jest.spyOn(EditStudentFormBase.prototype, 'handleFileChange');
+        let mockFormFileChange = jest.fn();
+        const form = mount(
+                        <EditStudentFormBase
+                          student={testData.STUDENT_DATA_EMPTY}
+                          onFormTextChange={jest.fn()}
+                          onFormFileChange={mockFormFileChange}
+                        />);
+        const inst = form.instance() as EditStudentFormBase;
+
+        const file = new File(['editStudentFormBase'], 'editStudentFormBase.test.txt', {
+            type: 'text/plain',
+          });
+        const fileList = new FileList();
+        fileList.add(file);
+        inst.handleFileChange(file);
+
+    });        
+    */ 
 });

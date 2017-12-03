@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { StudentListFilterForm } from './StudentListFilterForm';
 import toJson from 'enzyme-to-json';
+import * as studentTestData from '../../testData';
 
 describe('FilterableStudentList', () => {
     it('renders without crashing and matches the last snapshot', () => {
@@ -41,41 +42,25 @@ describe('FilterableStudentList', () => {
       expect(form.state().show).toBeTruthy();
     });
 
-    it('handles onShowModal and onHide', () => {
-      const form = mount(
-                      <StudentListFilterForm 
-                        filter="" 
-                        onFilterStudents={jest.fn()} 
-                        onAddStudent={jest.fn()}
-                      />);
-      const inst = form.instance() as StudentListFilterForm;
-
+    it('handles onShowModal, onHideModal, and Submit', () => {
+      const onAdd = jest.fn();
+      const item = shallow(
+          <StudentListFilterForm 
+            filter="" 
+            onFilterStudents={jest.fn()} 
+            onAddStudent={onAdd}
+          />);
+      const inst = item.instance() as StudentListFilterForm;
+  
       inst.onShowModal();
       expect(inst.state.show).toBeTruthy();
-      expect(inst.state.addStudent).toEqual({id: '', name: ''});
-
+  
       inst.onHideModal();
       expect(inst.state.show).toBeFalsy();
-    });
-
-    it('handles form events and submit', () => {
-      const onAddStudent = jest.fn();
-      const form = mount(
-                      <StudentListFilterForm 
-                        filter="" 
-                        onFilterStudents={jest.fn()} 
-                        onAddStudent={onAddStudent}
-                      />);
-      const inst = form.instance() as StudentListFilterForm;
 
       inst.onShowModal();
-      inst.onAddStudentTextChange('id', '123');
-      inst.onAddStudentTextChange('name', 'abc');
-      expect(inst.state.addStudent).toEqual({id: '123', name: 'abc'});
-
-      inst.onSubmit();
+      inst.onSubmit(studentTestData.STUDENT_DATA_BILLY, undefined);
       expect(inst.state.show).toBeFalsy();
-      expect(onAddStudent).toHaveBeenCalled();
+      expect(onAdd).toHaveBeenCalled();
     });
-
 });

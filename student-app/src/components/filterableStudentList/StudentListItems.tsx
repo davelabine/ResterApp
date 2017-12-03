@@ -3,7 +3,6 @@ import * as React from 'react';
 import { StudentListItem } from './StudentListItem';
 import { StudentData } from '../../types';
 import { Table } from 'react-bootstrap';
-import { EditStudentModal } from '../editStudentForm/editStudentModal';
 import * as constants from '../../constants/index';
 
 export interface StudentListItemsProps {
@@ -13,54 +12,10 @@ export interface StudentListItemsProps {
     onDeleteStudent: (skey: string) => void;
 }
 
-export interface StudentListItemsState {
-    show: boolean;
-    updateStudent: StudentData;
-    photoUpload?: File;
-}
-
-export class StudentListItems extends React.Component<StudentListItemsProps, StudentListItemsState> {
+export class StudentListItems extends React.Component<StudentListItemsProps> {
     
     constructor(props: StudentListItemsProps) {
         super(props);
-
-        this.state = { show: false, updateStudent: new StudentData(), photoUpload: undefined };
- 
-        this.onShowUpdateModal = this.onShowUpdateModal.bind(this);
-        this.onUpdateFormTextChange = this.onUpdateFormTextChange.bind(this);
-        this.onUpdateFormFileChange = this.onUpdateFormFileChange.bind(this);
-        this.onSubmitUpdateModal = this.onSubmitUpdateModal.bind(this);
-        this.onShowModal = this.onShowModal.bind(this);
-        this.onHideModal = this.onHideModal.bind(this);
-    }
-
-    public onShowUpdateModal(s: StudentData) {
-        this.setState({ updateStudent: s});
-        this.onShowModal();
-    }
-
-    public onUpdateFormTextChange(label: string, value: string): void {
-        let student = {...this.state.updateStudent};
-        student[label] = value;
-        this.setState( {updateStudent: student});
-    }
-
-    public onUpdateFormFileChange(file: File) {
-        console.log(file);
-        this.setState( {photoUpload: file});
-    }
-
-    public onSubmitUpdateModal() {
-        this.props.onUpdateStudent(this.state.updateStudent, this.state.photoUpload);
-        this.onHideModal();
-    }
-
-    public onShowModal() {
-        this.setState({ show: true});
-    }
-
-    public onHideModal() {
-        this.setState({ show: false});
     }
 
     public render() {
@@ -80,16 +35,6 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
                         {studentList}
                     </tbody>
                 </Table>
-                <EditStudentModal 
-                    title="Edit Student"
-                    submitButtonText="Save"
-                    student={this.state.updateStudent}
-                    show={this.state.show}
-                    onHide={this.onHideModal}
-                    onSubmit={this.onSubmitUpdateModal}
-                    onStudentFormTextChange={this.onUpdateFormTextChange}
-                    onStudentFormFileChange={this.onUpdateFormFileChange}
-                />
             </div>
         );
     }
@@ -108,7 +53,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps, Stu
                 <StudentListItem 
                     key={s.skey} 
                     student={s}
-                    onUpdateStudentClick={this.onShowUpdateModal}
+                    onUpdateStudent={this.props.onUpdateStudent}
                     onDeleteStudent={this.props.onDeleteStudent}
                 />
             );

@@ -6,18 +6,49 @@ import { StudentData } from '../../types';
 export interface EditStudentModalProps {
     title: string;
     submitButtonText: string;
-    student: StudentData;
+    initialStudent: StudentData;
     show: boolean;
     onHide: () => void;
-    onSubmit: () => void;
-    onStudentFormTextChange: (label: string, filter: String) => void;
-    onStudentFormFileChange: (file: File) => void;
+    onSubmit: (student: StudentData, photo?: File) => void;
 }
 
-export class EditStudentModal extends React.Component<EditStudentModalProps> {
+export interface EditStudentModalState {
+    student: StudentData;
+    photo?: File;
+}
+
+export class EditStudentModal extends React.Component<EditStudentModalProps, EditStudentModalState> {
     
     constructor(props: EditStudentModalProps) {
         super(props);
+
+        this.state = { student: new StudentData() };
+
+        this.onStudentTextChange = this.onStudentTextChange.bind(this);
+        this.onStudentFileChange = this.onStudentFileChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    public componentWillReceiveProps(nextProps: EditStudentModalProps) {
+        if (this.props.show !== nextProps.show) {
+          this.setState( {student: this.props.initialStudent, photo: undefined} );
+        }
+    }
+
+    public onStudentTextChange(label: string, value: string): void {
+        let student = {...this.state.student};
+        student[label] = value;
+        this.setState( {student: student});
+    }
+
+    public onStudentFileChange(file: File) {
+        console.log(file);
+        this.setState( {photo: file} );
+    }
+
+    public onSubmit() {
+        console.log('Submitting student: ' + JSON.stringify(this.state.student));
+        this.props.onSubmit(this.state.student, this.state.photo);
     }
 
     public render() {    
@@ -34,15 +65,15 @@ export class EditStudentModal extends React.Component<EditStudentModalProps> {
       
             <Modal.Body>
               <EditStudentFormBase
-                  student={this.props.student}
-                  onFormTextChange={this.props.onStudentFormTextChange}
-                  onFormFileChange={this.props.onStudentFormFileChange}
+                  student={this.state.student}
+                  onFormTextChange={this.onStudentTextChange}
+                  onFormFileChange={this.onStudentFileChange}
               />
             </Modal.Body>
       
             <Modal.Footer>
               <Button id="close" onClick={this.props.onHide}>Close</Button>
-              <Button id="submit" onClick={this.props.onSubmit} bsStyle="primary">
+              <Button id="submit" onClick={this.onSubmit} bsStyle="primary">
                 {this.props.submitButtonText}
               </Button>
             </Modal.Footer>

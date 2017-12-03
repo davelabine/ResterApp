@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { FilterableStudentList } from './FilterableStudentList';
 import toJson from 'enzyme-to-json';
 import * as studentTestData from '../../testData/';
@@ -21,7 +21,7 @@ describe('FilterableStudentList', () => {
 
     it('calls onFetchStudents after being mounted', () => {
       const mockFetchStudents = jest.fn();
-      mount(
+      shallow(
           <FilterableStudentList 
             students={studentTestData.LIST_STUDENT_DATA_TWO} 
             filter=""
