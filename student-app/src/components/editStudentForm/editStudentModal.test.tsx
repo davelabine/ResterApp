@@ -20,17 +20,19 @@ describe('EditStudentModal', () => {
 
     it('handles form events and submit', () => {
         const onSubmit = jest.fn();
-        const form = shallow(
+        const initialStudent = new StudentData();
+        const form = mount(
             <EditStudentModal 
                 title="Add Student"
                 submitButtonText="Add Student"
-                initialStudent={new StudentData()}
+                initialStudent={initialStudent}
                 show={false}
                 onHide={jest.fn()}
                 onSubmit={onSubmit}
             />);
         const inst = form.instance() as EditStudentModal;
 
+        form.setProps({show: true});
         inst.onStudentTextChange('id', '123');
         inst.onStudentTextChange('name', 'abc');
         expect(inst.state.student).toEqual({id: '123', name: 'abc'});
@@ -43,5 +45,13 @@ describe('EditStudentModal', () => {
 
         inst.onSubmit();
         expect(onSubmit).toHaveBeenCalled();
-    });
+        form.setProps({show: false});
+
+        /* Check that the form resets properly */
+        /* should happen even if show is called multiple times */
+        form.setProps({show: true});
+        form.setProps({show: true});
+        expect(inst.state.student).toEqual(initialStudent);
+    
+    });    
 });

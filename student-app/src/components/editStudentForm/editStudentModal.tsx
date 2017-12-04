@@ -30,7 +30,9 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
     }
 
     public componentWillReceiveProps(nextProps: EditStudentModalProps) {
+        console.log('#### here! cur: ' + this.props.show + ', next: ' + nextProps.show);
         if (this.props.show !== nextProps.show) {
+          console.log('here!');
           this.setState( {student: this.props.initialStudent, photo: undefined} );
         }
     }
