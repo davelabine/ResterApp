@@ -125,7 +125,6 @@ public class ControllerStudentsAPI {
 
         Busywork.doBusyWork(busyTime);
 
-        studentManager.updateStudent(student, data);
         Student studentUpdated = studentManager.updateStudent(student, data);
         if (studentUpdated == null) {
             logger.error("Student update failed");
