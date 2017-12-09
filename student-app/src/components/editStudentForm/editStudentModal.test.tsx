@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { EditStudentModal } from './editStudentModal';
 import { StudentData } from '../../types';
 import toJson from 'enzyme-to-json';

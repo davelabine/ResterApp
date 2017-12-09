@@ -85,12 +85,19 @@ public class ControllerStudentsAPITest {
     public void postCreateStudentSuccess() throws URISyntaxException, IOException {
         setupStudentFormPost(FAKE_ID, FAKE_NAME);
         reset(mockStudentManager);
-        doReturn(FAKE_KEY).when(mockStudentManager).createStudent(any(Student.class), any(BlobData.class));
 
         Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
+        fakeStudent.setSkey(FAKE_KEY);
+        doReturn(fakeStudent).when(mockStudentManager).createStudent(any(Student.class), any(BlobData.class));
+
         Response response = underTest.create(request, formDataInput, 0);
         assertEquals(response.getStatus(), SC_CREATED);
         assertTrue(response.getLocation().toString().contains(FAKE_KEY));
+
+        Student responseStudent = (Student)response.getEntity();
+        assertEquals(responseStudent.getSkey(), FAKE_KEY);
+        assertEquals(responseStudent.getId(), FAKE_ID);
+        assertEquals(responseStudent.getName(), FAKE_NAME);
     }
 
 
@@ -144,12 +151,22 @@ public class ControllerStudentsAPITest {
         underTest.create(request, formDataInput, 0);
     }
 
-    /* No useful way to unit test this since code assumes success unless an exception is thrown.
     @Test
-    public void postUpdateStudentSuccess() throws URISyntaxException {
+    public void postUpdateStudentSuccess() throws URISyntaxException, IOException {
+        setupStudentFormPost(FAKE_ID, FAKE_NAME);
+        reset(mockStudentManager);
 
+        Student fakeStudent = new Student(FAKE_ID, FAKE_NAME);
+        fakeStudent.setSkey(FAKE_KEY);
+        doReturn(fakeStudent).when(mockStudentManager).updateStudent(any(Student.class), any(BlobData.class));
+
+        Response response = underTest.updateStudent(request, formDataInput, 0, FAKE_KEY);
+        assertEquals(response.getStatus(), SC_OK);
+        Student responseStudent = (Student)response.getEntity();
+        assertEquals(responseStudent.getSkey(), FAKE_KEY);
+        assertEquals(responseStudent.getId(), FAKE_ID);
+        assertEquals(responseStudent.getName(), FAKE_NAME);
     }
-    */
 
     @Test
     public void postUpdateStudentBadParams() throws URISyntaxException, IOException {

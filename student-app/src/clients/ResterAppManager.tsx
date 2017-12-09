@@ -19,17 +19,17 @@ export class ResterAppManager {
         let response: Response = await fetch(url, requestInit);
         console.log('fetchStudents response: ' + response.status);
         let contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            students = await response.json();
-            console.log(JSON.stringify(students));
-            return students;
+        if ((!contentType) || (!contentType.includes('application/json')) )  {
+            throw Error('Incorrect contentType.  Expected application/json and received' 
+                            + contentType);
         }
-        console.log('Incorrect contentType.  Expected application/json and received' 
-                        + contentType);
+
+        students = await response.json();
+        console.log(JSON.stringify(students));
         return students;
     }
 
-    public async createStudent(s: StudentData, photo?: File): Promise<string> {
+    public async createStudent(s: StudentData, photo?: File): Promise<StudentData> {
 
         const myHeaders = new Headers();
         /* DO NOT append any Content-Type headers.  The browser will do it for you.
@@ -44,7 +44,7 @@ export class ResterAppManager {
         if (photo) {
             formData.append('photo', photo, photo.name);
         }
-        
+
         const requestInit: RequestInit = {
             body: formData,
             headers: myHeaders,
@@ -52,15 +52,24 @@ export class ResterAppManager {
         };
 
         const url = RESTERAPP_STUDENTS_URL;
-        console.log('createStudents... ' + url);    
+        console.log('createStudent... ' + url);    
         let response: Response = await fetch(url, requestInit);
+
+        let contentType = response.headers.get('content-type');
+        if ((!contentType) || (!contentType.includes('application/json')) )  {
+            throw Error('Incorrect contentType.  Expected application/json and received' 
+                            + contentType);
+        }
+
         let skey = response.headers.get('student-key');
         if (!skey) { skey = ''; }
         console.log('createStudents response: ' + response.status + ', skey:' + skey);
-        return skey;
+        let student = await response.json();
+        console.log(JSON.stringify(student));
+        return student;
     }
 
-    public async updateStudent(s: StudentData, photo?: File): Promise<void> {
+    public async updateStudent(s: StudentData, photo?: File): Promise<StudentData> {
         const myHeaders = new Headers();
         /* DO NOT append any Content-Type headers.  The browser will do it for you.
            Yes, you heard right.  
@@ -85,6 +94,10 @@ export class ResterAppManager {
         console.log('updateStudent fetch... ' + url);
         let response: Response = await fetch(url, requestInit);
         console.log('updateStudent response: ' + response.status);
+        let student = await response.json();
+        console.log(JSON.stringify(student));
+        return student;
+
     }
 
     public async deleteStudent(skey: string): Promise<void> {
@@ -99,4 +112,13 @@ export class ResterAppManager {
         let response: Response = await fetch(url, requestInit);
         console.log('deleteStudent response: ' + response.status);
     }
+
+    /*
+    private handleErrors(response): function {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+    */
 }

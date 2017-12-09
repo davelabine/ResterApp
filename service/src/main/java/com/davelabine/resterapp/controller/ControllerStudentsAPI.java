@@ -72,6 +72,7 @@ public class ControllerStudentsAPI {
     @POST
     @Path("/")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response create(@Context HttpServletRequest request,
                            @NotNull MultipartFormDataInput formDataInput,
                            @QueryParam(QUERY_PARAM_BUSYTIME) int busyTime)
@@ -84,18 +85,20 @@ public class ControllerStudentsAPI {
         BlobData data = getFormDataPhoto(request, formDataInput);
         if (!isPhotoDataWithinContentLength(data)) return Response.status(BAD_REQUEST).build();
 
-        String studentKey = studentManager.createStudent(student, data);
-        if (studentKey == null) {
+        Student studentCreated = studentManager.createStudent(student, data);
+        if (studentCreated == null) {
             logger.error("Student create failed");
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
 
         Busywork.doBusyWork(busyTime);
 
-        URI retURI = new URI(appConfig.getString("Api.rootUrl") + studentKey);
+        URI retURI = new URI(appConfig.getString("Api.rootUrl") + studentCreated.getSkey());
         logger.info("Student created successfully:{}", retURI.toString());
         return Response.created(retURI)
-                .header(appConfig.getString("Api.student-key-header"), studentKey).build();
+                .header(appConfig.getString("Api.student-key-header"), studentCreated.getSkey())
+                .entity(studentCreated)
+                .build();
     }
 
 
@@ -123,8 +126,13 @@ public class ControllerStudentsAPI {
         Busywork.doBusyWork(busyTime);
 
         studentManager.updateStudent(student, data);
+        Student studentUpdated = studentManager.updateStudent(student, data);
+        if (studentUpdated == null) {
+            logger.error("Student update failed");
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+        }
 
-        return Response.ok().build();
+        return Response.ok().entity(studentUpdated).build();
     }
 
     private Student getFormDataStudent(MultipartFormDataInput formDataInput) throws IOException {

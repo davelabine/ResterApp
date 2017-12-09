@@ -66,11 +66,12 @@ public class StudentManagerTest {
         */
 
         Student student = new Student(FAKE_ID, FAKE_NAME);
+        student.setSkey(FAKE_KEY);
         doReturn(FAKE_KEY).when(mockDaoStudent).createStudent(any(Student.class));
 
-        String key = underTest.createStudent(student, null);
+        Student studentCreated = underTest.createStudent(student, null);
 
-        assertNotNull(key);
+        assertNotNull(studentCreated.getSkey());
         //Assert.assertNotNull(student.getUrlPhoto());
     }
 

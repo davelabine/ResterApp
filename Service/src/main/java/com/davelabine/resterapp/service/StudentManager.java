@@ -31,13 +31,18 @@ public class StudentManager {
     }
 
     // Returns the Key of the student, or null on failure
-    public String createStudent(Student student, BlobData data)
+    public Student createStudent(Student student, BlobData data)
     {
         BlobLocation location = putPhoto(data);
         if (location != null) {
             student.setPhoto(location);
         }
-        return daoStudent.createStudent(student);
+
+        String skey = daoStudent.createStudent(student);
+        if (skey == null) { return null; }
+
+        student.setSkey(skey);
+        return student;
     }
 
 
@@ -60,7 +65,7 @@ public class StudentManager {
         return daoStudent.getStudentByName(prefix);
     }
 
-    public void updateStudent(Student newStudent, BlobData data) {
+    public Student updateStudent(Student newStudent, BlobData data) {
         // Find the old student so we can delete the old photo object, if it exsits.
         Student oldStudent = daoStudent.getStudent(newStudent.getSkey());
         if (oldStudent.getPhoto() != null) {
@@ -74,6 +79,7 @@ public class StudentManager {
 
         // Finally update the db
         daoStudent.updateStudent(newStudent);
+        return newStudent;
     }
 
     public String getPhotoUrl(BlobLocation location) {
