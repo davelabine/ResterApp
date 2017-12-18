@@ -4,7 +4,7 @@ TODOS:
 ** IN PRIORITY ORDER, WITH COMPLETED AT THE BOTTOM ***
 
 Current Backlog items:
-- Get add student to insert into the local Redux in sorted order
+- Handle client side add\edit errors where the name or id are empty.
 - Add small or expanding thumbnail image in the main student list
 - Do a styling pass - a simple way to help things look sharper with themes, etc?
 - Backend:Add Firstname Lastname to DB to provider more sophisticated search\sort
@@ -37,6 +37,7 @@ Adding an external Cache?
 - DONE ITEMS
 
 Modern React WebApp:
+- DONE - Get add student to insert into the local Redux in sorted order
 - DONE - Get add\edit to have a local image preview.  Update tests.
 - DONE - Restructure React add\edit dialogs to better use common code.  Leverage willReceiveProps to initialize state
 (ok in this instance only)

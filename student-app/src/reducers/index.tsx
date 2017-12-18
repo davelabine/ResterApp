@@ -11,7 +11,9 @@ export function studentReducer(state: StoreState, action: StudentAction): StoreS
       return { ...state, filter: action.filter };
     case constants.ADD_STUDENT:
       let addList: StudentData[] = [...state.studentList];
-      addList.push(action.student);
+      const addIndex = addList.findIndex(s => s.name > action.student.name);
+      if (addIndex === -1) { return state; } 
+      addList.splice(addIndex, 1, action.student);
       return { ...state, studentList: addList };
     case constants.DELETE_STUDENT:
       let delList: StudentData[] = [...state.studentList];
