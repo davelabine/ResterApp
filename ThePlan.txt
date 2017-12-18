@@ -1,10 +1,21 @@
 
 TODOS:
+
 ** IN PRIORITY ORDER, WITH COMPLETED AT THE BOTTOM ***
 
-Handling POST of complex content types, storing to S3:
-- Accept a student picture as part of the students POST endpoint, upload it to blob store (synchronously), and return
-the URL in GET.  Do with an HTML form first, then afterwards implement Multipart MIME
+Current Backlog items:
+- Get add student to insert into the local Redux in sorted order
+- Add small or expanding thumbnail image in the main student list
+- Do a styling pass - a simple way to help things look sharper with themes, etc?
+- Backend:Add Firstname Lastname to DB to provider more sophisticated search\sort
+- Add sort headers in the student list
+- Add Classes into the API\DB so you can pull students from a class
+- Deploy to Amazon container service using a hand-built container
+- Setup CICD using a hosted tool like Shippable.
+
+Other backlog items:
+
+Backend:
 - Figure out how to make the servlet respond to the request asynchronously (with a thread pool?) so we don't tie up a
 response thread from the serving container (eg Tomcat)
 - Figure out how to make the S3 code asynchronous with a thread pool.
@@ -19,14 +30,32 @@ Using SQS for batch processing of messages:
 - Develop a separate processor that reads from the queue and adds students using the /students endpoint
 - Might involve throwing data in a database somewhere to keep memory from blowing up.
 
-
-
+Swagger docs?
 Logging and other Metrics?
 Adding an external Cache?
 
-- DONE Swagger docs?
+- DONE ITEMS
 
-Basic AutoScaling App:
+Modern React WebApp:
+- DONE - Get add\edit to have a local image preview.  Update tests.
+- DONE - Restructure React add\edit dialogs to better use common code.  Leverage willReceiveProps to initialize state
+(ok in this instance only)
+- DONE - Backend - handle other REST methods in the API - create, update, delete, get student.  Update API to return
+state of server-generated references (like with photos).  Ensure preview photos upload to S3.  Update tests.
+- DONE - Backend - deal with CORS using a ContainerResponseFilter
+- DONE - Figure out how to structure a modal dialog form for add\edit student
+- DONE - Switch to Bootstrap-React
+- DONE - Restructure app with Redux | actions | reducers.  Make sure to unit tests! (didn't complete reducers)
+- DONE - In React app, Build a manager class with fetch to grab data from the REST API - getStudents only
+- DONE - Add CloudWatch alarms to auto shut down when I forget to turn them off.
+- DONE - Get back end deployed on AWS with Jetty, review RDS DB and ensure that is in shape
+- Try to deploy on Amazon Container Service - had issues. - Restructure config to read secrets from a TypeSafe Config.
+    - problems with depdencies so decided to leave this for now.
+- DONE - Add Jest unit tests for components so far and measure coverage
+- DONE - Add view-only React components to show a simulated student list
+- DONE - Add basic React front-end that displays Hello World
+
+Basic AutoScaling App & backend:
 - DONE Get simple manual deploy of ResterApp working on docker with Jetty.
 - DONE Add a basic Freemarker HTML front end with flows for add, list, update, delete students.
 - DONE Implement another database backend using Hibernate \ MySQL.  Ensure interfaces and unit tests in place.
