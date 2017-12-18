@@ -16,7 +16,7 @@ describe('EditStudentformBase', () => {
         expect(toJson(list)).toMatchSnapshot();
     });
 
-    it('triggers internal and external form text callbacks when a field is changed', () => {
+    it('triggers internal and external form callbacks when a text field is changed', () => {
         const spy = jest.spyOn(EditStudentFormBase.prototype, 'handleTextFieldChange');
         let mockFormTextChange = jest.fn();
         const form = mount(
@@ -53,8 +53,8 @@ describe('EditStudentformBase', () => {
         */
     });
 
-    /*
-    it('triggers internal and external form file callbacks', () => {
+    it('triggers internal and external form callbacks when the image file is changed', () => {
+        
         const spy = jest.spyOn(EditStudentFormBase.prototype, 'handleFileChange');
         let mockFormFileChange = jest.fn();
         const form = mount(
@@ -68,10 +68,8 @@ describe('EditStudentformBase', () => {
         const file = new File(['editStudentFormBase'], 'editStudentFormBase.test.txt', {
             type: 'text/plain',
           });
-        const fileList = new FileList();
-        fileList.add(file);
-        inst.handleFileChange(file);
-
-    });        
-    */ 
+        form.find('.preview-photo').simulate('change', {target: {files: [file]}});
+        expect(spy).toBeCalled();
+        expect(inst.state.previewURL.length).toBeGreaterThan(0);
+    }); 
 });

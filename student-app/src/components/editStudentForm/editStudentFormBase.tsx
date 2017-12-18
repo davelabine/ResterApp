@@ -11,18 +11,34 @@ export interface EditStudentFormBaseProps {
     onFormFileChange: (file: File) => void;
 }
 
-export class EditStudentFormBase extends React.Component<EditStudentFormBaseProps> {
-    file: FormControl;
+export interface EditStudentFormBaseState {
+    previewURL: string;
+}
+
+export class EditStudentFormBase extends React.Component<EditStudentFormBaseProps, EditStudentFormBaseState> {
 
     constructor(props: EditStudentFormBaseProps) {
         super(props);
+
+        this.state = { previewURL : '' };
+
         this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+        this.getPhotoURL = this.getPhotoURL.bind(this);
     }
 
     public handleFileChange(selectorFiles: FileList | null): void {
         if ( (selectorFiles != null ) && (selectorFiles.length > 0) ) {
-            this.props.onFormFileChange(selectorFiles[0]);
+            let file: File = selectorFiles[0];
+
+            if (URL.createObjectURL != null) {
+                /* A browser DOM depdendency that may not be present */
+                this.setState({previewURL: URL.createObjectURL(file)});
+            } else {
+                this.setState({previewURL: file.name});
+            }
+
+            this.props.onFormFileChange(file);
         }
     }
 
@@ -59,6 +75,7 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
                     />
                     <ControlLabel>Photo:</ControlLabel>
                     <input
+                        className="preview-photo"
                         type="file"
                         onChange={(e) => this.handleFileChange(e.target.files)}
                     />
@@ -73,6 +90,10 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
     }
 
     private getPhotoURL(photo: StudentPhoto): string {
+        let previewURL: string = this.state.previewURL;
+        if (previewURL) {
+            return previewURL;
+        }
         if (photo) {
             return BASE_PHOTO_URL + photo.bucketName + '/' + photo.key;
         }   

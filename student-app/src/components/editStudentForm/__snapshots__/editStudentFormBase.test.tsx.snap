@@ -81,6 +81,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           </label>
         </ControlLabel>
         <input
+          className="preview-photo"
           onChange={[Function]}
           type="file"
         />
