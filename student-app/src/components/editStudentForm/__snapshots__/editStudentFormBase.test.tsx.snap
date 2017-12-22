@@ -4,6 +4,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
 <EditStudentFormBase
   onFormFileChange={[Function]}
   onFormTextChange={[Function]}
+  onStudentTextValidate={[Function]}
   student={
     StudentData {
       "id": "",
@@ -16,7 +17,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
       bsClass="form-group"
     >
       <div
-        className="form-group"
+        className="form-group has-feedback"
       >
         <ControlLabel
           bsClass="control-label"
@@ -33,6 +34,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           componentClass="input"
           id="name"
           onChange={[Function]}
+          placeholder="Enter Name"
           type="text"
           value=""
         >
@@ -40,10 +42,23 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
             className="form-control"
             id="name"
             onChange={[Function]}
+            placeholder="Enter Name"
             type="text"
             value=""
           />
         </FormControl>
+        <FormControlFeedback
+          bsClass="form-control-feedback"
+          bsRole="feedback"
+        />
+      </div>
+    </FormGroup>
+    <FormGroup
+      bsClass="form-group"
+    >
+      <div
+        className="form-group has-feedback"
+      >
         <ControlLabel
           bsClass="control-label"
           srOnly={false}
@@ -59,6 +74,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           componentClass="input"
           id="id"
           onChange={[Function]}
+          placeholder="Enter Id"
           type="text"
           value=""
         >
@@ -66,10 +82,23 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
             className="form-control"
             id="id"
             onChange={[Function]}
+            placeholder="Enter Id"
             type="text"
             value=""
           />
         </FormControl>
+        <FormControlFeedback
+          bsClass="form-control-feedback"
+          bsRole="feedback"
+        />
+      </div>
+    </FormGroup>
+    <FormGroup
+      bsClass="form-group"
+    >
+      <div
+        className="form-group"
+      >
         <ControlLabel
           bsClass="control-label"
           srOnly={false}

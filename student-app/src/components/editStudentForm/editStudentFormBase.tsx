@@ -9,6 +9,7 @@ export interface EditStudentFormBaseProps {
     student: StudentData;
     onFormTextChange: (label: string, filter: String) => void;
     onFormFileChange: (file: File) => void;
+    onStudentTextValidate: (label: String) => 'success' | 'warning' | 'error' | undefined;
 }
 
 export interface EditStudentFormBaseState {
@@ -58,21 +59,33 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
 
         return (
             <form>
-                <FormGroup>
+                <FormGroup
+                    validationState={this.props.onStudentTextValidate('name')}
+                >
                     <ControlLabel>Name:</ControlLabel>
                     <FormControl
                         id="name"
                         type="text"
+                        placeholder="Enter Name"
                         value={student.name}
                         onChange={this.handleTextFieldChange}
                     />
+                    <FormControl.Feedback />
+                </FormGroup>
+                <FormGroup
+                    validationState={this.props.onStudentTextValidate('id')}
+                >
                     <ControlLabel>ID:</ControlLabel>
                     <FormControl
                         id="id"
                         type="text"
+                        placeholder="Enter Id"
                         value={student.id}
                         onChange={this.handleTextFieldChange}
                     />
+                    <FormControl.Feedback />
+                </FormGroup>
+                <FormGroup>
                     <ControlLabel>Photo:</ControlLabel>
                     <input
                         className="preview-photo"
