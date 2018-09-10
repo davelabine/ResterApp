@@ -6,7 +6,9 @@
 <session-factory>
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://db-resterapp-mysql.cqllyhoamsvw.us-west-2.rds.amazonaws.com:3306/resterapp_dev?useSSL=false</property>
+        <!--
+        <property name="hibernate.connection.url">jdbc:mysql://0.0.0.0:31918/resterapp_dev?useSSL=false</property>
+        -->
 
         <!-- SQL Dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -27,7 +29,7 @@
         -->
 
         <!-- Drop the existing tables and create new one -->
-        <!-- This would only be for dev...
+        <!-- only for dev
         <property name="hbm2ddl.auto">create</property>
         -->
 

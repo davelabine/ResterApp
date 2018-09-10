@@ -26,30 +26,28 @@ public class ConfigModule extends AbstractModule {
     @Getter
     private static final Config appConfig = ConfigFactory.load("application.conf");
 
-    @Getter
-    private static final Config secretConfig = ConfigFactory.load("secret.conf");
-
     @Override
     protected void configure() {
         bind(Config.class).annotatedWith(Names.named("aws.conf")).toInstance(awsConfig);
         bind(Config.class).annotatedWith(Names.named("application.conf")).toInstance(appConfig);
-        bind(Config.class).annotatedWith(Names.named("secret.conf")).toInstance(secretConfig);
     }
 
     @Provides
     @Singleton
-    Configuration getHbnConfig(@Named("secret.conf") final Config secretConfig) {
+    Configuration getHbnConfig() {
         Configuration hbnConfig = new Configuration();
         hbnConfig.configure("hibernate.cfg.xml");
 
-        String uname = secretConfig.getString("Secret.DB_UNAME");
-        String pw = secretConfig.getString("Secret.DB_PW");
+        String url = System.getenv("DB_URL");
+        String uname = System.getenv("DB_UNAME");
+        String pw = System.getenv("DB_PW");
 
-        if ( (uname != null) && (pw != null) ) {
+        if ( (uname != null) && (pw != null) && (url != null) ) {
+            hbnConfig.setProperty("hibernate.connection.url", url.replace("\r",""));
             hbnConfig.setProperty("hibernate.connection.username", uname.replace("\r",""));
             hbnConfig.setProperty("hibernate.connection.password", pw.replace("\r",""));
         } else {
-            logger.error("Hibernate DB username ({}) or password ({}) are not set!  Check secret.conf!");
+            logger.error("Hibernate DB URL, username, or password are not set!");
             throw new RuntimeException("#### Need to set DB credentials!");
         }
 
