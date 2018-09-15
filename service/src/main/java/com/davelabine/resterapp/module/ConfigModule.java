@@ -47,7 +47,7 @@ public class ConfigModule extends AbstractModule {
             hbnConfig.setProperty("hibernate.connection.username", uname.replace("\r",""));
             hbnConfig.setProperty("hibernate.connection.password", pw.replace("\r",""));
         } else {
-            logger.error("Hibernate DB URL, username, or password are not set!");
+            logger.error("Environment variables DB URL, DB_UNAME, or DB_PW are not set!");
             throw new RuntimeException("#### Need to set DB credentials!");
         }
 
