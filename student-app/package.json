@@ -30,7 +30,7 @@
     "enzyme-adapter-react-15": "^1.0.5",
     "enzyme-to-json": "^3.2.1",
     "i": "^0.3.6",
-    "npm": "^5.5.1",
+    "npm": "^5.10.0",
     "react-test-renderer": "^15.6.2"
   }
 }
