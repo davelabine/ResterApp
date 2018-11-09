@@ -1,0 +1,5 @@
+# https://github.com/kubernetes/charts/blob/master/stable/mysql/Chart.yaml
+dependencies:
+  - name: mysql
+    version: 0.3.6
+    repository: "https://kubernetes-charts.storage.googleapis.com"
