@@ -51,6 +51,14 @@ public class ConfigModule extends AbstractModule {
             throw new RuntimeException("#### Need to set DB credentials!");
         }
 
+        // Drop the existing tables and create new one
+        // Should be set to "create", or not set to keep existing tables
+        String create = System.getenv("DB_HBM2DDL_AUTO");
+        if ( create != null ) {
+            hbnConfig.setProperty("hibernate.hbm2ddl.auto", create.replace("\r",""));
+            logger.warn("Dropping and recreating resterapp tables");
+        }
+
         return hbnConfig;
     }
 }
