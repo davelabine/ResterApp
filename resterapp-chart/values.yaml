@@ -20,7 +20,14 @@ service:
 # Disable persistence for now since it complicates db setup like root pw
 
 mysql:
+  mysqlRootPassword: password
+  mysqlDatabase: resterapp_dev
   persistence:
     enabled: false
+  service:
+    type: NodePort
+    port: 3306
+    nodePort: 32000
+
   
 

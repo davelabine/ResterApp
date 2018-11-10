@@ -1,0 +1,25 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: resterapp
+spec:
+  selector:
+    matchLabels:
+      app: resterapp
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: resterapp
+    spec:
+      containers:
+      - image: davelabine/resterapp
+        name: resterapp
+        env:
+        - name: DB_URL
+          value: "jdbc:mysql://mysql.default.svc.cluster.local/resterapp_dev?useSSL=false"
+        - name: DB_UNAME
+          value: root
+        - name: DB_PW
+          value: password
