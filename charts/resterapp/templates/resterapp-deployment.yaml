@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.resterappsvc.name }}
-        image: {{ .Values.resterappsvc.image.repository }}
+        image: "{{ .Values.resterappsvc.image.repository }}:{{ .Values.resterappsvc.image.tag }}"
         app: {{ include "resterappsvc.name" . }}
         env:
         - name: DB_URL

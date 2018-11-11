@@ -10,6 +10,7 @@ resterappsvc:
   replicaCount: 1
   image:
     repository: davelabine/resterapp
+    tag: latest
     pullPolicy: IfNotPresent  
   service:
     type: NodePort
@@ -22,6 +23,7 @@ studentapp:
   replicaCount: 1
   image:
     repository: davelabine/student-app
+    tag: latest
     pullPolicy: IfNotPresent  
   service:
     type: NodePort

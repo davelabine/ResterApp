@@ -23,5 +23,5 @@ spec:
     spec:
       containers:
       - name: {{ .Values.studentapp.name }}
-        image: {{ .Values.studentapp.image.repository }}
+        image: "{{ .Values.studentapp.image.repository }}:{{ .Values.studentapp.image.tag }}"
         imagePullPolicy: {{ .Values.studentapp.image.pullPolicy }}
