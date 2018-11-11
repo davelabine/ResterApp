@@ -1,18 +1,27 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: student-app
+  name: {{ include "resterapp-chart.fullname" . }}
+  labels:
+    app: {{ include "resterapp-chart.name" . }}
+    chart: {{ include "resterapp-chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
+  replicas: {{ .Values.studentapp.replicaCount }}
   selector:
     matchLabels:
-      app: student-app
+      app: {{ include "resterapp-chart.name" . }}
+      release: {{ .Release.Name }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: student-app
+        app: {{ include "resterapp-chart.name" . }}
+        release: {{ .Release.Name }}
     spec:
       containers:
-      - image: davelabine/student-app
-        name: student-app
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.studentapp.image.repository }}
+        imagePullPolicy: {{ .Values.studentapp.image.pullPolicy }}

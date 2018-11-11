@@ -1,13 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: student-app
+  name: {{ include "resterapp-chart.fullname" . }}
+  labels:
+    app: {{ include "resterapp-chart.name" . }}
+    chart: {{ include "resterapp-chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
-  type: NodePort
+  type: {{ .Values.studentapp.service.type }}
   ports:
-  - port: 3000
-    targetPort: 3000
-    nodePort: 30000
+  - port: {{ .Values.studentapp.service.port }}
+    {{- if .Values.studentapp.service.nodePort }}
+    nodePort: {{ .Values.studentapp.service.nodePort }}
+    {{- end }}
     protocol: TCP
   selector:
-    app: student-app
+    app: {{ include "resterapp-chart.name" . }}
