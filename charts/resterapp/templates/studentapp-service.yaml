@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "resterapp-chart.fullname" . }}
+  name: {{ include "resterapp.fullname" . }}
   labels:
-    app: {{ include "resterapp-chart.name" . }}
-    chart: {{ include "resterapp-chart.chart" . }}
+    app: {{ include "resterapp.name" . }}
+    chart: {{ include "resterapp.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -16,4 +16,4 @@ spec:
     {{- end }}
     protocol: TCP
   selector:
-    app: {{ include "resterapp-chart.name" . }}
+    app: {{ include "resterapp.name" . }}

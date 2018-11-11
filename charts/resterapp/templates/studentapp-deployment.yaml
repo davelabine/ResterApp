@@ -1,24 +1,24 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ include "resterapp-chart.fullname" . }}
+  name: {{ include "resterapp.fullname" . }}
   labels:
-    app: {{ include "resterapp-chart.name" . }}
-    chart: {{ include "resterapp-chart.chart" . }}
+    app: {{ include "resterapp.name" . }}
+    chart: {{ include "resterapp.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.studentapp.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "resterapp-chart.name" . }}
+      app: {{ include "resterapp.name" . }}
       release: {{ .Release.Name }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: {{ include "resterapp-chart.name" . }}
+        app: {{ include "resterapp.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
