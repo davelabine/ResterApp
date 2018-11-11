@@ -1,9 +1,9 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ include "resterapp.fullname" . }}
+  name: {{ include "studentapp.name" . }}
   labels:
-    app: {{ include "resterapp.name" . }}
+    app: {{ include "studentapp.name" . }}
     chart: {{ include "resterapp.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -11,17 +11,17 @@ spec:
   replicas: {{ .Values.studentapp.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "resterapp.name" . }}
+      app: {{ include "studentapp.name" . }}
       release: {{ .Release.Name }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: {{ include "resterapp.name" . }}
+        app: {{ include "studentapp.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
+      - name: {{ .Values.studentapp.name }}
         image: {{ .Values.studentapp.image.repository }}
         imagePullPolicy: {{ .Values.studentapp.image.pullPolicy }}

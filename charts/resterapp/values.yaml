@@ -5,6 +5,18 @@
 nameOverride: ""
 fullnameOverride: ""
 
+resterappsvc:
+  name: resterapp-svc
+  replicaCount: 1
+  image:
+    repository: davelabine/resterapp
+    pullPolicy: IfNotPresent  
+  service:
+    type: NodePort
+    port: 8080
+    # Comment this out when using service types other than NodePort
+    nodePort: 30800
+
 studentapp:
   name: student-app
   replicaCount: 1
@@ -16,7 +28,6 @@ studentapp:
     port: 3000
     # Comment this out when using service types other than NodePort
     nodePort: 30000
-
 
 # MySQL values
 # Disable persistence for now since it complicates db setup like root pw

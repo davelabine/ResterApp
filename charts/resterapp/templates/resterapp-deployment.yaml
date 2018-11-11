@@ -1,21 +1,30 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: resterapp
+  name: {{ include "resterappsvc.name" . }}
+  labels:
+    app: {{ include "resterappsvc.name" . }}
+    chart: {{ include "resterapp.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
+  replicas: {{ .Values.resterappsvc.replicaCount }}
   selector:
     matchLabels:
-      app: resterapp
+      app: {{ include "resterappsvc.name" . }}
+      release: {{ .Release.Name }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: resterapp
+        app: {{ include "resterappsvc.name" . }}
+        release: {{ .Release.Name }}
     spec:
       containers:
-      - image: davelabine/resterapp
-        name: resterapp
+      - name: {{ .Values.resterappsvc.name }}
+        image: {{ .Values.resterappsvc.image.repository }}
+        app: {{ include "resterappsvc.name" . }}
         env:
         - name: DB_URL
           value: "jdbc:mysql://mysql.default.svc.cluster.local/resterapp_dev?useSSL=false"

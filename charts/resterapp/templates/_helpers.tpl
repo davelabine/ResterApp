@@ -25,6 +25,21 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/*
+Create an app name for resterapp-svc
+*/}}
+{{- define "resterappsvc.name" -}}
+{{- printf "%s-%s" .Release.Name .Values.resterappsvc.name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Create an app name for student-app
+*/}}
+{{- define "studentapp.name" -}}
+{{- printf "%s-%s" .Release.Name .Values.studentapp.name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "resterapp.chart" -}}
