@@ -35,7 +35,6 @@ studentapp:
 # MySQL values
 
 mysql:
-  # mysqlRootPassword: password
   mysqlDatabase: resterapp_dev
   # Disable persistence for now since it complicates db setup like root pw
   persistence:
@@ -43,6 +42,7 @@ mysql:
   service:
     type: NodePort
     port: 3306
+    # Comment this out when using service types other than NodePort
     nodePort: 32000
 
 
