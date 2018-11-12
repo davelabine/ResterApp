@@ -33,4 +33,7 @@ spec:
         - name: DB_UNAME
           value: root
         - name: DB_PW
-          value: "{{ .Values.mysql.mysqlRootPassword }}"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysql
+              key: mysql-root-password
