@@ -8,6 +8,7 @@ fullnameOverride: ""
 resterappsvc:
   name: resterapp-svc
   replicaCount: 1
+  db_hbm2ddl_auto: create
   image:
     repository: davelabine/resterapp
     tag: latest

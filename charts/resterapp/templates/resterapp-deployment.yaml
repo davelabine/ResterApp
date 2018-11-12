@@ -26,9 +26,11 @@ spec:
         image: "{{ .Values.resterappsvc.image.repository }}:{{ .Values.resterappsvc.image.tag }}"
         app: {{ include "resterappsvc.name" . }}
         env:
+        - name: DB_HBM2DDL_AUTO
+          value: "{{ .Values.resterappsvc.db_hbm2ddl_auto }}"
         - name: DB_URL
-          value: "jdbc:mysql://mysql.default.svc.cluster.local/resterapp_dev?useSSL=false"
+          value: "jdbc:mysql://{{ .Release.Name }}-mysql.default.svc.cluster.local/resterapp_dev?useSSL=false"
         - name: DB_UNAME
           value: root
         - name: DB_PW
-          value: password
+          value: "{{ .Values.mysql.mysqlRootPassword }}"
