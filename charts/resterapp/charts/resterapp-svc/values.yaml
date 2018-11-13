@@ -1,23 +1,24 @@
-# Default values for resterapp.
+# Default values for resterapp-svc.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+db_hbm2ddl_auto: create
+
+image:
+  repository: davelabine/resterapp
+  tag: latest
+  pullPolicy: IfNotPresent  
 
 nameOverride: ""
 fullnameOverride: ""
 
-# MySQL values
-
-mysql:
-  mysqlDatabase: resterapp_dev
-  # Disable persistence for now since it complicates db setup like root pw
-  persistence:
-    enabled: false
-  service:
-    type: NodePort
-    port: 3306
-    # Comment this out when using service types other than NodePort
-    nodePort: 32000
-
+service:
+  type: NodePort
+  port: 8080
+  # Comment this out when using service types other than NodePort
+  nodePort: 30800
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
