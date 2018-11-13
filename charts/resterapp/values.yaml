@@ -19,19 +19,6 @@ resterappsvc:
     # Comment this out when using service types other than NodePort
     nodePort: 30800
 
-studentapp:
-  name: student-app
-  replicaCount: 1
-  image:
-    repository: davelabine/student-app
-    tag: latest
-    pullPolicy: IfNotPresent  
-  service:
-    type: NodePort
-    port: 3000
-    # Comment this out when using service types other than NodePort
-    nodePort: 30000
-
 # MySQL values
 
 mysql:
