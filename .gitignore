@@ -5,3 +5,8 @@
 *.iml
 
 build/
+integration-tests/bin
+*.class
+*.
+*.classpath
+Service/bin
