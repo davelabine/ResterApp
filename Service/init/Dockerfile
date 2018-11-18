@@ -1,7 +1,7 @@
-FROM progrium/busybox
+FROM alpine:3.7
 
-RUN opkg-install nc curl bash
+RUN apk add --no-cache curl
 
 ADD ./init.sh /
 
-CMD ["/bin/bash", "-c", "init.sh"]
+CMD ["/bin/sh", "init.sh"]

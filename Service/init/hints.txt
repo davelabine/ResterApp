@@ -1,0 +1,10 @@
+// Run interactively and remove after completion.
+docker run -it --rm -e "SVC_HOST=wanton-mite-resterapp-svc" -e "SVC_PORT=8080" -e "SVC_POP=1" davelabine/resterapp-init
+
+// Shell access... use exec to drop into a running container
+docker run -it davelabine/resterapp-init /bin/sh
+
+// You'll run into differences with networking between Kubernetes and docker.  Here's how to
+// Start it with kubectl...
+kubectl run --image=davelabine/resterapp-init resterapp-init --env="SVC_HOST=bald-puma-resterapp-svc"  --env="SVC_PORT=8080" --env="SVC_POP=1"
+

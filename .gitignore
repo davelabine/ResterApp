@@ -10,3 +10,5 @@ integration-tests/bin
 *.
 *.classpath
 Service/bin
+.project
+*.prefs
