@@ -1,0 +1,27 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "resterapp.fullname" . -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app: {{ include "resterapp.name" . }}
+    chart: {{ include "resterapp.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: resterapp-svc.127.0.0.1.xip.io
+      http:
+        paths:
+        - path: /a
+          backend:
+            serviceName: {{ .Release.Name }}-resterapp-svc
+            servicePort: 8080
+        - path: /b
+          backend:
+            serviceName: {{ .Release.Name }}-student-app
+            servicePort: 30000
+{{- end }}
