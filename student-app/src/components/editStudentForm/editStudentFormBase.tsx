@@ -54,20 +54,20 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
         /* Make sure we set a default value for our form controls 
            Otherwise, React throws a warning that we are switching between uncontrolled and controlled components */
         let student = this.props.student;
-        if (!student.name) { student.name = ''; }
+        if (!student.lastName) { student.lastName = ''; }
         if (!student.id) { student.id = ''; }
 
         return (
             <form>
                 <FormGroup
-                    validationState={this.props.onStudentTextValidate('name')}
+                    validationState={this.props.onStudentTextValidate('lastName')}
                 >
                     <ControlLabel>Name:</ControlLabel>
                     <FormControl
-                        id="name"
+                        id="lastName"
                         type="text"
                         placeholder="Enter Name"
-                        value={student.name}
+                        value={student.lastName}
                         onChange={this.handleTextFieldChange}
                     />
                     <FormControl.Feedback />

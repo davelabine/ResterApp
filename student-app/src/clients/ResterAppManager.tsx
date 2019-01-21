@@ -3,7 +3,7 @@ import { StudentData } from '../types';
 /* export const RESTERAPP_BASE_URL: string = 'http://resterapp.lvictories.us:8080/api';
 export const RESTERAPP_BASE_URL: string = 'http://0.0.0.0:8080/service/api'; */
 export const RESTERAPP_BASE_URL: string = 'http://0.0.0.0:30800/api';
-console.log( "RESTERAPP_BASE_URL = " + RESTERAPP_BASE_URL);
+console.log( 'RESTERAPP_BASE_URL = ' + RESTERAPP_BASE_URL);
 export const RESTERAPP_STUDENTS_URL: string = RESTERAPP_BASE_URL + '/students';
 
 export class ResterAppManager {
@@ -41,7 +41,7 @@ export class ResterAppManager {
         */
 
         var formData = new FormData();
-        formData.append('name', s.name);
+        formData.append('name', s.lastName);
         formData.append('id', s.id);
         if (photo) {
             formData.append('photo', photo, photo.name);
@@ -80,7 +80,7 @@ export class ResterAppManager {
         */
 
         var formData = new FormData();
-        formData.append('name', s.name);
+        formData.append('name', s.lastName);
         formData.append('id', s.id);
         if (photo) {
             formData.append('photo', photo, photo.name);

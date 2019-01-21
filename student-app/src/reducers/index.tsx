@@ -3,7 +3,7 @@ import { StoreState, StudentData } from '../types/index';
 import * as constants from '../constants/index';
 
 export function studentReducer(state: StoreState, action: StudentAction): StoreState {
-  console.log('studentReducer Action - ' + JSON.stringify(action.type));
+  console.log('studentReducer Action - %s', JSON.stringify(action.type));
   switch (action.type) {     
     case constants.SET_STUDENTS:
       return { ...state, studentList: action.students };     
@@ -11,8 +11,9 @@ export function studentReducer(state: StoreState, action: StudentAction): StoreS
       return { ...state, filter: action.filter };
     case constants.ADD_STUDENT:
       let addList: StudentData[] = [...state.studentList];
-      const addIndex = addList.findIndex(s => s.name > action.student.name);
-      if (addIndex === -1) { return state; } 
+      let addIndex = addList.findIndex(s => s.lastName > action.student.lastName);
+      // If no index found just add it to the front
+      if (addIndex === -1) { addIndex = 0; } 
       addList.splice(addIndex, 1, action.student);
       return { ...state, studentList: addList };
     case constants.DELETE_STUDENT:

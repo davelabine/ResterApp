@@ -12,7 +12,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
     Array [
       Object {
         "id": "1234",
-        "name": "Billy Bob",
+        "lastName": "Billy Bob",
         "photo": Object {
           "bucketName": "resterapp-dev",
           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -21,7 +21,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
       },
       Object {
         "id": "503074",
-        "name": "Albert Russell",
+        "lastName": "Albert Russell",
         "photo": Object {
           "bucketName": "resterapp-dev",
           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -188,7 +188,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
             Array [
               Object {
                 "id": "1234",
-                "name": "Billy Bob",
+                "lastName": "Billy Bob",
                 "photo": Object {
                   "bucketName": "resterapp-dev",
                   "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -197,7 +197,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
               },
               Object {
                 "id": "503074",
-                "name": "Albert Russell",
+                "lastName": "Albert Russell",
                 "photo": Object {
                   "bucketName": "resterapp-dev",
                   "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -244,7 +244,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                     student={
                       Object {
                         "id": "1234",
-                        "name": "Billy Bob",
+                        "lastName": "Billy Bob",
                         "photo": Object {
                           "bucketName": "resterapp-dev",
                           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -328,7 +328,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                           initialStudent={
                             Object {
                               "id": "1234",
-                              "name": "Billy Bob",
+                              "lastName": "Billy Bob",
                               "photo": Object {
                                 "bucketName": "resterapp-dev",
                                 "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -413,7 +413,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                     student={
                       Object {
                         "id": "503074",
-                        "name": "Albert Russell",
+                        "lastName": "Albert Russell",
                         "photo": Object {
                           "bucketName": "resterapp-dev",
                           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -497,7 +497,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                           initialStudent={
                             Object {
                               "id": "503074",
-                              "name": "Albert Russell",
+                              "lastName": "Albert Russell",
                               "photo": Object {
                                 "bucketName": "resterapp-dev",
                                 "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",

@@ -13,7 +13,6 @@ export interface EditStudentModalProps {
 }
 
 export interface EditStudentModalState {
-    firstSubmit: boolean;
     student: StudentData;
     photo?: File;
 }
@@ -23,7 +22,7 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
     constructor(props: EditStudentModalProps) {
         super(props);
 
-        this.state = { firstSubmit: false, student: new StudentData() };
+        this.state = { student: new StudentData() };
 
         this.onStudentTextChange = this.onStudentTextChange.bind(this);
         this.onStudentTextValidate = this.onStudentTextValidate.bind(this);
@@ -35,7 +34,7 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
 
     public componentWillReceiveProps(nextProps: EditStudentModalProps) {
         if (this.props.show !== nextProps.show) {
-          this.setState( {firstSubmit: false, student: this.props.initialStudent, photo: undefined} );
+          this.setState( {student: this.props.initialStudent, photo: undefined} );
         }
     }
 
@@ -50,11 +49,8 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
         this.setState( {photo: file} );
     }
 
-    public onStudentTextValidate(label: string): 'success' | 'warning' | 'error' | undefined {
-        if (this.state.firstSubmit === false) {
-            console.log('First Submit!');
-            return undefined;
-        }
+    public onStudentTextValidate(label: string): 'success' | 'warning' | 'error' {
+        console.log('validating label - ' + label);
 
         let value = this.state.student[label];
         console.log('value is: ' + value);
@@ -66,18 +62,13 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
         return 'error';
     }
 
-    public getValidationState(): 'success' | 'warning' | 'error' | undefined {
-        if (this.state.firstSubmit === false) {
-            return undefined;
-        }
+    public getValidationState(): 'success' | 'warning' | 'error' {
         return this.validateForm();
     }
 
     public onSubmit() {
-
         if (this.validateForm() === 'error') {
             console.log('Form is not valid - block onSubmit()');
-            this.setState( {firstSubmit: true});
             return;
         }
         console.log('Submitting student: ' + JSON.stringify(this.state.student));
@@ -118,7 +109,7 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
     }
 
     private validateForm(): 'success' | 'warning' | 'error' {
-        if ( this.onStudentTextValidate('name') === 'success' &&
+        if ( this.onStudentTextValidate('lastName') === 'success' &&
              this.onStudentTextValidate('id') === 'success' ) {
             return 'success'; 
         }

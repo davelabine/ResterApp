@@ -47,7 +47,7 @@ export class StudentListItem extends React.Component<StudentListItemProps, Stude
         let student = this.props.student;
         return (
             <tr>
-                <td>{student.name}</td>
+                <td>{student.lastName}</td>
                 <td>{student.id}</td>
                 <td>
                     <ButtonGroup>
@@ -55,7 +55,7 @@ export class StudentListItem extends React.Component<StudentListItemProps, Stude
                         <Button id="delete" onClick={this.handleDeleteClick}><Glyphicon glyph="trash"/></Button>
                     </ButtonGroup>
                     <EditStudentModal 
-                        title={'Edit ' + this.props.student.name}
+                        title={'Edit ' + this.props.student.lastName}
                         submitButtonText="Save"
                         initialStudent={this.props.student}
                         show={this.state.show}

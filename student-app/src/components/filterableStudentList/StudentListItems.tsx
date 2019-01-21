@@ -45,7 +45,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps> {
         const rows: Array<JSX.Element> = [];
 
         students.map((s) => {
-            if (s.name.toLowerCase().indexOf(filter.toLowerCase()) === -1) {
+            if (s.lastName.toLowerCase().indexOf(filter.toLowerCase()) === -1) {
                 return;
             }
 

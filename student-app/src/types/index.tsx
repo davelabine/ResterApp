@@ -6,7 +6,7 @@ export interface StudentPhoto {
 export class StudentData {
     skey: string;
     id: string;
-    name: string;
+    lastName: string;
     photo: {};
 }
 
