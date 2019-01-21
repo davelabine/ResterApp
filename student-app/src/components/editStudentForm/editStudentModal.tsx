@@ -50,15 +50,15 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
     }
 
     public onStudentTextValidate(label: string): 'success' | 'warning' | 'error' {
-        console.log('validating label - ' + label);
+        // console.log('validating label - ' + label);
 
         let value = this.state.student[label];
-        console.log('value is: ' + value);
+        // console.log('value is: ' + value);
         if ((value.length > 0) && (value.length < 100) ) { 
-            console.log('return success');
+            // console.log('return success');
             return 'success'; 
         }
-        console.log('return error');
+        // console.log('return error');
         return 'error';
     }
 

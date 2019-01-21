@@ -26,10 +26,15 @@ function updateStudent(dispatch: Dispatch<actions.StudentAction>, student: Stude
 }
 
 function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData, photo?: File) {
+  /*
   resterApp.createStudent(student, photo)
     .then((createStudent) => dispatch(actions.addStudent(createStudent)))
     .catch((err) => console.log('addStudent Fetch error - ' + err));
+  */
+  let randomSKey = Math.floor(Math.random() * (99999 - 11111 + 1)) + 11111;
+  student.skey = randomSKey.toString();
 
+  dispatch(actions.addStudent(student));
 }
 
 export function mapStateToProps({ studentList, filter  }: StoreState) {
