@@ -7,8 +7,8 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
   onStudentTextValidate={[Function]}
   student={
     StudentData {
-      "id": "",
       "lastName": "",
+      "studentId": "",
     }
   }
 >
@@ -26,7 +26,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           <label
             className="control-label"
           >
-            Name:
+            Last Name:
           </label>
         </ControlLabel>
         <FormControl
@@ -66,13 +66,13 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           <label
             className="control-label"
           >
-            ID:
+            Student ID:
           </label>
         </ControlLabel>
         <FormControl
           bsClass="form-control"
           componentClass="input"
-          id="id"
+          id="studentId"
           onChange={[Function]}
           placeholder="Enter Id"
           type="text"
@@ -80,7 +80,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
         >
           <input
             className="form-control"
-            id="id"
+            id="studentId"
             onChange={[Function]}
             placeholder="Enter Id"
             type="text"

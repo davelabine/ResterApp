@@ -42,7 +42,7 @@ export class ResterAppManager {
 
         var formData = new FormData();
         formData.append('name', s.lastName);
-        formData.append('id', s.id);
+        formData.append('id', s.studentId);
         if (photo) {
             formData.append('photo', photo, photo.name);
         }
@@ -81,7 +81,7 @@ export class ResterAppManager {
 
         var formData = new FormData();
         formData.append('name', s.lastName);
-        formData.append('id', s.id);
+        formData.append('id', s.studentId);
         if (photo) {
             formData.append('photo', photo, photo.name);
         }

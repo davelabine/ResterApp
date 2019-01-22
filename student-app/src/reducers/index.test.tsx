@@ -40,7 +40,7 @@ describe('studentReducer', () => {
             filter: '',
         };
         const addStudent: StudentData = {
-            id: '1234',
+            studentId: '1234',
             lastName: 'Bobby',
             skey: '',
             photo: {}

@@ -14,15 +14,21 @@ function fetchStudents(dispatch: Dispatch<actions.StudentAction>) {
 }
 
 function deleteStudent(dispatch: Dispatch<actions.StudentAction>, skey: string) {
+  /*
   resterApp.deleteStudent(skey)
     .then(() => dispatch(actions.deleteStudent(skey)))
     .catch((err) => console.log('deleteStudent Fetch error- ' + err));
+    */
+   dispatch(actions.deleteStudent(skey));
 }
 
 function updateStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData, photo?: File) {
+  /*
   resterApp.updateStudent(student, photo)
     .then((updatedStudent) => dispatch(actions.updateStudent(updatedStudent)))
     .catch((err) => console.log('updateStudent Fetch error - ' + err));
+    */
+   dispatch(actions.updateStudent(student));
 }
 
 function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData, photo?: File) {

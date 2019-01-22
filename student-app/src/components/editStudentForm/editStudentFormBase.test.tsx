@@ -35,19 +35,19 @@ describe('EditStudentformBase', () => {
         expect(nameInput.length).toEqual(1);
         nameInput.simulate('change', {target: {id: 'lastName', value: 'abc'}});
 
-        const idInput = input.find('[id="id"]');
+        const idInput = input.find('[id="studentId"]');
         expect(idInput.length).toEqual(1);
-        idInput.simulate('change', {target: {id: 'id', value: '123'}});
+        idInput.simulate('change', {target: {id: 'studentId', value: '123'}});
 
         expect(spy.mock.calls.length).toBe(2);   
         expect(spy.mock.calls[0][0].target.id).toBe('lastName');
         expect(spy.mock.calls[0][0].target.value).toBe('abc');
-        expect(spy.mock.calls[1][0].target.id).toBe('id');
+        expect(spy.mock.calls[1][0].target.id).toBe('studentId');
         expect(spy.mock.calls[1][0].target.value).toBe('123');
 
         expect(mockFormTextChange.mock.calls.length).toBe(2);
         expect(mockFormTextChange.mock.calls[0][0]).toBe('lastName');
-        expect(mockFormTextChange.mock.calls[1][0]).toBe('id');
+        expect(mockFormTextChange.mock.calls[1][0]).toBe('studentId');
 
         /* Not sure why these dont work...
         expect(mockFormTextChange.mock.calls[0][1]).toBe('abc');

@@ -9,7 +9,7 @@ export interface EditStudentFormBaseProps {
     student: StudentData;
     onFormTextChange: (label: string, filter: String) => void;
     onFormFileChange: (file: File) => void;
-    onStudentTextValidate: (label: String) => 'success' | 'warning' | 'error' | undefined;
+    onStudentTextValidate: (label: String) => 'success' | 'warning' | 'error';
 }
 
 export interface EditStudentFormBaseState {
@@ -55,14 +55,14 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
            Otherwise, React throws a warning that we are switching between uncontrolled and controlled components */
         let student = this.props.student;
         if (!student.lastName) { student.lastName = ''; }
-        if (!student.id) { student.id = ''; }
+        if (!student.studentId) { student.studentId = ''; }
 
         return (
             <form>
                 <FormGroup
                     validationState={this.props.onStudentTextValidate('lastName')}
                 >
-                    <ControlLabel>Name:</ControlLabel>
+                    <ControlLabel>Last Name:</ControlLabel>
                     <FormControl
                         id="lastName"
                         type="text"
@@ -73,14 +73,14 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
                     <FormControl.Feedback />
                 </FormGroup>
                 <FormGroup
-                    validationState={this.props.onStudentTextValidate('id')}
+                    validationState={this.props.onStudentTextValidate('studentId')}
                 >
-                    <ControlLabel>ID:</ControlLabel>
+                    <ControlLabel>Student ID:</ControlLabel>
                     <FormControl
-                        id="id"
+                        id="studentId"
                         type="text"
                         placeholder="Enter Id"
-                        value={student.id}
+                        value={student.studentId}
                         onChange={this.handleTextFieldChange}
                     />
                     <FormControl.Feedback />

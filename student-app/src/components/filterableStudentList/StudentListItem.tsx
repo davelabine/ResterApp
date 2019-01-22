@@ -48,7 +48,7 @@ export class StudentListItem extends React.Component<StudentListItemProps, Stude
         return (
             <tr>
                 <td>{student.lastName}</td>
-                <td>{student.id}</td>
+                <td>{student.studentId}</td>
                 <td>
                     <ButtonGroup>
                         <Button id="edit" onClick={this.onShowModal}><Glyphicon glyph="pencil"/></Button>

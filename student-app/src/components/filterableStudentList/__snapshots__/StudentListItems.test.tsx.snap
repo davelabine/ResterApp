@@ -8,22 +8,22 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
   students={
     Array [
       Object {
-        "id": "1234",
         "lastName": "Billy Bob",
         "photo": Object {
           "bucketName": "resterapp-dev",
           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
         },
         "skey": "8a80810d5dd89a3f015dd89ac8280000",
+        "studentId": "1234",
       },
       Object {
-        "id": "503074",
         "lastName": "Albert Russell",
         "photo": Object {
           "bucketName": "resterapp-dev",
           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
         },
         "skey": "8a80810d5dd89a3f015dd8a252800001",
+        "studentId": "503074",
       },
     ]
   }
@@ -64,13 +64,13 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
             onUpdateStudent={[Function]}
             student={
               Object {
-                "id": "1234",
                 "lastName": "Billy Bob",
                 "photo": Object {
                   "bucketName": "resterapp-dev",
                   "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
                 },
                 "skey": "8a80810d5dd89a3f015dd89ac8280000",
+                "studentId": "1234",
               }
             }
           >
@@ -148,13 +148,13 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
                 <EditStudentModal
                   initialStudent={
                     Object {
-                      "id": "1234",
                       "lastName": "Billy Bob",
                       "photo": Object {
                         "bucketName": "resterapp-dev",
                         "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
                       },
                       "skey": "8a80810d5dd89a3f015dd89ac8280000",
+                      "studentId": "1234",
                     }
                   }
                   onHide={[Function]}
@@ -233,13 +233,13 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
             onUpdateStudent={[Function]}
             student={
               Object {
-                "id": "503074",
                 "lastName": "Albert Russell",
                 "photo": Object {
                   "bucketName": "resterapp-dev",
                   "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
                 },
                 "skey": "8a80810d5dd89a3f015dd8a252800001",
+                "studentId": "503074",
               }
             }
           >
@@ -317,13 +317,13 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
                 <EditStudentModal
                   initialStudent={
                     Object {
-                      "id": "503074",
                       "lastName": "Albert Russell",
                       "photo": Object {
                         "bucketName": "resterapp-dev",
                         "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
                       },
                       "skey": "8a80810d5dd89a3f015dd8a252800001",
+                      "studentId": "503074",
                     }
                   }
                   onHide={[Function]}

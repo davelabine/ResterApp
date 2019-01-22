@@ -33,9 +33,9 @@ describe('EditStudentModal', () => {
         const inst = form.instance() as EditStudentModal;
 
         form.setProps({show: true});
-        inst.onStudentTextChange('id', '123');
+        inst.onStudentTextChange('studentId', '123');
         inst.onStudentTextChange('lastName', 'abc');
-        expect(inst.state.student).toEqual({id: '123', lastName: 'abc'});
+        expect(inst.state.student).toEqual({studentId: '123', lastName: 'abc'});
 
         const file = new File(['editStudentModal'], 'editStudentModal.test.txt', {
             type: 'text/plain',
