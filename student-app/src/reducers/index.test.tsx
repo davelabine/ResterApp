@@ -41,6 +41,7 @@ describe('studentReducer', () => {
         };
         const addStudent: StudentData = {
             studentId: '1234',
+            firstName: 'Bob',
             lastName: 'Bobby',
             id: '',
             photo: {}

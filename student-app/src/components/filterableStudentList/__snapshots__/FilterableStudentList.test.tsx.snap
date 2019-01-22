@@ -11,8 +11,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
   students={
     Array [
       Object {
+        "firstName": "Billy",
         "id": "8a80810d5dd89a3f015dd89ac8280000",
-        "lastName": "Billy Bob",
+        "lastName": "Bob",
         "photo": Object {
           "bucketName": "resterapp-dev",
           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -20,8 +21,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
         "studentId": "1234",
       },
       Object {
+        "firstName": "Albert",
         "id": "8a80810d5dd89a3f015dd8a252800001",
-        "lastName": "Albert Russell",
+        "lastName": "Russel",
         "photo": Object {
           "bucketName": "resterapp-dev",
           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -187,8 +189,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
           students={
             Array [
               Object {
+                "firstName": "Billy",
                 "id": "8a80810d5dd89a3f015dd89ac8280000",
-                "lastName": "Billy Bob",
+                "lastName": "Bob",
                 "photo": Object {
                   "bucketName": "resterapp-dev",
                   "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -196,8 +199,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                 "studentId": "1234",
               },
               Object {
+                "firstName": "Albert",
                 "id": "8a80810d5dd89a3f015dd8a252800001",
-                "lastName": "Albert Russell",
+                "lastName": "Russel",
                 "photo": Object {
                   "bucketName": "resterapp-dev",
                   "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -243,8 +247,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                     onUpdateStudent={[Function]}
                     student={
                       Object {
+                        "firstName": "Billy",
                         "id": "8a80810d5dd89a3f015dd89ac8280000",
-                        "lastName": "Billy Bob",
+                        "lastName": "Bob",
                         "photo": Object {
                           "bucketName": "resterapp-dev",
                           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -255,7 +260,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                   >
                     <tr>
                       <td>
-                        Billy Bob
+                        Bob
                       </td>
                       <td>
                         1234
@@ -327,8 +332,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                         <EditStudentModal
                           initialStudent={
                             Object {
+                              "firstName": "Billy",
                               "id": "8a80810d5dd89a3f015dd89ac8280000",
-                              "lastName": "Billy Bob",
+                              "lastName": "Bob",
                               "photo": Object {
                                 "bucketName": "resterapp-dev",
                                 "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -340,7 +346,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                           onSubmit={[Function]}
                           show={false}
                           submitButtonText="Save"
-                          title="Edit Billy Bob"
+                          title="Edit Bob"
                         >
                           <div
                             className="static-modal"
@@ -412,8 +418,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                     onUpdateStudent={[Function]}
                     student={
                       Object {
+                        "firstName": "Albert",
                         "id": "8a80810d5dd89a3f015dd8a252800001",
-                        "lastName": "Albert Russell",
+                        "lastName": "Russel",
                         "photo": Object {
                           "bucketName": "resterapp-dev",
                           "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -424,7 +431,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                   >
                     <tr>
                       <td>
-                        Albert Russell
+                        Russel
                       </td>
                       <td>
                         503074
@@ -496,8 +503,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                         <EditStudentModal
                           initialStudent={
                             Object {
+                              "firstName": "Albert",
                               "id": "8a80810d5dd89a3f015dd8a252800001",
-                              "lastName": "Albert Russell",
+                              "lastName": "Russel",
                               "photo": Object {
                                 "bucketName": "resterapp-dev",
                                 "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -509,7 +517,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                           onSubmit={[Function]}
                           show={false}
                           submitButtonText="Save"
-                          title="Edit Albert Russell"
+                          title="Edit Russel"
                         >
                           <div
                             className="static-modal"

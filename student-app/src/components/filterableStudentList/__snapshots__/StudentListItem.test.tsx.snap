@@ -3,7 +3,7 @@
 exports[`StudentListItem renders wiuuthout crashing and matches the last snapshot 1`] = `
 <tr>
   <td>
-    Billy Bob
+    Bob
   </td>
   <td>
     1234
@@ -47,8 +47,9 @@ exports[`StudentListItem renders wiuuthout crashing and matches the last snapsho
     <EditStudentModal
       initialStudent={
         Object {
+          "firstName": "Billy",
           "id": "8a80810d5dd89a3f015dd89ac8280000",
-          "lastName": "Billy Bob",
+          "lastName": "Bob",
           "photo": Object {
             "bucketName": "resterapp-dev",
             "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
@@ -60,7 +61,7 @@ exports[`StudentListItem renders wiuuthout crashing and matches the last snapsho
       onSubmit={[Function]}
       show={false}
       submitButtonText="Save"
-      title="Edit Billy Bob"
+      title="Edit Bob"
     />
   </td>
 </tr>

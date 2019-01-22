@@ -6,6 +6,7 @@ export interface StudentPhoto {
 export class StudentData {
     id: string;
     studentId: string;
+    firstName: string;
     lastName: string;
     photo: {};
 }
