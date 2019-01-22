@@ -47,7 +47,10 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
         >
           <tr>
             <th>
-              Name
+              Last Name
+            </th>
+            <th>
+              First Name
             </th>
             <th>
               ID
@@ -80,6 +83,9 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
             <tr>
               <td>
                 Bob
+              </td>
+              <td>
+                Billy
               </td>
               <td>
                 1234
@@ -251,6 +257,9 @@ exports[`StudentListItems renders without crashing and matches the last snapshot
             <tr>
               <td>
                 Russel
+              </td>
+              <td>
+                Albert
               </td>
               <td>
                 503074

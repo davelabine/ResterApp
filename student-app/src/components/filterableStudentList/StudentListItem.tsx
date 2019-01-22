@@ -48,6 +48,7 @@ export class StudentListItem extends React.Component<StudentListItemProps, Stude
         return (
             <tr>
                 <td>{student.lastName}</td>
+                <td>{student.firstName}</td>
                 <td>{student.studentId}</td>
                 <td>
                     <ButtonGroup>

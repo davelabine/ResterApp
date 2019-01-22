@@ -26,7 +26,8 @@ export class StudentListItems extends React.Component<StudentListItemsProps> {
                 <Table striped={true} condensed={true} hover={true}>
                     <thead className="studentListItemsHead">
                     <tr>
-                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
                         <th>ID</th>
                         <th>URL</th>
                     </tr>

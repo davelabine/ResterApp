@@ -228,7 +228,10 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                 >
                   <tr>
                     <th>
-                      Name
+                      Last Name
+                    </th>
+                    <th>
+                      First Name
                     </th>
                     <th>
                       ID
@@ -261,6 +264,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                     <tr>
                       <td>
                         Bob
+                      </td>
+                      <td>
+                        Billy
                       </td>
                       <td>
                         1234
@@ -432,6 +438,9 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                     <tr>
                       <td>
                         Russel
+                      </td>
+                      <td>
+                        Albert
                       </td>
                       <td>
                         503074
