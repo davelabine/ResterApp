@@ -18,13 +18,13 @@ export function studentReducer(state: StoreState, action: StudentAction): StoreS
       return { ...state, studentList: addList };
     case constants.DELETE_STUDENT:
       let delList: StudentData[] = [...state.studentList];
-      const delIndex = delList.findIndex(s => s.skey === action.skey);
+      const delIndex = delList.findIndex(s => s.id === action.id);
       if (delIndex === -1) { return state; } 
       delList.splice(delIndex, 1);
       return { ...state, studentList: delList };
     case constants.UPDATE_STUDENT:
       let upList: StudentData[] = [...state.studentList];
-      const upIndex = upList.findIndex(s => s.skey === action.student.skey);
+      const upIndex = upList.findIndex(s => s.id === action.student.id);
       if (upIndex === -1) { return state; } 
       upList.splice(upIndex, 1, action.student);
       return { ...state, studentList: upList };    

@@ -51,7 +51,7 @@ export class StudentListItems extends React.Component<StudentListItemsProps> {
 
             rows.push(
                 <StudentListItem 
-                    key={s.skey} 
+                    key={s.id} 
                     student={s}
                     onUpdateStudent={this.props.onUpdateStudent}
                     onDeleteStudent={this.props.onDeleteStudent}

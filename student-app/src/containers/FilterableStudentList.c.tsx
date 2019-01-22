@@ -38,7 +38,7 @@ function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentD
     .catch((err) => console.log('addStudent Fetch error - ' + err));
   */
   let randomSKey = Math.floor(Math.random() * (99999 - 11111 + 1)) + 11111;
-  student.skey = randomSKey.toString();
+  student.id = randomSKey.toString();
 
   dispatch(actions.addStudent(student));
 }

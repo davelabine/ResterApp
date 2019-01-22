@@ -92,7 +92,7 @@ export class ResterAppManager {
             method: 'post',
         };
           
-        const url = RESTERAPP_STUDENTS_URL + '/' + s.skey;
+        const url = RESTERAPP_STUDENTS_URL + '/' + s.id;
         console.log('updateStudent fetch... ' + url);
         let response: Response = await fetch(url, requestInit);
         console.log('updateStudent response: ' + response.status);

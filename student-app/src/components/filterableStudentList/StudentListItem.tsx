@@ -40,7 +40,7 @@ export class StudentListItem extends React.Component<StudentListItemProps, Stude
     }
 
     public handleDeleteClick(): void {
-        this.props.onDeleteStudent(this.props.student.skey);
+        this.props.onDeleteStudent(this.props.student.id);
     } 
 
     public render() {

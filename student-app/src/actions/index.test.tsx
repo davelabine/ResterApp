@@ -43,12 +43,12 @@ describe('actions', () => {
   });
   
   it('should create an action to delete a student ', () => {
-    const skey: string = testData.STUDENT_DATA_BILLY.skey;
+    const id: string = testData.STUDENT_DATA_BILLY.id;
     const expectedAction = {
         type: constants.DELETE_STUDENT,
-        skey
+        id
     };
-    expect(actions.deleteStudent(skey)).toEqual(expectedAction);
+    expect(actions.deleteStudent(id)).toEqual(expectedAction);
   });
 
 });

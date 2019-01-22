@@ -42,19 +42,19 @@ describe('studentReducer', () => {
         const addStudent: StudentData = {
             studentId: '1234',
             lastName: 'Bobby',
-            skey: '',
+            id: '',
             photo: {}
         };
         const newState: StoreState = studentReducer(state, actions.addStudent(addStudent));
         /* We expect the skey to be defined by the reducer, but everything else should be the same */
-        addStudent.skey = newState.studentList[0].skey;
+        addStudent.id = newState.studentList[0].id;
         state.studentList.push(addStudent);
         expect(newState).toEqual(state);
     });
 
     it('should delete students', () => {
         const newState: StoreState = studentReducer(initialState, 
-                                                    actions.deleteStudent(testData.STUDENT_DATA_BILLY.skey));
+                                                    actions.deleteStudent(testData.STUDENT_DATA_BILLY.id));
         expect(newState.studentList.length).toEqual(1);
     });
 

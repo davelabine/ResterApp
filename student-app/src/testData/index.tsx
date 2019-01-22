@@ -3,14 +3,14 @@ import { StudentData } from '../types';
 export const STUDENT_DATA_EMPTY: StudentData = new StudentData();
 
 export const STUDENT_DATA_FAKE: StudentData =  {
-    'skey': 'FAKE_KEY',
+    'id': 'FAKE_KEY',
     'studentId': 'FAKE_ID',
     'lastName': 'FAKE_NAME',
     'photo': {}
 };
 
 export const STUDENT_DATA_BILLY: StudentData =  {
-                                                    'skey': '8a80810d5dd89a3f015dd89ac8280000',
+                                                    'id': '8a80810d5dd89a3f015dd89ac8280000',
                                                     'studentId': '1234',
                                                     'lastName': 'Billy Bob',
                                                     'photo': {
@@ -20,7 +20,7 @@ export const STUDENT_DATA_BILLY: StudentData =  {
                                                 };
 
 export const STUDENT_DATA_BILLY_UPDATE: StudentData =  {
-                                                    'skey': '8a80810d5dd89a3f015dd89ac8280000',
+                                                    'id': '8a80810d5dd89a3f015dd89ac8280000',
                                                     'studentId': '007',
                                                     'lastName': 'James Bond',
                                                     'photo': {}
@@ -30,7 +30,7 @@ export const LIST_STUDENT_DATA_EMPTY: StudentData[] = [];
 
 export const LIST_STUDENT_DATA_TWO: StudentData[] =  [
     {
-        'skey': '8a80810d5dd89a3f015dd89ac8280000',
+        'id': '8a80810d5dd89a3f015dd89ac8280000',
         'studentId': '1234',
         'lastName': 'Billy Bob',
         'photo': {
@@ -39,7 +39,7 @@ export const LIST_STUDENT_DATA_TWO: StudentData[] =  [
         }
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a252800001',
+        'id': '8a80810d5dd89a3f015dd8a252800001',
         'studentId': '503074',
         'lastName': 'Albert Russell',
         'photo': {
@@ -51,7 +51,7 @@ export const LIST_STUDENT_DATA_TWO: StudentData[] =  [
 
 export const LIST_STUDENT_DATA_BIG: StudentData[] =  [
     {
-        'skey': '8a80810d5dd89a3f015dd89ac8280000',
+        'id': '8a80810d5dd89a3f015dd89ac8280000',
         'studentId': '1234',
         'lastName': 'Billy Bob',
         'photo': {
@@ -60,7 +60,7 @@ export const LIST_STUDENT_DATA_BIG: StudentData[] =  [
         }
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a252800001',
+        'id': '8a80810d5dd89a3f015dd8a252800001',
         'studentId': '503074',
         'lastName': 'Albert Russell',
         'photo': {
@@ -69,49 +69,49 @@ export const LIST_STUDENT_DATA_BIG: StudentData[] =  [
         }
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a259b2000e',
+        'id': '8a80810d5dd89a3f015dd8a259b2000e',
         'studentId': '942226',
         'lastName': 'Alfredo Cummings',
         'photo': {}
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a2677f0027',
+        'id': '8a80810d5dd89a3f015dd8a2677f0027',
         'studentId': '824388',
         'lastName': 'Allen Russell',
         'photo': {}
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a271fb003a',
+        'id': '8a80810d5dd89a3f015dd8a271fb003a',
         'studentId': '266192',
         'lastName': 'Andre McKenna',
         'photo': {}
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a27f0d0052',
+        'id': '8a80810d5dd89a3f015dd8a27f0d0052',
         'studentId': '932083',
         'lastName': 'Angelica Obrien',
         'photo': {}
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a281c80057',
+        'id': '8a80810d5dd89a3f015dd8a281c80057',
         'studentId': '682307',
         'lastName': 'Anna Washington',
         'photo': {}
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a27c52004d',
+        'id': '8a80810d5dd89a3f015dd8a27c52004d',
         'studentId': '734552',
         'lastName': 'Antonio Fowler',
         'photo': {}
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a25fb80019',
+        'id': '8a80810d5dd89a3f015dd8a25fb80019',
         'studentId': '615643',
         'lastName': 'Ashley Mcdaniel',
         'photo': {}
     },
     {
-        'skey': '8a80810d5dd89a3f015dd8a25897000c',
+        'id': '8a80810d5dd89a3f015dd8a25897000c',
         'studentId': '753238',
         'lastName': 'Beatrice Russell',
         'photo': {}
