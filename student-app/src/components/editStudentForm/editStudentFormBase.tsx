@@ -55,6 +55,7 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
            Otherwise, React throws a warning that we are switching between uncontrolled and controlled components */
         let student = this.props.student;
         if (!student.lastName) { student.lastName = ''; }
+        if (!student.firstName) { student.firstName = ''; }
         if (!student.studentId) { student.studentId = ''; }
 
         return (
@@ -66,12 +67,25 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
                     <FormControl
                         id="lastName"
                         type="text"
-                        placeholder="Enter Name"
+                        placeholder="Enter Last Name"
                         value={student.lastName}
                         onChange={this.handleTextFieldChange}
                     />
                     <FormControl.Feedback />
                 </FormGroup>
+                <FormGroup
+                    validationState={this.props.onStudentTextValidate('firstName')}
+                >
+                    <ControlLabel>First Name:</ControlLabel>
+                    <FormControl
+                        id="firstName"
+                        type="text"
+                        placeholder="Enter First Name"
+                        value={student.firstName}
+                        onChange={this.handleTextFieldChange}
+                    />
+                    <FormControl.Feedback />
+                </FormGroup>                
                 <FormGroup
                     validationState={this.props.onStudentTextValidate('studentId')}
                 >
@@ -79,7 +93,7 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
                     <FormControl
                         id="studentId"
                         type="text"
-                        placeholder="Enter Id"
+                        placeholder="Enter Student Id"
                         value={student.studentId}
                         onChange={this.handleTextFieldChange}
                     />

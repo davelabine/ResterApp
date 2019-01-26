@@ -7,6 +7,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
   onStudentTextValidate={[Function]}
   student={
     StudentData {
+      "firstName": "",
       "lastName": "",
       "studentId": "",
     }
@@ -34,7 +35,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           componentClass="input"
           id="lastName"
           onChange={[Function]}
-          placeholder="Enter Name"
+          placeholder="Enter Last Name"
           type="text"
           value=""
         >
@@ -42,7 +43,47 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
             className="form-control"
             id="lastName"
             onChange={[Function]}
-            placeholder="Enter Name"
+            placeholder="Enter Last Name"
+            type="text"
+            value=""
+          />
+        </FormControl>
+        <FormControlFeedback
+          bsClass="form-control-feedback"
+          bsRole="feedback"
+        />
+      </div>
+    </FormGroup>
+    <FormGroup
+      bsClass="form-group"
+    >
+      <div
+        className="form-group has-feedback"
+      >
+        <ControlLabel
+          bsClass="control-label"
+          srOnly={false}
+        >
+          <label
+            className="control-label"
+          >
+            First Name:
+          </label>
+        </ControlLabel>
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          id="firstName"
+          onChange={[Function]}
+          placeholder="Enter First Name"
+          type="text"
+          value=""
+        >
+          <input
+            className="form-control"
+            id="firstName"
+            onChange={[Function]}
+            placeholder="Enter First Name"
             type="text"
             value=""
           />
@@ -74,7 +115,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
           componentClass="input"
           id="studentId"
           onChange={[Function]}
-          placeholder="Enter Id"
+          placeholder="Enter Student Id"
           type="text"
           value=""
         >
@@ -82,7 +123,7 @@ exports[`EditStudentformBase renders without crashing and matches the last snaps
             className="form-control"
             id="studentId"
             onChange={[Function]}
-            placeholder="Enter Id"
+            placeholder="Enter Student Id"
             type="text"
             value=""
           />

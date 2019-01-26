@@ -110,6 +110,7 @@ export class EditStudentModal extends React.Component<EditStudentModalProps, Edi
 
     private validateForm(): 'success' | 'warning' | 'error' {
         if ( this.onStudentTextValidate('lastName') === 'success' &&
+             this.onStudentTextValidate('lastName') === 'success' &&
              this.onStudentTextValidate('studentId') === 'success' ) {
             return 'success'; 
         }
