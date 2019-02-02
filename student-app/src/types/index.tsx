@@ -1,14 +1,10 @@
-export interface StudentPhoto {
-    bucketName: string;
-    key: string;
-}
 
 export class StudentData {
     id: string;
     studentId: string;
     firstName: string;
     lastName: string;
-    photo: {};
+    photoUrl: string;
 }
 
 export interface StoreState {

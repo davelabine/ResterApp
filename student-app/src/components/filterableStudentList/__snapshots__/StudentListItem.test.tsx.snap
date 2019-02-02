@@ -53,10 +53,7 @@ exports[`StudentListItem renders wiuuthout crashing and matches the last snapsho
           "firstName": "Billy",
           "id": "8a80810d5dd89a3f015dd89ac8280000",
           "lastName": "Bob",
-          "photo": Object {
-            "bucketName": "resterapp-dev",
-            "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-          },
+          "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
           "studentId": "1234",
         }
       }

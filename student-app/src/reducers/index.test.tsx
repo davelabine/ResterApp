@@ -44,7 +44,7 @@ describe('studentReducer', () => {
             firstName: 'Bob',
             lastName: 'Bobby',
             id: '',
-            photo: {}
+            photoUrl: ''
         };
         const newState: StoreState = studentReducer(state, actions.addStudent(addStudent));
         /* We expect the skey to be defined by the reducer, but everything else should be the same */

@@ -14,20 +14,14 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
         "firstName": "Billy",
         "id": "8a80810d5dd89a3f015dd89ac8280000",
         "lastName": "Bob",
-        "photo": Object {
-          "bucketName": "resterapp-dev",
-          "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-        },
+        "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
         "studentId": "1234",
       },
       Object {
         "firstName": "Albert",
         "id": "8a80810d5dd89a3f015dd8a252800001",
         "lastName": "Russel",
-        "photo": Object {
-          "bucketName": "resterapp-dev",
-          "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-        },
+        "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
         "studentId": "503074",
       },
     ]
@@ -192,20 +186,14 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                 "firstName": "Billy",
                 "id": "8a80810d5dd89a3f015dd89ac8280000",
                 "lastName": "Bob",
-                "photo": Object {
-                  "bucketName": "resterapp-dev",
-                  "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                },
+                "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
                 "studentId": "1234",
               },
               Object {
                 "firstName": "Albert",
                 "id": "8a80810d5dd89a3f015dd8a252800001",
                 "lastName": "Russel",
-                "photo": Object {
-                  "bucketName": "resterapp-dev",
-                  "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                },
+                "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
                 "studentId": "503074",
               },
             ]
@@ -253,10 +241,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                         "firstName": "Billy",
                         "id": "8a80810d5dd89a3f015dd89ac8280000",
                         "lastName": "Bob",
-                        "photo": Object {
-                          "bucketName": "resterapp-dev",
-                          "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                        },
+                        "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
                         "studentId": "1234",
                       }
                     }
@@ -341,10 +326,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                               "firstName": "Billy",
                               "id": "8a80810d5dd89a3f015dd89ac8280000",
                               "lastName": "Bob",
-                              "photo": Object {
-                                "bucketName": "resterapp-dev",
-                                "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                              },
+                              "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
                               "studentId": "1234",
                             }
                           }
@@ -427,10 +409,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                         "firstName": "Albert",
                         "id": "8a80810d5dd89a3f015dd8a252800001",
                         "lastName": "Russel",
-                        "photo": Object {
-                          "bucketName": "resterapp-dev",
-                          "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                        },
+                        "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
                         "studentId": "503074",
                       }
                     }
@@ -515,10 +494,7 @@ exports[`FilterableStudentList renders without crashing and matches the last sna
                               "firstName": "Albert",
                               "id": "8a80810d5dd89a3f015dd8a252800001",
                               "lastName": "Russel",
-                              "photo": Object {
-                                "bucketName": "resterapp-dev",
-                                "key": "e93ecbf0-ba96-4290-a906-5ea67e4c4a9f",
-                              },
+                              "photoUrl": "https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg",
                               "studentId": "503074",
                             }
                           }

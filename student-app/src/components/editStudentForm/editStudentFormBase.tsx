@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FormGroup, ControlLabel, FormControl, FormControlProps, Thumbnail } from 'react-bootstrap';
-import { StudentData, StudentPhoto } from '../../types';
+import { StudentData } from '../../types';
 
 export const BASE_PHOTO_URL: string = 'https://s3-us-west-2.amazonaws.com/';
 export const DEFAULT_PHOTO_URL: string = 'https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg';
@@ -109,21 +109,21 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
                     <Thumbnail 
                         href="#" 
                         alt="171x180" 
-                        src={this.getPhotoURL(student.photo as StudentPhoto)}
+                        src={this.getPhotoURL(student.photoUrl)}
                     />
                 </FormGroup>
             </form>
         );
     }
 
-    private getPhotoURL(photo: StudentPhoto): string {
+    private getPhotoURL(photo: string): string {
         let previewURL: string = this.state.previewURL;
         if (previewURL) {
             return previewURL;
         }
-        if (photo) {
-            return BASE_PHOTO_URL + photo.bucketName + '/' + photo.key;
+        if (!photo) {
+            return DEFAULT_PHOTO_URL;
         }   
-        return DEFAULT_PHOTO_URL;
+        return photo;
     }
 }
