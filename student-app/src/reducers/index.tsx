@@ -24,7 +24,11 @@ export function studentReducer(state: StoreState, action: StudentAction): StoreS
       return { ...state, studentList: delList };
     case constants.UPDATE_STUDENT:
       let upList: StudentData[] = [...state.studentList];
-      const upIndex = upList.findIndex(s => s.id === action.student.id);
+      const upIndex = upList.findIndex(function (s: StudentData) {
+        console.log('s: %s, action: %s', s.id, action.student.id);
+        return s.id === action.student.id;
+      });
+      console.log('UPDATE_STUDENT upIndex - ', upIndex);
       if (upIndex === -1) { return state; } 
       upList.splice(upIndex, 1, action.student);
       return { ...state, studentList: upList };    

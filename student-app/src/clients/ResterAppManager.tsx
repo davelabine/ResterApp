@@ -2,9 +2,9 @@ import { StudentData } from '../types';
 
 /* export const RESTERAPP_BASE_URL: string = 'http://resterapp.lvictories.us:8080/api';
 export const RESTERAPP_BASE_URL: string = 'http://0.0.0.0:8080/service/api'; */
-export const RESTERAPP_BASE_URL: string = 'http://0.0.0.0:30800/api';
+export const RESTERAPP_BASE_URL: string = 'http://localhost:8080/api/v1';
 console.log( 'RESTERAPP_BASE_URL = ' + RESTERAPP_BASE_URL);
-export const RESTERAPP_STUDENTS_URL: string = RESTERAPP_BASE_URL + '/students';
+export const RESTERAPP_STUDENTS_URL: string = RESTERAPP_BASE_URL + '/student';
 
 export class ResterAppManager {
       
@@ -26,7 +26,8 @@ export class ResterAppManager {
                             + contentType);
         }
 
-        students = await response.json();
+        let json = await response.json();
+        students = json.students;
         console.log(JSON.stringify(students));
         return students;
     }
@@ -41,8 +42,9 @@ export class ResterAppManager {
         */
 
         var formData = new FormData();
-        formData.append('name', s.lastName);
-        formData.append('id', s.studentId);
+        formData.append('lastName', s.lastName);
+        formData.append('firstName', s.firstName);
+        formData.append('studentId', s.studentId);
         if (photo) {
             formData.append('photo', photo, photo.name);
         }
@@ -62,13 +64,16 @@ export class ResterAppManager {
             throw Error('Incorrect contentType.  Expected application/json and received' 
                             + contentType);
         }
-
-        let skey = response.headers.get('student-key');
-        if (!skey) { skey = ''; }
-        console.log('createStudents response: ' + response.status + ', skey:' + skey);
-        let student = await response.json();
-        console.log(JSON.stringify(student));
-        return student;
+        console.log(response.headers);
+        let id = response.headers.get('id');
+        if (!id) { id = ''; }
+        console.log('createStudents response: ' + response.status + ', id:' + id);
+        let json = await response.json();
+        console.log(JSON.stringify(json));
+        if (!json.student) {
+            throw Error('No student object returned.');
+        }
+        return json.student;
     }
 
     public async updateStudent(s: StudentData, photo?: File): Promise<StudentData> {
@@ -80,8 +85,9 @@ export class ResterAppManager {
         */
 
         var formData = new FormData();
-        formData.append('name', s.lastName);
-        formData.append('id', s.studentId);
+        formData.append('lastName', s.lastName);
+        formData.append('firstName', s.firstName);
+        formData.append('studentId', s.studentId);
         if (photo) {
             formData.append('photo', photo, photo.name);
         }
@@ -89,7 +95,7 @@ export class ResterAppManager {
         const requestInit: RequestInit = {
             body: formData,
             headers: myHeaders,
-            method: 'post',
+            method: 'put',
         };
           
         const url = RESTERAPP_STUDENTS_URL + '/' + s.id;
@@ -102,14 +108,14 @@ export class ResterAppManager {
 
     }
 
-    public async deleteStudent(skey: string): Promise<void> {
+    public async deleteStudent(id: string): Promise<void> {
         var myHeaders = new Headers();
         const requestInit: RequestInit = {
             headers: myHeaders,
             method: 'DELETE',
         };
                  
-        const url = RESTERAPP_STUDENTS_URL + '/' + skey;
+        const url = RESTERAPP_STUDENTS_URL + '/' + id;
         console.log('deleteStudent fetch... ' + url);
         let response: Response = await fetch(url, requestInit);
         console.log('deleteStudent response: ' + response.status);

@@ -46,7 +46,7 @@ export class EditStudentFormBase extends React.Component<EditStudentFormBaseProp
     public handleTextFieldChange(e: React.FormEvent<FormControlProps>): void {
         const label = e.currentTarget.id as string;
         const value = e.currentTarget.value as string;
-        console.log('handleTextFieldChange: ' + label + ' ' + value);
+        // console.log('handleTextFieldChange: ' + label + ' ' + value);
         this.props.onFormTextChange(label, value);
     }
 

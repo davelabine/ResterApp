@@ -13,34 +13,22 @@ function fetchStudents(dispatch: Dispatch<actions.StudentAction>) {
     .catch((err) => console.log('fetchStudents error - ' + err));
 }
 
-function deleteStudent(dispatch: Dispatch<actions.StudentAction>, skey: string) {
-  /*
-  resterApp.deleteStudent(skey)
-    .then(() => dispatch(actions.deleteStudent(skey)))
+function deleteStudent(dispatch: Dispatch<actions.StudentAction>, id: string) {
+  resterApp.deleteStudent(id)
+    .then(() => dispatch(actions.deleteStudent(id)))
     .catch((err) => console.log('deleteStudent Fetch error- ' + err));
-    */
-   dispatch(actions.deleteStudent(skey));
 }
 
 function updateStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData, photo?: File) {
-  /*
   resterApp.updateStudent(student, photo)
     .then((updatedStudent) => dispatch(actions.updateStudent(updatedStudent)))
     .catch((err) => console.log('updateStudent Fetch error - ' + err));
-    */
-   dispatch(actions.updateStudent(student));
 }
 
 function addStudent(dispatch: Dispatch<actions.StudentAction>, student: StudentData, photo?: File) {
-  /*
   resterApp.createStudent(student, photo)
     .then((createStudent) => dispatch(actions.addStudent(createStudent)))
     .catch((err) => console.log('addStudent Fetch error - ' + err));
-  */
-  let randomSKey = Math.floor(Math.random() * (99999 - 11111 + 1)) + 11111;
-  student.id = randomSKey.toString();
-
-  dispatch(actions.addStudent(student));
 }
 
 export function mapStateToProps({ studentList, filter  }: StoreState) {
