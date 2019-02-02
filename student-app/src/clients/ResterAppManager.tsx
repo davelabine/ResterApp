@@ -71,7 +71,7 @@ export class ResterAppManager {
         let json = await response.json();
         console.log(JSON.stringify(json));
         if (!json.student) {
-            throw Error('No student object returned.');
+            throw Error('No student data returned.');
         }
         return json.student;
     }
@@ -102,9 +102,12 @@ export class ResterAppManager {
         console.log('updateStudent fetch... ' + url);
         let response: Response = await fetch(url, requestInit);
         console.log('updateStudent response: ' + response.status);
-        let student = await response.json();
-        console.log(JSON.stringify(student));
-        return student;
+        let json = await response.json();
+        console.log(JSON.stringify(json));
+        if (!json.student) {
+            throw Error('No student data returned.');
+        }
+        return json.student;
 
     }
 
