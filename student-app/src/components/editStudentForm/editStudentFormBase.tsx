@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FormGroup, ControlLabel, FormControl, FormControlProps, Thumbnail } from 'react-bootstrap';
 import { StudentData } from '../../types';
 
-export const BASE_PHOTO_URL: string = 'https://s3-us-west-2.amazonaws.com/';
 export const DEFAULT_PHOTO_URL: string = 'https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg';
 
 export interface EditStudentFormBaseProps {
